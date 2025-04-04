@@ -4,16 +4,16 @@ import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()], // tailwind는 postcss에서 처리함
+  plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '~app': path.resolve('src/app'),
-      '~entities': path.resolve('src/entities'),
-      '~features': path.resolve('src/features'),
-      '~pages': path.resolve('src/pages'),
-      '~shared': path.resolve('src/shared'),
-      '~widgets': path.resolve('src/widgets'),
+      '@/app': path.resolve('src/app'),
+      '@/entities': path.resolve('src/entities'),
+      '@/features': path.resolve('src/features'),
+      '@/pages': path.resolve('src/pages'),
+      '@/shared': path.resolve('src/shared'),
+      '@/widgets': path.resolve('src/widgets'),
     },
   },
 });

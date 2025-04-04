@@ -101,8 +101,6 @@
   }
 
   body {
-    color: var(--foreground);
-    background: var(--background);
     width: 100dvw;
     font-family: var(--font-spoqa-han-sans-neo);
   }
