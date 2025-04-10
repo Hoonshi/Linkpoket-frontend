@@ -2,7 +2,7 @@ import { cva } from 'class-variance-authority';
 
 interface ToggleSwitchProps {
   checked: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const toggleContainer = cva(
