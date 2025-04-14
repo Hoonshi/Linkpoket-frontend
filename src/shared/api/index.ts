@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 
 export const client = axios.create({
-  baseURL: 'http://dev.linkrew.com /api',
+  baseURL: 'http://dev.linkrew.com/api',
 });
 
 //백엔드 api 유효성 검증 에러 응답
