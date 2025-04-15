@@ -12,7 +12,7 @@ interface ViewToggleProps {
 }
 
 const toggleButton = cva(
-  'flex-1 flex items-center justify-center transition-colors bg-[#E4E4E4] p-2',
+  'flex-1 flex items-center justify-center transition-colors bg-[#E4E4E4] p-2 cursor-pointer',
   {
     variants: {
       active: {
@@ -46,7 +46,7 @@ export function ViewToggle({
   return (
     <div
       className={cn(
-        'flex w-[128px] h-[58px] rounded-[8px] overflow-hidden',
+        'flex h-[58px] w-[128px] overflow-hidden rounded-[8px]',
         className
       )}
     >
