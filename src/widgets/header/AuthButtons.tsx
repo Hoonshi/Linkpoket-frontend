@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/shared/ui/button';
 import { useNavigate } from 'react-router-dom';
 
 export function AuthButtons() {
@@ -13,14 +13,14 @@ export function AuthButtons() {
   };
 
   return (
-    <div className="flex items-center gap-[16px] text-[17px]">
-      <Button onClick={handleLogin} className=" h-auto py-[12px] px-[16px]">
+    <div className="flex cursor-pointer items-center gap-[16px] text-[17px]">
+      <Button onClick={handleLogin} className="h-auto px-[16px] py-[12px]">
         로그인
       </Button>
       <Button
         variant="ghost"
         onClick={handleSignup}
-        className="h-auto py-[12px] px-[16px]"
+        className="h-auto px-[16px] py-[12px]"
       >
         회원가입
       </Button>

@@ -5,10 +5,10 @@ export function UserActions() {
   return (
     <div className="flex items-center gap-2">
       <button>
-        <Bell className="py-[2px] px-[3px]" />
+        <Bell className="cursor-pointer px-[3px] py-[2px]" />
       </button>
       <button>
-        <Menu />
+        <Menu className="cursor-pointer" />
       </button>
     </div>
   );

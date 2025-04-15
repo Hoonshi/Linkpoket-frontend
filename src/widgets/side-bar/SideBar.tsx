@@ -27,40 +27,40 @@ const SideBar: React.FC<MenubarProps> = ({
   showFooter = true,
 }) => {
   return (
-    <aside className="flex flex-col justify-between h-screen w-[320px] pt-[14px] px-[10px]">
-      <div className="mb-[16px]">
+    <aside className="border-r-gray-30 flex h-screen w-[320px] flex-col justify-between border-r">
+      <div className="gap-[16px pt-[14px]] mb-[16px] flex flex-col px-[10px]">
         <div className="flex flex-col gap-[16px]">
-          <HamburgerButton />
-          <div className="flex gap-[12px] py-[8px] px-[10px]">
+          <div className="py-[10px]">
+            <HamburgerButton />
+          </div>
+          <div className="flex gap-[12px] px-[10px] py-[8px]">
             <img src={avatarUrl} alt="avatar" className="p-[8px]" />
             <div>
               <p className="text-gray-90 text-[21px] font-bold">{nickname}</p>
-              <p className="text-gray-50 text-[17px] font-[400]">{email}</p>
+              <p className="text-[17px] font-[400] text-gray-50">{email}</p>
             </div>
           </div>
         </div>
-
         {/* 메뉴 리스트 */}
         <ul>
           <Link
             to="#"
-            className="group flex items-center gap-[20px] py-[14px] px-[8px] text-gray-90 font-[600] active:bg-primary-10 active:text-primary-50"
+            className="group text-gray-90 focus:bg-primary-10 focus:text-primary-50 flex items-center gap-[20px] px-[8px] py-[14px] font-[600] focus:rounded-[8px]"
           >
-            <BookMark className="text-gray-90 group-active:text-primary-50" />
+            <BookMark className="text-gray-90 group-focus:text-primary-50" />
             즐겨찾기 / 북마크
           </Link>
           <Link
             to="#"
-            className="group flex items-center  gap-[20px] py-[14px] px-[8px] text-gray-90 font-[600] active:bg-primary-10 active:text-primary-50"
+            className="group text-gray-90 focus:bg-primary-10 focus:text-primary-50 flex items-center gap-[20px] px-[8px] py-[14px] font-[600] focus:rounded-[8px]"
           >
-            <PersonalPage className="group-active:text-primary-50" /> 개인
-            페이지
+            <PersonalPage className="group-focus:text-primary-50" /> 개인 페이지
           </Link>
           <Link
             to="#"
-            className="group flex items-center  gap-[20px] py-[14px] px-[8px] text-gray-90 font-[600] active:bg-primary-10 active:text-primary-50"
+            className="group text-gray-90 focus:bg-primary-10 focus:text-primary-50 flex items-center gap-[20px] px-[8px] py-[14px] font-[600] focus:rounded-[8px]"
           >
-            <SharedPage className="group-active:text-primary-50" /> 공유 페이지
+            <SharedPage className="group-focus:text-primary-50" /> 공유 페이지
           </Link>
 
           {sharedPages.map((page) => (
@@ -68,7 +68,7 @@ const SideBar: React.FC<MenubarProps> = ({
               to="#"
               key={page.id}
               // TODO: 만약 공유페이지에도 아이콘이 들어간다면 padding 수정
-              className="flex gap-[20px] py-[14px] pl-[48px] pr-[8px] text-gray-90 font-[500] active:bg-primary-10 active:text-primary-50"
+              className="text-gray-90 focus:bg-primary-10 focus:text-primary-50 flex gap-[20px] py-[14px] pr-[8px] pl-[48px] font-[500] focus:rounded-[8px]"
             >
               {page.title}
             </Link>
