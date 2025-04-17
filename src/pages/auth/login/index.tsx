@@ -1,36 +1,45 @@
 import Logo from '@/shared/assets/Logo.svg?react';
 import Kakao from '@/shared/assets/Kakao.svg?react';
 import Google from '@/shared/assets/Google.svg?react';
-import { Button } from '@/shared/ui/Button';
+import { SocialLoginButton } from '@/shared/ui/SocialLoginButton';
 
 const LoginPage = () => {
+  const handleKakaoLogin = () => {
+    // 카카오 로그인 로직 구현
+    console.log('카카오 로그인 시도');
+  };
+
+  const handleGoogleLogin = () => {
+    // 구글 로그인 로직 구현
+    console.log('구글 로그인 시도');
+  };
+
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
-      <section className="flex flex-col items-start w-full max-w-md">
-        <div className="flex flex-col leading-[1.5] text-left text-[28px] font-bold mb-[69px]">
-          {/* 링크모아 문구 */}
+    <main className="flex min-h-screen flex-col items-center justify-center bg-white p-4">
+      <section className="flex w-full max-w-md flex-col items-start">
+        <div className="mb-[69px] flex flex-col text-left text-[28px] leading-[150%] font-bold">
           <Logo />
-          <h2 className="text-gray-800 mb-1 mt-4">
-            <span className="text-orange-500">링크</span>를 한눈에
-          </h2>
-          <h2 className="mb-1">
-            <span className="text-orange-500">모아</span>두고
-          </h2>
-          <p className="text-gray-800">간편하게 관리하세요</p>
+          <h2 className="mt-4 text-orange-500">링크를 한눈에</h2>
+          <span className="text-gray-100">모아두고</span>
+          <span className="text-gray-100">간편하게 관리하세요</span>
         </div>
 
-        {/* 카카오 로그인 */}
         <section className="w-full space-y-4">
-          <Button className="flex items-center justify-center w-full py-3 bg-[#fee500] rounded-lg text-gray-800 font-medium hover:bg-none">
-            <Kakao className="mr-2" />
-            카카오 로그인
-          </Button>
+          <SocialLoginButton
+            provider="카카오"
+            icon={Kakao}
+            bgColor="bg-yellow-300"
+            hoverColor="bg-yellow-400"
+            onClick={handleKakaoLogin}
+          />
 
-          {/* 구글 로그인 */}
-          <Button className="flex items-center justify-center w-full py-3 bg-[#f2f2f2] hover:bg-[#e6e6e6] rounded-lg text-gray-800 font-medium">
-            <Google className="mr-2" />
-            Google 로그인
-          </Button>
+          <SocialLoginButton
+            provider="Google"
+            icon={Google}
+            bgColor="bg-gray-5"
+            hoverColor="bg-gray-200"
+            onClick={handleGoogleLogin}
+          />
         </section>
       </section>
     </main>
