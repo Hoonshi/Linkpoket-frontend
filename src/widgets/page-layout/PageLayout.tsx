@@ -65,7 +65,7 @@ export default function PageLayout() {
         <div className="flex gap-[12px]">
           <SearchBar size="fixed" placeholder="폴더, 사이트 검색" />
           <PageSelectBox />
-          <ViewToggle selectedView={view} onChange={setView} />;
+          <ViewToggle selectedView={view} onChange={setView} />
         </div>
       </div>
       <div>
