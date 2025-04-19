@@ -4,7 +4,7 @@ import SiteIcon from '@/widgets/assets/SiteIcon.svg?react';
 import { Button } from '@/shared/ui/button';
 import { SearchBar } from '@/shared/ui/SearchBar';
 import { ViewToggle } from '@/shared/ui/ViewToggle';
-import PageSelectBox from '@/widgets/page-layout/PageSelectBox';
+import PageSelectBox from '@/widgets/page-layout/PageSortBox';
 import { useOutletContext } from 'react-router-dom';
 
 type ContextType = {
@@ -50,6 +50,7 @@ export default function PageLayout() {
           />
         </div>
       </div>
+
       {/* CONTROLLER */}
       <div className="flex justify-between px-[64px]">
         <div className="flex h-[48px] gap-[12px]">
@@ -68,6 +69,8 @@ export default function PageLayout() {
           <ViewToggle selectedView={view} onChange={setView} />
         </div>
       </div>
+
+      {/* DIRECTORY, SITE */}
       <div>
         {showSidebar === true ? (
           <div className="px-[136px] text-3xl font-bold">

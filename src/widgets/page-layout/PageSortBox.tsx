@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import PageSelectBoxIcon from '@/shared/assets/PageSelectBoxIcon.svg?react';
-import PageSelectBoxIconUp from '@/shared/assets/PageSelectBoxIconUp.svg?react';
-import PageSelectBoxIconCheck from '@/shared/assets/PageSelectBoxIconCheck.svg?react';
+import PageSortBoxIcon from '@/shared/assets/PageSortBoxIcon.svg?react';
+import PageSortBoxIconUp from '@/shared/assets/PageSortBoxIconUp.svg?react';
+import PageSelectBoxIconCheck from '@/shared/assets/PageSortBoxIconCheck.svg?react';
 import { cn } from '@/shared/lib/util/utils';
 
 type Option = '기본순' | '최신순' | '이름순';
@@ -12,7 +12,7 @@ interface SortSelectProps {
   onChange?: (value: Option) => void;
 }
 
-export default function PageSelectBox({
+export default function PageSortBox({
   options = ['기본순', '최신순', '이름순'],
   defaultValue = '기본순',
   onChange,
@@ -53,7 +53,7 @@ export default function PageSelectBox({
         className="bg-gray-5 text-gray-60 inline-flex h-[48px] min-w-max cursor-pointer items-center justify-between gap-[10px] rounded-[8px] px-[20px] text-[17px] font-[600]"
       >
         <span>{selected}</span>
-        {isOpen ? <PageSelectBoxIconUp /> : <PageSelectBoxIcon />}
+        {isOpen ? <PageSortBoxIconUp /> : <PageSortBoxIcon />}
       </button>
 
       {isOpen && (
