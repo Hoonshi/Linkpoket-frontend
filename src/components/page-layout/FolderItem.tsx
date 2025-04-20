@@ -1,4 +1,5 @@
 import FolderItemIcon from '@/assets/common-ui-assets/FolderItemIcon.svg?react';
+import ListBookmarkModal from './ListBookmarkModal';
 
 interface FolderItemProps {
   item: {
@@ -26,7 +27,9 @@ export default function FolderItem({ item, view }: FolderItemProps) {
           {item.title}
         </span>
       </div>
-      <div>북마크 및 메뉴 영역</div>
+      <div>
+        <ListBookmarkModal />
+      </div>
     </div>
   );
 }
