@@ -6,6 +6,8 @@ import { Button } from '@/components/common-ui/button';
 import { SearchBar } from '@/components/common-ui/SearchBar';
 import { ViewToggle } from '@/components/common-ui/ViewToggle';
 import PageSortBox from './PageSortBox';
+import LinkItem from './LinkItem';
+import FolderItem from './FolderItem';
 
 type ContextType = {
   showSidebar: boolean;
@@ -60,28 +62,35 @@ export default function PageLayout() {
           </Button>
           <Button variant="ghost" size="md" className="flex gap-[6px]">
             <SiteIcon />
-            사이트 추가
+            링크 추가
           </Button>
         </div>
         <div className="flex gap-[12px]">
-          <SearchBar size="fixed" placeholder="폴더, 사이트 검색" />
+          <SearchBar size="fixed" placeholder="폴더, 링크 검색" />
           <PageSortBox />
           <ViewToggle selectedView={view} onChange={setView} />
         </div>
       </div>
 
-      {/* DIRECTORY, SITE */}
-      <div>
-        {showSidebar === true ? (
-          <div className="px-[136px] text-3xl font-bold">
-            Sidebar Open 레이아웃
+      {/* Folder, Link */}
+      {showSidebar ? (
+        <div className="px-[140px] text-3xl font-bold">
+          <div
+            className={
+              view === 'grid'
+                ? 'grid [grid-template-columns:repeat(auto-fit,minmax(134px,max-content))] gap-4'
+                : 'flex flex-col'
+            }
+          >
+            <FolderItem item={{ id: '1', title: '폴더 이름' }} view={view} />
+            <LinkItem item={{ id: '1', title: '링크 이름' }} view={view} />
           </div>
-        ) : (
-          <div className="px-[296px] text-3xl font-bold">
-            Sidebar Closed 레이아웃
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="px-[142px] text-3xl font-bold">
+          Sidebar Closed 레이아웃
+        </div>
+      )}
     </div>
   );
 }

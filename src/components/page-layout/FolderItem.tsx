@@ -1,0 +1,32 @@
+import FolderItemIcon from '@/assets/common-ui-assets/FolderItemIcon.svg?react';
+
+interface FolderItemProps {
+  item: {
+    id: string;
+    title: string;
+  };
+  view: 'grid' | 'list';
+}
+
+export default function FolderItem({ item, view }: FolderItemProps) {
+  const isGrid = view === 'grid';
+
+  return isGrid ? (
+    <div className="bg-gray-5 inline-flex flex-col items-center gap-2 rounded-[8px] p-[12px]">
+      <FolderItemIcon />
+      <span className="text-gray-90 text-center text-[15px] font-[400]">
+        {item.title}
+      </span>
+    </div>
+  ) : (
+    <div className="border-gray-30 border-b-gray-30 flex w-full items-center justify-between border-b py-[16px] pl-[8px]">
+      <div className="flex items-center gap-[20px]">
+        <FolderItemIcon width={42} height={38} />
+        <span className="text-gray-90 text-[16px] font-[400]">
+          {item.title}
+        </span>
+      </div>
+      <div>북마크 및 메뉴 영역</div>
+    </div>
+  );
+}

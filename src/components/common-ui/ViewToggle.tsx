@@ -46,33 +46,34 @@ export function ViewToggle({
   return (
     <div className={cn('flex h-[48px]', className)}>
       <button
-        onClick={() => onChange('list')}
+        onClick={() => onChange('grid')}
         className={cn(
-          toggleButton({ active: selectedView === 'list' }),
+          toggleButton({ active: selectedView === 'grid' }),
           'rounded-tl-[8px] rounded-bl-[8px] p-[16px]'
         )}
       >
         <ToggleGrid
-          className={iconClass({ active: selectedView === 'list' })}
-        />
-      </button>
-      <button
-        onClick={() => onChange('grid')}
-        className={cn(
-          toggleButton({ active: selectedView === 'grid' }),
-          'rounded-tr-[8px] rounded-br-[8px] p-[16px]'
-        )}
-      >
-        <ToggleList
           className={cn(
             iconClass({ active: selectedView === 'grid' }),
             'px-[3px] py-[4px]'
           )}
         />
       </button>
+      <button
+        onClick={() => onChange('list')}
+        className={cn(
+          toggleButton({ active: selectedView === 'list' }),
+          'rounded-tr-[8px] rounded-br-[8px] p-[16px]'
+        )}
+      >
+        <ToggleList
+          className={iconClass({ active: selectedView === 'list' })}
+        />
+      </button>
     </div>
   );
 }
+
 // 사용방법;
 // const [view, setView] = useState<'grid' | 'list'>('grid');
 //   <ViewToggle selectedView={view} onChange={setView} />;
