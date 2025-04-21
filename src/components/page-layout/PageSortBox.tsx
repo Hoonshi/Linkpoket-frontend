@@ -1,23 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/utils/cn';
-import PageSelectBoxIcon from '@/assets/common-ui-assets/PageSelectBoxIcon.svg?react';
-import PageSelectBoxIconUp from '@/assets/common-ui-assets/PageSelectBoxIconUp.svg?react';
-import PageSelectBoxIconCheck from '@/assets/common-ui-assets/PageSelectBoxIconCheck.svg?react';
+import PageSortBoxIcon from '@/assets/common-ui-assets/PageSortBoxIcon.svg?react';
+import PageSortBoxIconUp from '@/assets/common-ui-assets/PageSortBoxIconUp.svg?react';
+import PageSortBoxIconCheck from '@/assets/common-ui-assets/PageSortBoxIconCheck.svg?react';
 
 type Option = '기본순' | '최신순' | '이름순';
 
 interface SortSelectProps {
   options?: Option[];
-  defaultValue?: Option;
   onChange?: (value: Option) => void;
 }
 
-export default function PageSelectBox({
+export default function PageSortBox({
   options = ['기본순', '최신순', '이름순'],
-  defaultValue = '기본순',
   onChange,
 }: SortSelectProps) {
-  const [selected, setSelected] = useState<Option>(defaultValue);
+  const [selected, setSelected] = useState<Option>('기본순');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -39,10 +37,10 @@ export default function PageSelectBox({
     };
   }, [isOpen]);
 
-  const handleSelect = (opt: Option) => {
-    setSelected(opt);
+  const handleSelect = (option: Option) => {
+    setSelected(option);
     setIsOpen(false);
-    onChange?.(opt);
+    onChange?.(option);
   };
 
   return (
@@ -53,27 +51,27 @@ export default function PageSelectBox({
         className="bg-gray-5 text-gray-60 inline-flex h-[48px] min-w-max cursor-pointer items-center justify-between gap-[10px] rounded-[8px] px-[20px] text-[17px] font-[600]"
       >
         <span>{selected}</span>
-        {isOpen ? <PageSelectBoxIconUp /> : <PageSelectBoxIcon />}
+        {isOpen ? <PageSortBoxIconUp /> : <PageSortBoxIcon />}
       </button>
 
       {isOpen && (
         <ul
           role="menu"
-          className="border-gray-30 text-gray-90 absolute z-10 mt-1 w-full rounded-[10px] border p-[8px] text-[17px] font-[600]"
+          className="border-gray-30 text-gray-90 bg-gray-0 absolute z-10 mt-1 w-full rounded-[10px] border p-[8px] text-[17px] font-[600]"
         >
-          {options.map((opt) => (
+          {options.map((option) => (
             <li
-              key={opt}
+              key={option}
               role="menuitem"
-              onClick={() => handleSelect(opt)}
+              onClick={() => handleSelect(option)}
               className={cn(
                 'hover:bg-gray-5 flex cursor-pointer items-center justify-between px-3 py-3',
-                selected === opt && 'bg-gray-5 rounded-[8px]'
+                selected === option && 'bg-gray-5 rounded-[8px]'
               )}
             >
-              <span>{opt}</span>
-              {selected === opt && (
-                <PageSelectBoxIconCheck className="h-4 w-4 text-gray-500" />
+              <span>{option}</span>
+              {selected === option && (
+                <PageSortBoxIconCheck className="h-4 w-4 text-gray-500" />
               )}
             </li>
           ))}
@@ -90,4 +88,5 @@ export default function PageSelectBox({
 //     // 선택된 정렬값으로 API 요청 다시 보내기
 //     fetchSortedPosts(val);
 //   }}
+// 또는 새로운 함수 로직 작성을 하고 onChange={새로운 함수} 이렇게도 가능
 // />;
