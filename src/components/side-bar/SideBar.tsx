@@ -59,14 +59,23 @@ const SideBar: React.FC<MenubarProps> = ({
             to="#"
             className="hover:bg-primary-5 group text-gray-90 focus:bg-primary-10 focus:text-primary-50 flex items-center gap-[20px] px-[8px] py-[12px] text-[18px] font-[600] hover:rounded-[8px] focus:rounded-[8px]"
           >
-            <BookMark className="text-gray-90 group-focus:text-primary-50" />
+            <BookMark
+              width={16}
+              height={20}
+              className="text-gray-90 group-focus:text-primary-50 mx-[4px] my-[2px]"
+            />
             즐겨찾기 / 북마크
           </Link>
           <Link
             to="#"
             className="group hover:bg-primary-5 text-gray-90 focus:bg-primary-10 focus:text-primary-50 flex items-center gap-[20px] px-[8px] py-[14px] text-[18px] font-[600] hover:rounded-[8px] focus:rounded-[8px]"
           >
-            <PersonalPage className="group-focus:text-primary-50" /> 개인 페이지
+            <PersonalPage
+              width={20}
+              height={20}
+              className="group-focus:text-primary-50 m-[2px]"
+            />
+            개인 페이지
           </Link>
           <Link
             to="#"
@@ -74,7 +83,11 @@ const SideBar: React.FC<MenubarProps> = ({
           >
             <div className="group flex w-full items-center justify-between">
               <div className="flex gap-[20px]">
-                <SharedPage className="group-focus:text-primary-50" />
+                <SharedPage
+                  width={20}
+                  height={20}
+                  className="group-focus:text-primary-50 m-[2px]"
+                />
                 <div>공유 페이지</div>
               </div>
               <PlusIcon className="text-gray-60 hover:text-gray-90 opacity-0 transition-opacity group-hover:opacity-100" />

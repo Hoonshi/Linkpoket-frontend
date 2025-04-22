@@ -71,7 +71,7 @@ const DropDownInline = ({
   return (
     <div
       ref={dropdownRef}
-      className={`border-gray-30 focus:bg-gray-30 focus:border-gray-30 bg-gray-0 inline-flex flex-col rounded-[10px] border p-[8px] text-[19px] font-[600] shadow ${className}`}
+      className={`border-gray-30 focus:bg-gray-30 focus:border-gray-30 bg-gray-0 inline-flex flex-col rounded-[10px] border p-[8px] text-[16px] font-[600] shadow ${className}`}
     >
       {type === 'directory' && (
         <>
@@ -85,19 +85,19 @@ const DropDownInline = ({
             onClick={() => onShare?.(id)}
             className="flex cursor-pointer items-center gap-[10px] p-[12px]"
           >
-            <Transfer /> 전송하기
+            <Transfer width={20} height={20} /> 전송하기
           </button>
           <button
             onClick={() => onCopy?.(title)}
             className="flex cursor-pointer items-center gap-[10px] p-[12px]"
           >
-            <Copy /> 복사하기
+            <Copy width={20} height={20} /> 복사하기
           </button>
           <button
             onClick={() => onDelete?.(id)}
             className="text-status-danger flex cursor-pointer items-center gap-[10px] p-[12px]"
           >
-            <Delete /> 삭제하기
+            <Delete width={20} height={20} /> 삭제하기
           </button>
         </>
       )}

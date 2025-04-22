@@ -53,9 +53,11 @@ export function ViewToggle({
         )}
       >
         <ToggleGrid
+          width={17}
+          height={17}
           className={cn(
             iconClass({ active: selectedView === 'grid' }),
-            'px-[3px] py-[4px]'
+            'mx-[2px] my-[2px]'
           )}
         />
       </button>
@@ -67,7 +69,12 @@ export function ViewToggle({
         )}
       >
         <ToggleList
-          className={iconClass({ active: selectedView === 'list' })}
+          width={15}
+          height={12}
+          className={cn(
+            iconClass({ active: selectedView === 'list' }),
+            'mx-[2px]'
+          )}
         />
       </button>
     </div>
