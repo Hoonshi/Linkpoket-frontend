@@ -12,9 +12,9 @@ export default function LinkItem({
   const isGrid = view === 'grid';
 
   return isGrid ? (
-    <div className="bg-gray-5 relative inline-flex flex-col items-center gap-2 rounded-[8px] p-[12px]">
-      <div className="bg-primary-40 text-gray-0 flex h-[98px] w-[110px] items-center justify-center rounded-[8px] text-center">
-        링
+    <div className="group bg-gray-0 hover:bg-gray-5 actove:bg-gray-10 relative inline-flex cursor-pointer flex-col items-center gap-2 rounded-[8px] p-[12px]">
+      <div className="bg-gray-5 group-hover:bg-gray-5 flex h-[98px] w-[110px] items-center justify-center rounded-[8px] text-center">
+        <span className="bg-primary-40 h-[52px] w-[52px] rounded-[8px] px-[28px] py-[22px]" />
       </div>
       <button
         className="absolute top-6 right-5 cursor-pointer bg-transparent"
@@ -22,9 +22,9 @@ export default function LinkItem({
       >
         {isBookmark ? <ActiveBookmarkIcon /> : <InactiveBookmarkIcon />}
       </button>
-      <span className="text-gray-90 text-center text-[15px] font-[400]">
+      <div className="text-gray-90 text-center text-[15px] font-[400]">
         {item.title}
-      </span>
+      </div>
     </div>
   ) : (
     <div className="border-gray-30 border-b-gray-30 active:bg-gray-5 hover:bg-gray-5 flex w-full items-center justify-between border-b py-[16px] pl-[8px] last:border-b-0">

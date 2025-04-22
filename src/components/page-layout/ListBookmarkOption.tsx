@@ -32,7 +32,7 @@ export default function ListBookMarkOption({
         {isBookmark === false ? (
           <InactiveBookmarkIcon className="cursor-pointer" />
         ) : (
-          <ActiveBookmarkIcon className="relative right-[3px] cursor-pointer" />
+          <ActiveBookmarkIcon className="relative left-[2px] cursor-pointer" />
         )}
       </button>
       <button
