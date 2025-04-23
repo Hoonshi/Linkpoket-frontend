@@ -89,12 +89,12 @@ const SignupPage = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-white p-4">
+    <main className="flex min-h-screen min-w-screen flex-col items-center justify-center bg-white">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md space-y-6"
+        className="w-[460px] max-w-md space-y-6"
       >
-        <h1 className="mb-8 flex justify-center text-[28px] font-bold">
+        <h1 className="mb-8 flex justify-center text-[26px] font-bold">
           링크모아 회원 가입
         </h1>
 

@@ -50,9 +50,9 @@ export const Radio = ({
   };
 
   const dotSize = {
-    sm: 'w-2 h-2',
-    md: 'w-2.5 h-2.5',
-    lg: 'w-3 h-3',
+    sm: 'w-1.5 h-1.5',
+    md: 'w-2 h-2',
+    lg: 'w-2.5 h-2.5',
   };
 
   return (
@@ -69,8 +69,8 @@ export const Radio = ({
           className={cn(
             'peer appearance-none rounded-full border',
             error
-              ? 'border-red-500 checked:border-2 checked:border-red-500 focus:ring-red-500/50'
-              : 'border-gray-30 checked:border-2 checked:border-[#FF9320] focus:ring-[#FF9320]/50',
+              ? 'border-red-500 checked:border-0 checked:bg-red-500 focus:ring-red-500/50'
+              : 'border-gray-30 checked:border-0 checked:bg-[#FF9320] focus:ring-[#FF9320]/50',
             'focus:ring-2 focus:outline-none',
             'disabled:border-gray-30 disabled:bg-gray-10',
             radioSize[size || 'md'],
@@ -80,13 +80,18 @@ export const Radio = ({
         />
         <div
           className={cn(
-            'pointer-events-none absolute rounded-full bg-[#FF9320] opacity-0 peer-checked:opacity-100',
+            'pointer-events-none absolute rounded-full bg-white opacity-0 peer-checked:opacity-100',
             dotSize[size || 'md']
           )}
         ></div>
       </div>
       {label && (
-        <span className={cn('text-gray-90', disabled ? 'text-gray-50' : '')}>
+        <span
+          className={cn(
+            'text-gray-90 text-[19px]',
+            disabled ? 'text-gray-50' : ''
+          )}
+        >
           {label}
         </span>
       )}
