@@ -39,8 +39,15 @@ export function UserActions() {
           isOpen={isOpen}
           setIsOpen={() => setIsOpen(!isOpen)}
           notifications={notifications}
-          onAccept={() => setIsOpen((prev) => !prev)}
-          onReject={() => setIsOpen((prev) => !prev)}
+          onAccept={() =>
+            console.log('수락하는 로직 + 모달닫기 함수로 대체예정')
+          }
+          onReject={() =>
+            console.log('거절하는 로직 + 모달닫기 함수로 대체예정')
+          }
+          onDelete={() =>
+            console.log('item.id 를 통해서 해당 알람 삭제하는 함수로 대체예정')
+          }
         />
       )}
 

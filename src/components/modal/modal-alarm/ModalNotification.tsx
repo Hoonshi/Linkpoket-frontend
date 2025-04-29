@@ -9,6 +9,7 @@ export default function NotificationModal({
   notifications,
   onAccept,
   onReject,
+  onDelete,
 }: NotificationModalProps) {
   const [selectedTab, setSelectedTab] = useState<'time' | 'type'>('time');
   const modalRef = useRef<HTMLDivElement>(null);
@@ -87,7 +88,7 @@ export default function NotificationModal({
                 </div>
                 {/* TODO: 함수 로직 id값 활용해서 해당 알림 삭제로 교체하기 */}
                 <button
-                  onClick={() => console.log('해당 알림 삭제')}
+                  onClick={() => onDelete?.(item.id)}
                   className="cursor-pointer"
                 >
                   <Close className="text-gray-40" width={14} height={14} />

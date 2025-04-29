@@ -14,4 +14,5 @@ export interface NotificationModalProps {
   notifications: NotificationItem[];
   onAccept?: (id: number) => void;
   onReject?: (id: number) => void;
+  onDelete?: (id: number) => void;
 }
