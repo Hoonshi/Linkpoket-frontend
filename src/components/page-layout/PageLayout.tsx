@@ -17,7 +17,6 @@ export default function PageLayout() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isBookmark, setIsBookmark] = useState(false);
-  const [isDropDownInline, setIsDropDownInline] = useState(false);
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const { showSidebar } = useOutletContext<ContextType>();
 
