@@ -1,19 +1,21 @@
 import { NotificationModalProps } from '@/types/modalAlaram';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import profile from '@/assets/common-ui-assets/Profile.webp';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 export default function NotificationModal({
-  isOpen,
+  onClose,
   notifications,
   onAccept,
   onReject,
 }: NotificationModalProps) {
   const [selectedTab, setSelectedTab] = useState<'time' | 'type'>('time');
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  if (!isOpen) return null;
+  useClickOutside(modalRef, onClose);
 
   return (
-    <div className="absolute top-12 right-17 z-1">
+    <div className="absolute top-12 right-17 z-1" ref={modalRef}>
       <div
         className="border-gray-30 bg-gray-0 max-h-[590px] w-[434px] rounded-2xl border p-[24px] pt-[8px]"
         style={{ boxShadow: '0px 4px 8px 0px rgba(0, 0, 0, 0.08)' }}
