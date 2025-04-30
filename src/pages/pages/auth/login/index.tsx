@@ -5,13 +5,12 @@ import { SocialLoginButton } from '@/components/common-ui/SocialLoginButton';
 
 const LoginPage = () => {
   const handleKakaoLogin = () => {
-    // 카카오 로그인 로직 구현
-    console.log('카카오 로그인 시도');
+    window.location.href = 'https://dev.linkrew.com/oauth2/authorization/kakao';
   };
 
   const handleGoogleLogin = () => {
-    // 구글 로그인 로직 구현
-    console.log('구글 로그인 시도');
+    window.location.href =
+      'https://dev.linkrew.com/oauth2/authorization/google';
   };
 
   const textData = [
