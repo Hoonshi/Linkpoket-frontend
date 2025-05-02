@@ -9,7 +9,7 @@ import PageSortBox from './PageSortBox';
 import LinkItem from './LinkItem';
 import FolderItem from './FolderItem';
 import { ContextMenu } from '../common-ui/ContextMenu';
-import { axiosInstance } from '@/apis/axiosInstance';
+import { useMobile } from '@/hooks/useMobile';
 
 type ContextType = {
   showSidebar: boolean;
@@ -19,8 +19,9 @@ export default function PageLayout() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isBookmark, setIsBookmark] = useState(false);
-  const [view, setView] = useState<'grid' | 'list'>('grid');
+  const [view, setView] = useState<'grid' | 'list'>('list');
   const { showSidebar } = useOutletContext<ContextType>();
+
   const [contextMenu, setContextMenu] = useState<{
     x: number;
     y: number;
@@ -33,6 +34,13 @@ export default function PageLayout() {
 
   const MAX_TITLE_LENGTH = 21;
   const MAX_DESCRIPTION_LENGTH = 200;
+  const isUnderDesktop = useMobile();
+
+  useEffect(() => {
+    if (isUnderDesktop) {
+      setView('list');
+    }
+  }, [isUnderDesktop]);
 
   return (
     <div className="flex h-screen flex-col gap-[40px]">
