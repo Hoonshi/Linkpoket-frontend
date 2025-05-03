@@ -5,8 +5,8 @@ import SignupPage from '@/pages/pages/auth/signup';
 import { LandingPage } from '@/pages/pages/landing/ui/LandingPage';
 import PageLayout from '@/components/page-layout/PageLayout';
 import ReissuePage from '@/pages/pages/reissue/page';
-import { ProtectedRoute } from '@/components/common-ui/ProtectedRoute';
-import { RedirectIfAuthenticated } from '@/components/common-ui/RedirectIfAuthenticated';
+import { ProtectedRoute } from './guards/ProtectedRoute';
+import { RedirectIfAuthenticated } from './guards/RedirectIfAuthenticated';
 
 const router = createBrowserRouter([
   {
