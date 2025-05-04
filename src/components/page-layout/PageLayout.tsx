@@ -19,9 +19,9 @@ export default function PageLayout() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isBookmark, setIsBookmark] = useState(false);
-  const [view, setView] = useState<'grid' | 'list'>('list');
-  const { showSidebar } = useOutletContext<ContextType>();
-
+  const [view, setView] = useState<'grid' | 'list'>('grid');
+  const context = useOutletContext<ContextType | null>();
+  const showSidebar = context?.showSidebar ?? true; // 기본값으로 true 사용
   const [contextMenu, setContextMenu] = useState<{
     x: number;
     y: number;
