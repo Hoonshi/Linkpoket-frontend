@@ -24,6 +24,7 @@ const DeleteFolderModal = ({
       onClose();
     } catch (error) {
       console.error('폴더 삭제 오류:', error);
+      // Todo 에러 로직 추가 필요
     } finally {
       setIsSubmitting(false);
     }

@@ -20,15 +20,21 @@ const FolderTransferModal = ({
 
   const handleSubmit = async () => {
     if (!email) return;
+    // 이메일 형식 검사
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      ToastCustom.error('유효한 이메일 주소를 입력해 주세요.');
+      return;
+    }
 
     setIsSubmitting(true);
     try {
       await onSubmit(email);
-      setEmail(''); // 입력 필드 초기화
+      setEmail('');
       ToastCustom.success('폴더를 성공적으로 전송했습니다.');
       onClose();
     } catch (error) {
-      ToastCustom.error('폴더 삭제 중 오류가 발생했습니다.');
+      ToastCustom.error('폴더 전송 중 오류가 발생했습니다.');
       console.error('폴더 전송 오류:', error);
     } finally {
       setIsSubmitting(false);

@@ -121,7 +121,7 @@ const ConfirmButton = ({
     primary: 'bg-[var(--color-primary-50)] text-[var(--color-primary-0)]',
     danger: 'bg-[var(--color-status-danger)] text-[var(--color-primary-0)]',
     default: 'bg-[var(--color-gray-20)] text-[var(--color-gray-50)]',
-    check: 'bg-none text-gray=90 border-1 border-gray-30',
+    check: 'bg-none text-gray-90 border border-gray-30',
   };
 
   return (
