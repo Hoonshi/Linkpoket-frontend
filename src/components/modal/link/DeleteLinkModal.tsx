@@ -16,14 +16,19 @@ const DeleteLinkModal = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (linkId: number | null) => {
+    if (linkId === null) {
+      console.error('삭제할 링크 ID가 없습니다.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      console.log('삭제할 폴더 ID:', linkId);
+      console.log('삭제할 링크 ID:', linkId);
       await onSubmit(linkId);
       onClose();
     } catch (error) {
-      console.error('폴더 삭제 오류:', error);
+      console.error('링크 삭제 오류:', error);
       // Todo 에러 로직 추가 필요
     } finally {
       setIsSubmitting(false);

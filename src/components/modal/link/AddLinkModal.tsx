@@ -6,20 +6,33 @@ import { Textarea } from '@/components/common-ui/Textarea';
 const AddLinkModal = ({
   isOpen,
   onClose,
-  linkName,
   onSubmit,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  linkName: string;
   onSubmit: (link: string, url: string) => Promise<void>;
 }) => {
   const [link, setLink] = useState('');
   const [url, setUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const isValidUrl = (urlString: string) => {
+    try {
+      new URL(urlString);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
     if (!link) return;
+
+    if (url && !isValidUrl(url)) {
+      console.error('유효하지 않은 URL 형식입니다.');
+      // TODO 사용자에게 에러 메시지를 표시하는 로직 추가
+      return;
+    }
 
     setIsSubmitting(true);
     try {

@@ -47,8 +47,8 @@ export default function PageControllerSection({
   };
 
   // 링크 삭제 버튼 클릭 핸들러
-  const handleDeleteLinkFolder = () => {
-    setIsDeleteModalOpen(true);
+  const handleDeleteLink = () => {
+    setIsDeleteLinkModalOpen(true);
   };
 
   // 에러 버튼 클릭 핸들러
@@ -156,7 +156,7 @@ export default function PageControllerSection({
           variant="ghost"
           size="md"
           className="flex gap-[6px]"
-          onClick={handleDeleteLinkFolder}
+          onClick={handleDeleteLink}
         >
           <SiteIcon />
           링크 삭제
@@ -182,7 +182,6 @@ export default function PageControllerSection({
       <AddLinkModal
         isOpen={isAddLinkModalOpen}
         onClose={() => setIsAddLinkModalOpen(false)}
-        linkName="새 폴더"
         onSubmit={handleLinkSubmit}
       />
 
@@ -205,7 +204,7 @@ export default function PageControllerSection({
       {/* 링크 삭제 모달 */}
       <DeleteLinkModal
         isOpen={isDeleteLinkModalOpen}
-        onClose={() => setIsDeleteLinkModalOpen}
+        onClose={() => setIsDeleteLinkModalOpen(false)}
         linkId={selectedLinkId}
         onSubmit={handleDeleteLinkSubmit}
       />
