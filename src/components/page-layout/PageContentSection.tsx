@@ -40,18 +40,7 @@ export default function PageContentSection({ view }: PageContentSectionProps) {
           item={{ id: '1', title: '링크 이름' }}
           view={view}
         />
-        <LinkItem
-          isBookmark={isBookmark}
-          setIsBookmark={setIsBookmark}
-          item={{ id: '1', title: '링크 이름' }}
-          view={view}
-        />
-        <LinkItem
-          isBookmark={isBookmark}
-          setIsBookmark={setIsBookmark}
-          item={{ id: '1', title: '링크 이름' }}
-          view={view}
-        />
+
         {contextMenu && (
           <ContextMenu
             x={contextMenu.x}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Footer } from '../footer/Footer';
 import BookMark from '@/assets/widget-ui-assets/BookMark.svg?react';
@@ -7,6 +7,7 @@ import SharedPage from '@/assets/widget-ui-assets/SharedPage.svg?react';
 import PlusIcon from '@/assets/common-ui-assets/PlusIcon.svg?react';
 import { useMobile } from '@/hooks/useMobile';
 import { useUserStore } from '@/stores/userStore';
+import AddSharedPageModal from '../modal/page/AddSharedPageModal';
 
 type SharedPage = {
   id: string;
@@ -27,6 +28,7 @@ const SideBar: React.FC<MenubarProps> = ({
   const sidebarRef = useRef<HTMLElement | null>(null);
   const isMobile = useMobile();
   const { nickname, email, colorCode } = useUserStore();
+  const [showAddSharedPageModal, setShowAddSharedPageModal] = useState(false);
 
   //768px 이하의 경우, showSidebar를 false처리, 이외엔 true처리
   useEffect(() => {
@@ -57,6 +59,7 @@ const SideBar: React.FC<MenubarProps> = ({
       ref={sidebarRef}
       className={`border-gray-30 flex h-screen w-[260px] flex-col justify-between border-r ${isMobile ? 'bg-gray-0 absolute top-0 left-0 z-50' : 'relative'} `}
     >
+      {/* TODO: 유저 정보쪽 데이터 전달까지 스켈레톤 처리 필요 */}
       <div className="flex flex-col gap-[16px] px-[12px] pt-[24px] pb-[8px]">
         <div className="flex flex-col gap-[16px]">
           <div className="flex gap-[12px] p-[8px]">
@@ -112,9 +115,20 @@ const SideBar: React.FC<MenubarProps> = ({
                   />
                   <div>공유 페이지</div>
                 </div>
-                <PlusIcon className="text-gray-60 hover:text-gray-90 opacity-0 transition-opacity group-hover:opacity-100" />
+                <PlusIcon
+                  className="text-gray-60 hover:text-gray-90 opacity-0 transition-opacity group-hover:opacity-100"
+                  onClick={() => {
+                    setShowAddSharedPageModal(true);
+                  }}
+                />
               </div>
             </Link>
+            {showAddSharedPageModal && (
+              <AddSharedPageModal
+                isOpen={showAddSharedPageModal}
+                onClose={() => setShowAddSharedPageModal(false)}
+              />
+            )}
 
             {sharedPages.map((page) => (
               <Link
@@ -150,9 +164,6 @@ export default SideBar;
 //   return (
 //     <div>
 //       <SideBar
-//         avatarUrl="/avatar.png"
-//         nickname="김링크"
-//         email="linkmoa@gmail.com"
 //         sharedPages={sharedPagesData}
 //         showFooter={true}
 //       />
