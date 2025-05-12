@@ -8,11 +8,6 @@ import { useCreateSharedPage } from '@/hooks/mutations/useCreateSharedPage';
 interface AddSharedPageProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit?: (data: {
-    pageName: string;
-    description: string;
-    grade: string;
-  }) => void;
 }
 
 const gradeOptions = [
@@ -36,6 +31,10 @@ export default function AddSharedPageModal({
 
   const createSharedPageMutation = useCreateSharedPage({
     onSuccess: () => {
+      setPageName('');
+      setDescription('');
+      setGrade('');
+      setError('');
       onClose();
     },
     onError: (error) => {
@@ -142,7 +141,7 @@ export default function AddSharedPageModal({
           )}
           disabled={isConfirmDisabled}
         >
-          생성
+          {createSharedPageMutation.isPending ? '생성 중...' : '생성'}
         </Modal.ConfirmButton>
       </Modal.Footer>
     </Modal>
