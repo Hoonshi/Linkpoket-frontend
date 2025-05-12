@@ -7,6 +7,8 @@ import ReissuePage from '@/pages/pages/reissue/page';
 import { ProtectedRoute } from './guards/ProtectedRoute';
 import { RedirectIfAuthenticated } from './guards/RedirectIfAuthenticated';
 import PersonalPage from '@/pages/PersonalPage';
+import BookmarkPage from '@/pages/BookmarkPage';
+import SharedPage from '@/pages/SharedPage';
 
 const router = createBrowserRouter([
   {
@@ -15,7 +17,22 @@ const router = createBrowserRouter([
       // 인증이 필요한 라우트들
       {
         element: <ProtectedRoute />,
-        children: [{ path: '/', element: <PersonalPage /> }],
+        children: [
+          { path: '/', element: <PersonalPage /> },
+          { path: '/personal', element: <PersonalPage /> },
+          { path: '/personal/bookmarks', element: <BookmarkPage /> },
+          { path: '/personal/shared', element: <SharedPage /> },
+          // 이후 디렉토리에 따른 경로
+          { path: '/personal/folder/:folderId', element: <PersonalPage /> },
+          {
+            path: '/personal/bookmarks/folder/:folderId',
+            element: <BookmarkPage />,
+          },
+          {
+            path: '/personal/shared/folder/:folderId',
+            element: <SharedPage />,
+          },
+        ],
       },
 
       // 인증된 사용자는 접근할 필요 없는 라우트들
