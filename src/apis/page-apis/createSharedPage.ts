@@ -1,0 +1,12 @@
+import { CreateSharedPageData } from '@/types/sharedPage';
+import { axiosInstance } from '../axiosInstance';
+
+export async function createSharedPage(data: CreateSharedPageData) {
+  try {
+    const response = await axiosInstance.post('/api/page', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating shared page:', error);
+    throw error;
+  }
+}

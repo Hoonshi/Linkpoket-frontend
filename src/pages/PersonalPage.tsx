@@ -1,24 +1,30 @@
 import PageLayout from '@/components/page-layout/PageLayout';
-import { axiosInstance } from '@/apis/axiosInstance';
+import { useFetchPersonalPage } from '@/hooks/queries/useFetchPersonalPage';
+import { useUserStore } from '@/stores/userStore';
 import { useEffect } from 'react';
 
 export default function PersonalPage() {
-  // useEffect(() => {
-  //   async function fetchLoginPage() {
-  //     try {
-  //       const response = await axiosInstance.get('/api/page', {});
-  //       console.log('응답 데이터:', response.data, '/api/page');
-  //     } catch (error) {
-  //       console.error('GET 요청 에러:', error);
-  //     }
-  //   }
+  const { member, pageDetails, isLoading, error } = useFetchPersonalPage();
+  const setUser = useUserStore((state) => state.setUser);
 
-  //   fetchLoginPage(); // 여기서 호출해야 요청이 발생함
-  // }, []);
+  const { nickName, email, colorCode } = member || {};
+
+  useEffect(() => {
+    if (nickName && email && colorCode) {
+      setUser(nickName, email, colorCode);
+    }
+  }, [nickName, email, colorCode, setUser]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data</div>;
 
   return (
     <>
-      <PageLayout />
+      <PageLayout
+        pageTitle={pageDetails?.pageTitle}
+        pageDescription={pageDetails?.pageDescription}
+        key={pageDetails?.id}
+      />
     </>
   );
 }

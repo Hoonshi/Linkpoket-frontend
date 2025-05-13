@@ -1,37 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Footer } from '../footer/Footer';
 import BookMark from '@/assets/widget-ui-assets/BookMark.svg?react';
 import PersonalPage from '@/assets/widget-ui-assets/PersonalPage.svg?react';
 import SharedPage from '@/assets/widget-ui-assets/SharedPage.svg?react';
 import PlusIcon from '@/assets/common-ui-assets/PlusIcon.svg?react';
-import profile from '@/assets/common-ui-assets/Profile.webp';
 import { useMobile } from '@/hooks/useMobile';
-
-type SharedPage = {
-  id: string;
-  title: string;
-};
+import { useUserStore } from '@/stores/userStore';
+import AddSharedPageModal from '../modal/page/AddSharedPageModal';
+import useFetchJoinedPage from '@/hooks/queries/useFetchJoinedPage';
+import { JoinedPageData } from '@/types/sharedPage';
 
 type MenubarProps = {
-  avatarUrl: string;
-  nickname: string;
-  email: string;
-  sharedPages: SharedPage[];
   showSidebar: boolean;
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const SideBar: React.FC<MenubarProps> = ({
-  avatarUrl,
-  nickname,
-  email,
-  sharedPages,
-  showSidebar,
-  setShowSidebar,
-}) => {
+const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
   const sidebarRef = useRef<HTMLElement | null>(null);
   const isMobile = useMobile();
+  const { nickname, email, colorCode } = useUserStore();
+  const [showAddSharedPageModal, setShowAddSharedPageModal] = useState(false);
 
   //768px 이하의 경우, showSidebar를 false처리, 이외엔 true처리
   useEffect(() => {
@@ -57,19 +46,26 @@ const SideBar: React.FC<MenubarProps> = ({
     };
   }, [isMobile, setShowSidebar, showSidebar]);
 
+  // 현재 참여중인 페이지 호출
+  const { joinedPage } = useFetchJoinedPage();
+  //첫 번째 항목은 항상 개인 페이지이므로 제외합니다
+  const joinedPageData = (joinedPage ?? []).slice(1);
+
   return showSidebar ? (
     <aside
       ref={sidebarRef}
       className={`border-gray-30 flex h-screen w-[260px] flex-col justify-between border-r ${isMobile ? 'bg-gray-0 absolute top-0 left-0 z-50' : 'relative'} `}
     >
+      {/* TODO: 유저 정보쪽 데이터 전달까지 스켈레톤 처리 필요 */}
       <div className="flex flex-col gap-[16px] px-[12px] pt-[24px] pb-[8px]">
         <div className="flex flex-col gap-[16px]">
           <div className="flex gap-[12px] p-[8px]">
-            <img
-              src={profile}
-              alt="avatar"
-              className="h-[50px] w-[50px] rounded-full p-[8px]"
-            />
+            <div
+              style={{ backgroundColor: colorCode }}
+              className="flex h-[50px] w-[50px] items-center justify-center rounded-full p-[8px]"
+            >
+              {nickname.charAt(0).toUpperCase()}
+            </div>
             <div>
               <p className="text-gray-90 text-[18px] font-semibold">
                 {nickname}
@@ -116,18 +112,30 @@ const SideBar: React.FC<MenubarProps> = ({
                   />
                   <div>공유 페이지</div>
                 </div>
-                <PlusIcon className="text-gray-60 hover:text-gray-90 opacity-0 transition-opacity group-hover:opacity-100" />
+                <PlusIcon
+                  className="text-gray-60 hover:text-gray-90 opacity-0 transition-opacity group-hover:opacity-100"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setShowAddSharedPageModal(true);
+                  }}
+                />
               </div>
             </Link>
+            {showAddSharedPageModal && (
+              <AddSharedPageModal
+                isOpen={showAddSharedPageModal}
+                onClose={() => setShowAddSharedPageModal(false)}
+              />
+            )}
 
-            {sharedPages.map((page) => (
+            {joinedPageData.map((page: JoinedPageData) => (
               <Link
                 to="#"
-                key={page.id}
-                // TODO: 만약 공유페이지에도 아이콘이 들어간다면 padding 수정
+                key={page.pageId}
                 className="text-gray-70 hover:bg-primary-5 focus:bg-primary-10 focus:text-primary-50 flex py-[12px] pr-[8px] pl-[52px] text-[18px] font-[600] hover:rounded-[8px] focus:rounded-[8px]"
               >
-                {page.title}
+                {page.pageTitle}
               </Link>
             ))}
           </li>
@@ -154,9 +162,6 @@ export default SideBar;
 //   return (
 //     <div>
 //       <SideBar
-//         avatarUrl="/avatar.png"
-//         nickname="김링크"
-//         email="linkmoa@gmail.com"
 //         sharedPages={sharedPagesData}
 //         showFooter={true}
 //       />
