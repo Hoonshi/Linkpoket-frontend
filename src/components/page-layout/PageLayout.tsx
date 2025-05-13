@@ -4,7 +4,15 @@ import PageHeaderSection from './PageHeaderSection';
 import PageControllerSection from './PageControllerSection';
 import PageContentSection from './PageContentSection';
 
-export default function PageLayout() {
+type PageLayoutProps = {
+  pageTitle: string;
+  pageDescription: string;
+};
+
+export default function PageLayout({
+  pageTitle,
+  pageDescription,
+}: PageLayoutProps) {
   const [view, setView] = useState<'grid' | 'list'>('grid');
 
   const isMobile = useMobile();
@@ -15,28 +23,13 @@ export default function PageLayout() {
     }
   }, [isMobile]);
 
-  function decodeJwt(token: string) {
-    try {
-      const payload = token.split('.')[1];
-      const decoded = JSON.parse(atob(payload));
-      return decoded;
-    } catch (error) {
-      console.error('JWT 디코딩 실패:', error);
-      return null;
-    }
-  }
-
-  const token = localStorage.getItem('access_token');
-
-  if (token) {
-    const decoded = decodeJwt(token);
-    console.log('디코딩된 payload:', decoded);
-  }
-
   return (
     <div className="flex h-screen flex-col">
       {/* HEADER SECTION*/}
-      <PageHeaderSection />
+      <PageHeaderSection
+        pageTitle={pageTitle}
+        pageDescription={pageDescription}
+      />
 
       {/* Boundary line */}
       <div className="border-b-gray-30 mb-[40px] w-full border-b" />

@@ -12,6 +12,7 @@ export default function ReissuePage() {
         }
 
         const accessToken = response.data.data;
+        
         if (accessToken) {
           localStorage.setItem('access_token', accessToken);
         }
@@ -23,5 +24,6 @@ export default function ReissuePage() {
     fetchAccessToken();
   }, []);
 
+  // TODO: 로딩스피너 넣는게 좋을듯
   return <p>Reissuing access token... Please wait.</p>;
 }
