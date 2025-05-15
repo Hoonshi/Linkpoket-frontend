@@ -19,6 +19,7 @@ const buttonVariants = cva(
         md: 'px-[16px] py-[12px] rounded-[8px] text-[17px] font-[600]',
         lg: 'px-[20px] py-[14px] rounded-[8px] text-[19px] font-[600]',
         xl: 'px-[20px] py-[18px] rounded-[8px] text-[19px] font-[600]',
+        noPadding: 'px-0 py-0 rounded-[8px] text-[17px] font-[600]',
       },
     },
     defaultVariants: {
