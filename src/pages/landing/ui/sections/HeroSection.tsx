@@ -1,12 +1,12 @@
 import { Button } from '@/components/common-ui/button';
-import LandingMainWebp from '@/assets/common-ui-assets/LandingMain.webp';
+import landingImage1 from '@/assets/common-ui-assets/landingImage1.png';
 
 const HeroSection: React.FC = () => {
   const heroTitles = ['링크를 한눈에', '모아두고', '간편하게 관리하세요'];
 
   const buttonVariants = [
     {
-      text: '링크루 시작하기',
+      text: '시작하기',
       href: '/signup',
       className: '',
     },
@@ -18,13 +18,13 @@ const HeroSection: React.FC = () => {
   ];
 
   return (
-    <section className="bg-primary-5 h-[558.41px] w-full px-[90px] py-[112px]">
-      <div className="mx-auto flex max-w-[1280px] items-start justify-between">
-        <header className="flex w-[550px] flex-col">
+    <section className="bg-primary-5 hero-section-mobile hero-section-tablet hero-section-desktop">
+      <div className="hero-container-mobile hero-container-tablet hero-container-desktop flex">
+        <header className="hero-header-mobile hero-header-tablet hero-header-desktop flex flex-col">
           {heroTitles.map((title, index) => (
             <h1
               key={index}
-              className={`text-[38px] leading-[140%] font-bold tracking-[0.01em] ${
+              className={`hero-title-mobile hero-title-tablet hero-title-desktop leading-[140%] font-bold tracking-[0.01em] ${
                 index === 0 ? 'text-primary-50' : 'text-gray-100'
               }`}
             >
@@ -32,11 +32,12 @@ const HeroSection: React.FC = () => {
             </h1>
           ))}
 
-          <div className="mt-[22px] space-x-4">
+          <div className="hero-buttons-mobile hero-buttons-tablet hero-buttons-desktop">
             {buttonVariants.map(({ text, href, className }, index) => (
               <a key={index} href={href}>
                 <Button
-                  className={`px-5 py-4 text-[19px] font-semibold ${className} ${
+                  size="noPadding"
+                  className={`hero-button-mobile hero-button-tablet hero-button-desktop font-semibold ${className} ${
                     index === 0
                       ? 'hover:bg-primary-40 active:bg-primary-60'
                       : 'hover:bg-primary-20 active:bg-primary-30'
@@ -49,11 +50,13 @@ const HeroSection: React.FC = () => {
           </div>
         </header>
 
-        <img
-          src={LandingMainWebp}
-          alt="Landing page main illustration"
-          className="w-[550px] object-contain"
-        />
+        <div className="hero-image-container-tablet hero-image-container-desktop">
+          <img
+            src={landingImage1}
+            alt="Landing page main illustration"
+            className="hero-image-mobile hero-image-tablet hero-image-desktop"
+          />
+        </div>
       </div>
     </section>
   );

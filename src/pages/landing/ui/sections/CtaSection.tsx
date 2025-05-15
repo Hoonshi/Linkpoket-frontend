@@ -20,7 +20,7 @@ const CtaSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative mt-[100px] py-[110px]">
+    <section className="cta-section-mobile cta-section-tablet cta-section-desktop relative mt-[100px] py-[110px]">
       <div className="absolute inset-0 z-0 overflow-hidden">
         <FooterBg
           className="h-full w-full object-cover"
@@ -33,16 +33,18 @@ const CtaSection: React.FC = () => {
           {ctaTitles.map((title, index) => (
             <h2
               key={index}
-              className="text-gray-0 text-[38px] leading-[1.4] font-bold"
+              className="text-gray-0 cta-title-mobile cta-title-tablet cta-title-desktop text-[38px] leading-[1.4] font-bold"
             >
               {title}
             </h2>
           ))}
 
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
+          <div className="cta-buttons-mobile cta-buttons-tablet cta-buttons-desktop mt-10 flex flex-col items-center gap-4 sm:flex-row">
             {ctaButtons.map(({ text, href, className }) => (
-              <a key={href} href={href}>
-                <Button className={`px-5 py-[14px] text-[19px] ${className}`}>
+              <a key={href} href={href} className="w-full sm:w-auto">
+                <Button
+                  className={`cta-button-mobile cta-button-desktop cta-button-tablet ${className}`}
+                >
                   {text}
                 </Button>
               </a>
