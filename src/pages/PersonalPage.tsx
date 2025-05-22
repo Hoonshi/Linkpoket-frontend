@@ -1,11 +1,24 @@
-import PageLayout from '@/components/page-layout/PageLayout';
+import PageControllerSection from '@/components/page-layout-ui/PageControllerSection';
+import PageHeaderSection from '@/components/page-layout-ui/PageHeaderSection';
+import PersonalPageContentSection from '@/components/page-layout-ui/PersonalPageContentSection';
 import { useFetchPersonalPage } from '@/hooks/queries/useFetchPersonalPage';
+import { useMobile } from '@/hooks/useMobile';
 import { useUserStore } from '@/stores/userStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function PersonalPage() {
   const { member, pageDetails, isLoading, error } = useFetchPersonalPage();
   const setUser = useUserStore((state) => state.setUser);
+
+  const [view, setView] = useState<'grid' | 'list'>('grid');
+
+  const isMobile = useMobile();
+
+  useEffect(() => {
+    if (isMobile) {
+      setView('list');
+    }
+  }, [isMobile]);
 
   const { nickName, email, colorCode } = member || {};
 
@@ -19,12 +32,21 @@ export default function PersonalPage() {
   if (error) return <div>Error loading data</div>;
 
   return (
-    <>
-      <PageLayout
+    <div className="flex h-screen flex-col">
+      {/* HEADER SECTION*/}
+      <PageHeaderSection
         pageTitle={pageDetails?.pageTitle}
         pageDescription={pageDetails?.pageDescription}
-        key={pageDetails?.id}
       />
-    </>
+
+      {/* Boundary line */}
+      <div className="border-b-gray-30 mb-[40px] w-full border-b" />
+
+      {/* CONTROLLER SECTION*/}
+      <PageControllerSection view={view} setView={setView} />
+
+      {/*CONTENT SECTION*/}
+      <PersonalPageContentSection view={view} />
+    </div>
   );
 }
