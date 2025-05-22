@@ -3,7 +3,7 @@ import Menu from '@/assets/widget-ui-assets/Menu.svg?react';
 import { useState } from 'react';
 import NotificationModal from '../modal/page/ModalNotification';
 import { NotificationItem } from '@/types/modalAlaram';
-import DropDownMenu from '../modal/page/ModalMenu';
+import ModalMenu from '../modal/page/ModalMenu';
 
 //테스트용 목데이터 POSTMAN참고
 const notifications: NotificationItem[] = [
@@ -68,7 +68,7 @@ export function UserActions() {
       </button>
 
       {isMenuOpen && (
-        <DropDownMenu
+        <ModalMenu
           isHost={true}
           // isDarkMode={isDarkMode}
           // onToggleDarkMode={handleToggleDarkMode}

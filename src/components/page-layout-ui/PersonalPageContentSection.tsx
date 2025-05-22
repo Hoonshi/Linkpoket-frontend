@@ -3,14 +3,13 @@ import FolderItem from './FolderItem';
 import LinkItem from './LinkItem';
 import { ContextMenu } from '../common-ui/ContextMenu';
 import { PageContentSectionProps } from '@/types/pageItems';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useFetchSelectedPage } from '@/hooks/queries/useFetchSelectedPage';
-import useFetchFavorite from '@/hooks/queries/useFetchFavorite';
 import { usePageStore } from '@/stores/pageStore';
-import useFetchSharedPageDashboard from '@/hooks/queries/useFetchSharedPageDashboard';
-import useFetchSharedPageMember from '@/hooks/queries/useFetchSharedPageMember';
 
-export default function PageContentSection({ view }: PageContentSectionProps) {
+export default function PersonalPageContentSection({
+  view,
+}: PageContentSectionProps) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [contextMenu, setContextMenu] = useState<{
     x: number;
@@ -19,8 +18,6 @@ export default function PageContentSection({ view }: PageContentSectionProps) {
 
   //만약 path param이 없다면 1로 간주하고, 있다면 그대로 꺼내와서 사용.
   const { pageId } = useParams();
-  const location = useLocation();
-  const isBookmarks = location.pathname.includes('bookmarks');
 
   let resolvedPageId = 1;
   if (pageId) {
@@ -34,34 +31,13 @@ export default function PageContentSection({ view }: PageContentSectionProps) {
     setPageInfo(resolvedPageId, 'VIEW');
   }, [resolvedPageId, setPageInfo]);
 
-  // 분기처리: bookmarks면 useFetchFavorite, 아니면 useFetchSelectedPage
-  const favoriteQuery = useFetchFavorite();
   const selectedPageQuery = useFetchSelectedPage({
     pageId: resolvedPageId,
     commandType: 'VIEW',
-    enabled: !isBookmarks,
   });
 
   // 실제 사용할 데이터
-  const data = isBookmarks ? favoriteQuery.favorite : selectedPageQuery.data;
-
-  console.log(data);
-
-  //TODO: 해당 값을 통해서 현재 공유페이지의 정보 리스팅팅
-  const sharedPageDashboardQuery = useFetchSharedPageDashboard({
-    pageId: resolvedPageId,
-    commandType: 'VIEW',
-    enabled: isBookmarks,
-  });
-
-  const sharedPageMemberQuery = useFetchSharedPageMember({
-    pageId: resolvedPageId,
-    commandType: 'VIEW',
-    enabled: isBookmarks,
-  });
-
-  console.log('페이지 대쉬보드 정보', sharedPageDashboardQuery.data);
-  console.log('페이지 멤버 정보', sharedPageMemberQuery.data);
+  console.log('선택한 페이지 데이터', selectedPageQuery.data);
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();

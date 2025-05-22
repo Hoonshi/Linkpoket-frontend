@@ -40,10 +40,12 @@ export default function ModalMenu({
     console.log(id, type);
   }, [id, type]);
 
+  //TODO: 공유 페이지 삭제 모달 추가 후 그 곳으로 옮길 예정
   const deleteSharedPageMutation = useDeleteSharedPage({
     onSuccess: () => {
       console.log('공유 페이지 삭제 성공');
       setIsOpen(false);
+      navigate('/');
     },
     onError: () => {
       console.log('공유 페이지 삭제 실패');
@@ -57,7 +59,6 @@ export default function ModalMenu({
         commandType: type,
       },
     });
-    navigate('/');
     console.log('페이지 번호:', id, '삭제 완료');
   };
 

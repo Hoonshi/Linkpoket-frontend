@@ -1,9 +1,35 @@
-import PageLayout from '@/components/page-layout/PageLayout';
-
+import { useEffect, useState } from 'react';
+import { useMobile } from '@/hooks/useMobile';
+import PageHeaderSection from '@/components/page-layout-ui/PageHeaderSection';
+import PageControllerSection from '@/components/page-layout-ui/PageControllerSection';
+import BookmarkPageContentSection from '@/components/page-layout-ui/BookmarkPageContentSection';
 export default function BookmarkPage() {
+  const [view, setView] = useState<'grid' | 'list'>('grid');
+
+  const isMobile = useMobile();
+
+  useEffect(() => {
+    if (isMobile) {
+      setView('list');
+    }
+  }, [isMobile]);
+
   return (
-    <>
-      <PageLayout pageTitle="북마크 페이지" pageDescription="북마크 페이지" />
-    </>
+    <div className="flex h-screen flex-col">
+      {/* HEADER SECTION*/}
+      <PageHeaderSection
+        pageTitle="북마크 페이지"
+        pageDescription="즐겨찾기를 관리하는 페이지 입니다!"
+      />
+
+      {/* Boundary line */}
+      <div className="border-b-gray-30 mb-[40px] w-full border-b" />
+
+      {/* CONTROLLER SECTION*/}
+      <PageControllerSection view={view} setView={setView} />
+
+      {/*CONTENT SECTION*/}
+      <BookmarkPageContentSection view={view} />
+    </div>
   );
 }
