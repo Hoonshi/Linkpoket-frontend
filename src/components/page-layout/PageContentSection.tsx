@@ -8,6 +8,7 @@ import { useFetchSelectedPage } from '@/hooks/queries/useFetchSelectedPage';
 import useFetchFavorite from '@/hooks/queries/useFetchFavorite';
 import { usePageStore } from '@/stores/pageStore';
 import useFetchSharedPageDashboard from '@/hooks/queries/useFetchSharedPageDashboard';
+import useFetchSharedPageMember from '@/hooks/queries/useFetchSharedPageMember';
 
 export default function PageContentSection({ view }: PageContentSectionProps) {
   const [isBookmark, setIsBookmark] = useState(false);
@@ -46,14 +47,21 @@ export default function PageContentSection({ view }: PageContentSectionProps) {
 
   console.log(data);
 
-  //TODO: 해당 값을 통해서 현재 참여한 유저정보 리스팅
+  //TODO: 해당 값을 통해서 현재 공유페이지의 정보 리스팅팅
   const sharedPageDashboardQuery = useFetchSharedPageDashboard({
     pageId: resolvedPageId,
     commandType: 'VIEW',
     enabled: isBookmarks,
   });
 
-  console.log(sharedPageDashboardQuery.data);
+  const sharedPageMemberQuery = useFetchSharedPageMember({
+    pageId: resolvedPageId,
+    commandType: 'VIEW',
+    enabled: isBookmarks,
+  });
+
+  console.log('페이지 대쉬보드 정보', sharedPageDashboardQuery.data);
+  console.log('페이지 멤버 정보', sharedPageMemberQuery.data);
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
