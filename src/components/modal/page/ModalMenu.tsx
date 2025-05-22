@@ -1,33 +1,65 @@
 import Consult from '@/assets/common-ui-assets/Consult.svg?react';
 import Withdraw from '@/assets/common-ui-assets/Withdraw.svg?react';
 import Deleted from '@/assets/common-ui-assets/Deleted.svg?react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDeleteSharedPage } from '@/hooks/mutations/useDeleteSharedPage';
+import { usePageStore } from '@/stores/pageStore';
 // import DarkMode from '@/assets/common-ui-assets/DarkMode.svg?react';
 // import ToggleButton from './ToggleButton';
 
-interface DropDownProps {
+interface ModalMenuProps {
   isHost: boolean;
   // isDarkMode?: boolean;
   // onToggleDarkMode?: () => void;
   onWithDrawPage: () => void;
-  onDeletePage: () => void;
   onContact: () => void;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function DropDownMenu({
+export default function ModalMenu({
   // isDarkMode = false,
   // onToggleDarkMode,
   isHost,
   onWithDrawPage,
-  onDeletePage,
   onContact,
   setIsOpen,
-}: DropDownProps) {
+}: ModalMenuProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
+  const navigate = useNavigate();
   useClickOutside(modalRef, setIsOpen);
+
+  const location = useLocation();
+  const isShared = location.pathname.includes('shared');
+
+  const { pageId: id, commandType: type } = usePageStore();
+
+  useEffect(() => {
+    console.log(id, type);
+  }, [id, type]);
+
+  const deleteSharedPageMutation = useDeleteSharedPage({
+    onSuccess: () => {
+      console.log('공유 페이지 삭제 성공');
+      setIsOpen(false);
+    },
+    onError: () => {
+      console.log('공유 페이지 삭제 실패');
+    },
+  });
+
+  const handleDeleteSharedPage = () => {
+    deleteSharedPageMutation.mutate({
+      baseRequest: {
+        pageId: id,
+        commandType: type,
+      },
+    });
+    navigate('/');
+    console.log('페이지 번호:', id, '삭제 완료');
+  };
 
   return (
     <div
@@ -53,23 +85,27 @@ export default function DropDownMenu({
         </div> */}
         <div className="flex"></div>
       </div>
-      <div className="border-gray-40 m-[8px] w-[166px] border" />
-      <div className="flex flex-col">
-        <button
-          onClick={onWithDrawPage}
-          className="text-status-danger hover:bg-gray-10 active:bg-gray-5 flex cursor-pointer items-center gap-[10px] rounded-lg px-2 py-[11px] text-[14px] font-[600]"
-        >
-          <Withdraw /> <span className="text-[14px]">공유 페이지 탈퇴</span>
-        </button>
-        {isHost && (
-          <button
-            onClick={onDeletePage}
-            className="text-status-danger hover:bg-gray-10 active:bg-gray-5 flex cursor-pointer items-center gap-[10px] rounded-lg px-2 py-[11px] text-[14px] font-[600]"
-          >
-            <Deleted /> <span className="text-[14px]">페이지 삭제하기</span>
-          </button>
-        )}
-      </div>
+      {isShared && (
+        <>
+          <div className="border-gray-40 m-[8px] w-[166px] border" />
+          <div className="flex flex-col">
+            <button
+              onClick={onWithDrawPage}
+              className="text-status-danger hover:bg-gray-10 active:bg-gray-5 flex cursor-pointer items-center gap-[10px] rounded-lg px-2 py-[11px] text-[14px] font-[600]"
+            >
+              <Withdraw /> <span className="text-[14px]">공유 페이지 탈퇴</span>
+            </button>
+            {isHost && (
+              <button
+                onClick={handleDeleteSharedPage}
+                className="text-status-danger hover:bg-gray-10 active:bg-gray-5 flex cursor-pointer items-center gap-[10px] rounded-lg px-2 py-[11px] text-[14px] font-[600]"
+              >
+                <Deleted /> <span className="text-[14px]">페이지 삭제하기</span>
+              </button>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

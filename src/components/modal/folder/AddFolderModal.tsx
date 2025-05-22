@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/common-ui/Input';
 import Modal from '@/components/common-ui/Modal';
 import FolderItemIcon from '@/assets/common-ui-assets/FolderItemIcon.svg?react';
@@ -17,7 +17,7 @@ export default function AddFolderModal({
   onClose,
   pageId = 1,
   parentFolderId = 1,
-  commandType = 'EDIT',
+  commandType = 'CREATE',
 }: AddFolderModalProps) {
   const [folderName, setFolderName] = useState('');
   const [folderDescription, setFolderDescription] = useState('');
@@ -49,7 +49,7 @@ export default function AddFolderModal({
         pageId,
         commandType,
       },
-      folderName,
+      directoryName: folderName,
       parentFolderId,
       folderDescription,
     });

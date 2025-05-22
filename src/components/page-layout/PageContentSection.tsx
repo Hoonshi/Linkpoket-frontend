@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FolderItem from './FolderItem';
 import LinkItem from './LinkItem';
 import { ContextMenu } from '../common-ui/ContextMenu';
@@ -6,6 +6,9 @@ import { PageContentSectionProps } from '@/types/pageItems';
 import { useLocation, useParams } from 'react-router-dom';
 import { useFetchSelectedPage } from '@/hooks/queries/useFetchSelectedPage';
 import useFetchFavorite from '@/hooks/queries/useFetchFavorite';
+import { usePageStore } from '@/stores/pageStore';
+import useFetchSharedPageDashboard from '@/hooks/queries/useFetchSharedPageDashboard';
+import useFetchSharedPageMember from '@/hooks/queries/useFetchSharedPageMember';
 
 export default function PageContentSection({ view }: PageContentSectionProps) {
   const [isBookmark, setIsBookmark] = useState(false);
@@ -13,11 +16,6 @@ export default function PageContentSection({ view }: PageContentSectionProps) {
     x: number;
     y: number;
   } | null>(null);
-
-  const handleContextMenu = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setContextMenu({ x: e.clientX, y: e.clientY });
-  };
 
   //만약 path param이 없다면 1로 간주하고, 있다면 그대로 꺼내와서 사용.
   const { pageId } = useParams();
@@ -29,7 +27,14 @@ export default function PageContentSection({ view }: PageContentSectionProps) {
     resolvedPageId = parseInt(pageId);
   }
 
-  // 분기: bookmarks면 useFetchFavorite, 아니면 useFetchSelectedPage
+  // 클릭해서 들어간 페이지 정보 전역 변수로사 저장
+  const { setPageInfo } = usePageStore();
+
+  useEffect(() => {
+    setPageInfo(resolvedPageId, 'VIEW');
+  }, [resolvedPageId, setPageInfo]);
+
+  // 분기처리: bookmarks면 useFetchFavorite, 아니면 useFetchSelectedPage
   const favoriteQuery = useFetchFavorite();
   const selectedPageQuery = useFetchSelectedPage({
     pageId: resolvedPageId,
@@ -41,6 +46,27 @@ export default function PageContentSection({ view }: PageContentSectionProps) {
   const data = isBookmarks ? favoriteQuery.favorite : selectedPageQuery.data;
 
   console.log(data);
+
+  //TODO: 해당 값을 통해서 현재 공유페이지의 정보 리스팅팅
+  const sharedPageDashboardQuery = useFetchSharedPageDashboard({
+    pageId: resolvedPageId,
+    commandType: 'VIEW',
+    enabled: isBookmarks,
+  });
+
+  const sharedPageMemberQuery = useFetchSharedPageMember({
+    pageId: resolvedPageId,
+    commandType: 'VIEW',
+    enabled: isBookmarks,
+  });
+
+  console.log('페이지 대쉬보드 정보', sharedPageDashboardQuery.data);
+  console.log('페이지 멤버 정보', sharedPageMemberQuery.data);
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setContextMenu({ x: e.clientX, y: e.clientY });
+  };
 
   return (
     <div
