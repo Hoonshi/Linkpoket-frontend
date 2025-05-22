@@ -3,6 +3,9 @@ import FolderItem from './FolderItem';
 import LinkItem from './LinkItem';
 import { ContextMenu } from '../common-ui/ContextMenu';
 import { PageContentSectionProps } from '@/types/pageItems';
+import { useLocation, useParams } from 'react-router-dom';
+import { useFetchSelectedPage } from '@/hooks/queries/useFetchSelectedPage';
+import useFetchFavorite from '@/hooks/queries/useFetchFavorite';
 
 export default function PageContentSection({ view }: PageContentSectionProps) {
   const [isBookmark, setIsBookmark] = useState(false);
@@ -15,6 +18,29 @@ export default function PageContentSection({ view }: PageContentSectionProps) {
     e.preventDefault();
     setContextMenu({ x: e.clientX, y: e.clientY });
   };
+
+  //만약 path param이 없다면 1로 간주하고, 있다면 그대로 꺼내와서 사용.
+  const { pageId } = useParams();
+  const location = useLocation();
+  const isBookmarks = location.pathname.includes('bookmarks');
+
+  let resolvedPageId = 1;
+  if (pageId) {
+    resolvedPageId = parseInt(pageId);
+  }
+
+  // 분기: bookmarks면 useFetchFavorite, 아니면 useFetchSelectedPage
+  const favoriteQuery = useFetchFavorite();
+  const selectedPageQuery = useFetchSelectedPage({
+    pageId: resolvedPageId,
+    commandType: 'VIEW',
+    enabled: !isBookmarks,
+  });
+
+  // 실제 사용할 데이터
+  const data = isBookmarks ? favoriteQuery.favorite : selectedPageQuery.data;
+
+  console.log(data);
 
   return (
     <div
