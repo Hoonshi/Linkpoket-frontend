@@ -7,7 +7,7 @@ interface PageStoreState {
 }
 
 interface ParentsFolderIdStoreState {
-  parentsFolderId: number;
+  parentsFolderId: number | null;
   setParentsFolderId: (parentsFolderId: number) => void;
 }
 
@@ -20,7 +20,7 @@ export const usePageStore = create<PageStoreState>((set) => ({
 
 export const useParentsFolderIdStore = create<ParentsFolderIdStoreState>(
   (set) => ({
-    parentsFolderId: 1,
+    parentsFolderId: null,
     setParentsFolderId: (parentsFolderId: number) => set({ parentsFolderId }),
   })
 );

@@ -1,5 +1,17 @@
 export type ViewType = 'grid' | 'list';
 
+export interface ContentData {
+  folders?: Array<{
+    id: string;
+    title: string;
+  }>;
+  links?: Array<{
+    id: string;
+    title: string;
+    linkUrl?: string;
+  }>;
+}
+
 export interface PageItemProps {
   item: {
     id: string;
