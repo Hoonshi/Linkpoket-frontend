@@ -6,19 +6,17 @@ import DropDownInline from '../common-ui/DropDownInline';
 interface ListBookmarkOptionInterface {
   isBookmark: boolean;
   setIsBookmark: React.Dispatch<React.SetStateAction<boolean>>;
-  item: {
-    id: number;
-    title: string;
-    linkUrl?: string;
-  };
-  type: string;
+  itemId: string;
+  initialTitle: string;
+  initialLink?: string;
 }
 
 export default function ListBookMarkOption({
   isBookmark,
   setIsBookmark,
-  item,
-  type,
+  itemId,
+  initialTitle,
+  initialLink,
 }: ListBookmarkOptionInterface) {
   const [isDropDownInline, setIsDropDownInline] = useState(false);
 
@@ -51,10 +49,10 @@ export default function ListBookMarkOption({
       </button>
       {isDropDownInline && (
         <DropDownInline
-          id={item.id}
-          type={type}
-          initialTitle={item.title}
-          initialLink={item.linkUrl ?? ''}
+          id={itemId}
+          type="site"
+          initialTitle={initialTitle}
+          initialLink={initialLink ?? ''}
           className="absolute top-10 right-1 z-1"
           isDropDownInline={isDropDownInline}
           setIsDropDownInline={setIsDropDownInline}

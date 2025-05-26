@@ -3,9 +3,10 @@ import Transfer from '@/assets/common-ui-assets/Transfer.svg?react';
 import Copy from '@/assets/common-ui-assets/Copy.svg?react';
 import Delete from '@/assets/common-ui-assets/Delete.svg?react';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import useDeleteFolder from '@/hooks/mutations/useDeleteFolder';
+import { useLinkActionStore } from '@/stores/linkActionStore';
+import { useUpdateLink } from '@/hooks/mutations/useUpdateLink';
 import { usePageStore } from '@/stores/pageStore';
-import DeleteFolderModal from '../modal/folder/DeleteFolderModal';
+
 type DropDownInlineProps = {
   id: number;
   type: string;
@@ -35,6 +36,11 @@ const DropDownInline = ({
   const [link, setLink] = useState(initialLink);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const deleteLink = useLinkActionStore((state) => state.deleteLink);
+  const isModified = title !== initialTitle || link !== initialLink;
+  const { mutate } = useUpdateLink();
+
+  const pageId = usePageStore((state) => state.pageId);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -110,9 +116,38 @@ const DropDownInline = ({
               value={link}
               onChange={handleLinkChange}
               placeholder="링크를 입력하세요"
-              className="text-gray-60 cursor-pointer resize-none p-[12px] text-[13px] font-[400] outline-none"
+              className="text-gray-60 resize-none p-[12px] text-[13px] font-[400] outline-none"
             />
           </div>
+          {isModified && (
+            <button
+              onClick={() => {
+                mutate(
+                  {
+                    baseRequest: {
+                      pageId,
+                      commandType: 'EDIT',
+                    },
+                    linkId: Number(id),
+                    linkName: title,
+                    linkUrl: link,
+                  },
+                  {
+                    onSuccess: () => {
+                      setIsDropDownInline(false);
+                    },
+                    onError: (error) => {
+                      console.error('링크 수정 실패:', error);
+                      //Todo 사용자에게 에러 메시지 표시
+                    },
+                  }
+                );
+              }}
+              className="text-primary-60 flex cursor-pointer gap-[10px] p-[12px]"
+            >
+              수정 완료
+            </button>
+          )}
           <button
             onClick={() => console.log('전송')}
             className="flex cursor-pointer items-center gap-[10px] p-[12px]"
@@ -120,7 +155,7 @@ const DropDownInline = ({
             <Transfer width={18} height={18} /> 전송하기
           </button>
           <button
-            onClick={() => console.log('삭제')}
+            onClick={() => deleteLink(id)}
             className="text-status-danger flex cursor-pointer items-center gap-[10px] p-[12px]"
           >
             <Delete width={18} height={18} /> 삭제하기

@@ -1,23 +1,22 @@
+import { deleteLink } from '@/apis/link-apis/deleteLink';
+import { DeleteLinkData, DeleteLinkResponse } from '@/types/links';
 import {
   useMutation,
   UseMutationOptions,
   useQueryClient,
 } from '@tanstack/react-query';
-import { createLink } from '@/apis/link-apis/createLink';
-import { CreateLinkData, CreateLinkResponse } from '@/types/links';
 
-export function useCreateLink(
-  options?: UseMutationOptions<CreateLinkResponse, unknown, CreateLinkData>
+export function useDeleteLink(
+  options?: UseMutationOptions<DeleteLinkResponse, unknown, DeleteLinkData>
 ) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createLink,
+    mutationFn: deleteLink,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: ['selectedPage', variables.baseRequest.pageId, 'VIEW'],
       });
-
       options?.onSuccess?.(data, variables, context);
     },
     onError: (error, variables, context) => {

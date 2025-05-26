@@ -1,23 +1,22 @@
+import { updateLink } from '@/apis/link-apis/updateLink';
+import { UpdateLinkData, UpdateLinkResponse } from '@/types/links';
 import {
   useMutation,
   UseMutationOptions,
   useQueryClient,
 } from '@tanstack/react-query';
-import { createLink } from '@/apis/link-apis/createLink';
-import { CreateLinkData, CreateLinkResponse } from '@/types/links';
 
-export function useCreateLink(
-  options?: UseMutationOptions<CreateLinkResponse, unknown, CreateLinkData>
+export function useUpdateLink(
+  options?: UseMutationOptions<UpdateLinkResponse, unknown, UpdateLinkData>
 ) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createLink,
+    mutationFn: updateLink,
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: ['selectedPage', variables.baseRequest.pageId, 'VIEW'],
       });
-
       options?.onSuccess?.(data, variables, context);
     },
     onError: (error, variables, context) => {

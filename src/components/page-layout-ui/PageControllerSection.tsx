@@ -5,29 +5,50 @@ import { SearchBar } from '@/components/common-ui/SearchBar';
 import { ViewToggle } from '@/components/common-ui/ViewToggle';
 import PageSortBox from './PageSortBox';
 import { PageControllerSectionProps } from '@/types/pageItems';
-import { useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import AddFolderModal from '../modal/folder/AddFolderModal';
 import AddLinkModal from '../modal/link/AddLinkModal';
 import { useCreateLink } from '@/hooks/mutations/useCreateLink';
 import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
+import { useDeleteLink } from '@/hooks/mutations/useDeleteLink';
+import { useLinkActionStore } from '@/stores/linkActionStore';
+import { useModalStore } from '@/stores/modalStore';
 
 export default function PageControllerSection({
   view,
   setView,
 }: PageControllerSectionProps) {
-  const [isFolderOpen, setIsFolderOpen] = useState(false);
-  const [isLinkOpen, setIsLinkOpen] = useState(false);
+  const {
+    isLinkModalOpen,
+    isFolderModalOpen,
+    openLinkModal,
+    openFolderModal,
+    closeLinkModal,
+    closeFolderModal,
+  } = useModalStore();
   const pageId = usePageStore((state) => state.pageId);
+  const setDeleteLink = useLinkActionStore((state) => state.setDeleteLink);
   const { parentsFolderId } = useParentsFolderIdStore();
 
-  const { mutate: createLink } = useCreateLink({
-    onSuccess: () => {
-      console.log('링크 생성 성공');
+  const { mutate: createLink } = useCreateLink();
+  const { mutate: deleteLinkMutate } = useDeleteLink();
+
+  const deleteHandler = useCallback(
+    (id: string) => {
+      deleteLinkMutate({
+        baseRequest: {
+          pageId,
+          commandType: 'EDIT',
+        },
+        linkId: Number(id),
+      });
     },
-    onError: (error) => {
-      console.error('링크 생성 실패:', error);
-    },
-  });
+    [deleteLinkMutate, pageId]
+  );
+
+  useEffect(() => {
+    setDeleteLink(deleteHandler);
+  }, [setDeleteLink, deleteHandler]);
 
   return (
     <div className="flex flex-col justify-between gap-[16px] px-[64px] xl:flex-row xl:gap-0">
@@ -36,7 +57,7 @@ export default function PageControllerSection({
           variant="ghost"
           size="md"
           className="flex gap-[6px]"
-          onClick={() => setIsFolderOpen(true)}
+          onClick={() => openFolderModal()}
         >
           <FolderIcon />
           폴더 추가
@@ -45,7 +66,7 @@ export default function PageControllerSection({
           variant="ghost"
           size="md"
           className="flex gap-[6px]"
-          onClick={() => setIsLinkOpen(true)}
+          onClick={() => openLinkModal()}
         >
           <SiteIcon />
           링크 추가
@@ -58,16 +79,13 @@ export default function PageControllerSection({
           <ViewToggle selectedView={view} onChange={setView} />
         </div>
       </div>
-      {isFolderOpen && (
-        <AddFolderModal
-          isOpen={isFolderOpen}
-          onClose={() => setIsFolderOpen(false)}
-        />
+      {isFolderModalOpen && (
+        <AddFolderModal isOpen={isFolderModalOpen} onClose={closeFolderModal} />
       )}
-      {isLinkOpen && (
+      {isLinkModalOpen && (
         <AddLinkModal
-          isOpen={isLinkOpen}
-          onClose={() => setIsLinkOpen(false)}
+          isOpen={isLinkModalOpen}
+          onClose={closeLinkModal}
           onSubmit={async (linkName, linkUrl) => {
             createLink({
               baseRequest: {
@@ -76,7 +94,7 @@ export default function PageControllerSection({
               },
               linkName,
               linkUrl,
-              directoryId: parentsFolderId ?? 1, // 실제 폴더 ID
+              directoryId: parentsFolderId ?? 1,
               faviconUrl: `${linkUrl}/favicon.ico`,
             });
           }}
