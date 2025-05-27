@@ -35,6 +35,8 @@ export default function PersonalPageContentSection({
     commandType: 'VIEW',
   });
 
+  console.log('선택한 페이지 데이터:', selectedPageQuery.data);
+
   useEffect(() => {
     setPageInfo(resolvedPageId, 'VIEW');
     setParentsFolderId(selectedPageQuery.data?.data.parentsFolderId);

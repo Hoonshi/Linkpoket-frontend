@@ -21,11 +21,13 @@ export interface PageItemProps {
   isBookmark: boolean;
   setIsBookmark: React.Dispatch<React.SetStateAction<boolean>>;
   view: ViewType;
+  pageDescription?: string;
 }
 
 export interface PageContentSectionProps {
   view: ViewType;
   contentData?: any;
+  pageDescription?: string;
 }
 
 export interface PageControllerSectionProps extends PageContentSectionProps {

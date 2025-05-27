@@ -7,6 +7,7 @@ import { PageContentSectionProps } from '@/types/pageItems';
 export default function SharedPageContentSection({
   view,
   contentData,
+  pageDescription,
 }: PageContentSectionProps) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [contextMenu, setContextMenu] = useState<{
@@ -50,6 +51,7 @@ export default function SharedPageContentSection({
                 isBookmark={item.isFavorite}
                 setIsBookmark={setIsBookmark}
                 item={{ id: item.folderId, title: item.folderName }}
+                pageDescription={pageDescription}
                 view={view}
               />
             );

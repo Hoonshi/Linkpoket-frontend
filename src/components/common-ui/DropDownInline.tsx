@@ -7,13 +7,13 @@ import { useLinkActionStore } from '@/stores/linkActionStore';
 import { useUpdateLink } from '@/hooks/mutations/useUpdateLink';
 import { usePageStore } from '@/stores/pageStore';
 import DeleteFolderModal from '../modal/folder/DeleteFolderModal';
+import useUpdateFolder from '@/hooks/mutations/useUpdateFolder';
 
 type DropDownInlineProps = {
   id: number;
   type: string;
   initialTitle: string;
   initialLink: string;
-
   onTitleChange?: (id: number, title: string) => void;
   onLinkChange?: (id: number, link: string) => void;
   className?: string;
@@ -33,14 +33,21 @@ const DropDownInline = ({
   className,
 }: DropDownInlineProps) => {
   const [title, setTitle] = useState(initialTitle);
+
   const [link, setLink] = useState(initialLink);
+
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const deleteLink = useLinkActionStore((state) => state.deleteLink);
-  const isModified = title !== initialTitle || link !== initialLink;
-  const { mutate } = useUpdateLink();
+
+  const isModifiedLink = title !== initialTitle || link !== initialLink;
+  const isModifiedFolder = title !== initialTitle;
 
   const pageId = usePageStore((state) => state.pageId);
+
+  const { mutate } = useUpdateLink();
+  const { mutate: mutateFolder } = useUpdateFolder(pageId);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -73,6 +80,35 @@ const DropDownInline = ({
             placeholder="디렉토리명 입력"
             className="border-gray-30 rounded-lg border p-[8px] outline-none"
           />
+
+          {isModifiedFolder && (
+            <button
+              onClick={() => {
+                mutateFolder(
+                  {
+                    baseRequest: {
+                      pageId,
+                      commandType: 'EDIT',
+                    },
+                    folderName: title,
+                    folderId: id,
+                  },
+                  {
+                    onSuccess: () => {
+                      setIsDropDownInline(false);
+                    },
+                    onError: (error) => {
+                      console.error('링크 수정 실패:', error);
+                      //Todo 사용자에게 에러 메시지 표시
+                    },
+                  }
+                );
+              }}
+              className="text-primary-60 flex cursor-pointer gap-[10px] p-[12px]"
+            >
+              수정 완료
+            </button>
+          )}
           <button
             onClick={() => console.log('전송')}
             className="flex cursor-pointer items-center gap-[10px] px-[8px] py-[11px]"
@@ -119,7 +155,7 @@ const DropDownInline = ({
               className="text-gray-60 resize-none p-[12px] text-[13px] font-[400] outline-none"
             />
           </div>
-          {isModified && (
+          {isModifiedLink && (
             <button
               onClick={() => {
                 mutate(

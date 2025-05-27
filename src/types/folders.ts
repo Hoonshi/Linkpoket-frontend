@@ -8,6 +8,16 @@ export type CreateFolderData = {
   folderDescription: string;
 };
 
+export type UpdateFolderData = {
+  baseRequest: {
+    pageId: number;
+    commandType: string;
+  };
+  folderName: string;
+  folderId: number;
+  folderDescription?: string;
+};
+
 export type DeleteFolderData = {
   baseRequest: {
     pageId: number;
