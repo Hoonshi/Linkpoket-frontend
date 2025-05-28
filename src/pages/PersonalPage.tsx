@@ -3,12 +3,18 @@ import PageHeaderSection from '@/components/page-layout-ui/PageHeaderSection';
 import PersonalPageContentSection from '@/components/page-layout-ui/PersonalPageContentSection';
 import { useFetchPersonalPage } from '@/hooks/queries/useFetchPersonalPage';
 import { useMobile } from '@/hooks/useMobile';
+import { usePageSearch } from '@/hooks/usePageSearch';
+import { usePageStore } from '@/stores/pageStore';
 import { useUserStore } from '@/stores/userStore';
 import { useEffect, useState } from 'react';
 
 export default function PersonalPage() {
   const { member, pageDetails, isLoading, error } = useFetchPersonalPage();
   const setUser = useUserStore((state) => state.setUser);
+  const pageId = usePageStore((state) => state.pageId);
+
+  const { searchKeyword, setSearchKeyword, searchResult } =
+    usePageSearch(pageId);
 
   const [view, setView] = useState<'grid' | 'list'>('grid');
 
@@ -43,10 +49,15 @@ export default function PersonalPage() {
       <div className="border-b-gray-30 mb-[40px] w-full border-b" />
 
       {/* CONTROLLER SECTION*/}
-      <PageControllerSection view={view} setView={setView} />
+      <PageControllerSection
+        view={view}
+        setView={setView}
+        searchKeyword={searchKeyword}
+        setSearchKeyword={setSearchKeyword}
+      />
 
       {/*CONTENT SECTION*/}
-      <PersonalPageContentSection view={view} />
+      <PersonalPageContentSection view={view} searchResult={searchResult} />
     </div>
   );
 }

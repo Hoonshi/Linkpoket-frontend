@@ -3,11 +3,14 @@ import FolderItem from './FolderItem';
 import LinkItem from './LinkItem';
 import { ContextMenu } from '../common-ui/ContextMenu';
 import { PageContentSectionProps } from '@/types/pageItems';
+import { useModalStore } from '@/stores/modalStore';
 
 export default function SharedPageContentSection({
   view,
   contentData,
+  searchResult,
 }: PageContentSectionProps) {
+  const { openLinkModal, openFolderModal } = useModalStore();
   const [isBookmark, setIsBookmark] = useState(false);
   const [contextMenu, setContextMenu] = useState<{
     x: number;
@@ -18,12 +21,19 @@ export default function SharedPageContentSection({
     e.preventDefault();
     setContextMenu({ x: e.clientX, y: e.clientY });
   };
+  console.log('contentData:', contentData);
 
   const folderData = contentData?.directoryDetailRespons ?? [];
   const linkData = contentData?.siteDetailResponses ?? [];
-  const mergedList = [...folderData, ...linkData].sort(
-    (a, b) => a.orderIndex - b.orderIndex
-  );
+  const mergedList = searchResult
+    ? [
+        ...(searchResult.directorySimpleResponses ?? []),
+        ...(searchResult.siteSimpleResponses ?? []),
+      ].map((item, index) => ({
+        ...item,
+        orderIndex: index, // orderIndex는 없기 때문에 임의 부여
+      }))
+    : [...folderData, ...linkData].sort((a, b) => a.orderIndex - b.orderIndex);
   console.log('합친 데이터', mergedList);
 
   return (
@@ -72,6 +82,8 @@ export default function SharedPageContentSection({
             x={contextMenu.x}
             y={contextMenu.y}
             onClose={() => setContextMenu(null)}
+            onAddFolder={openFolderModal}
+            onAddLink={openLinkModal}
           />
         )}
       </div>
