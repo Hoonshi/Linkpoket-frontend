@@ -28,8 +28,10 @@ export default function SharedPage() {
   if (pageId) {
     resolvedPageId = parseInt(pageId);
   }
-  const { searchKeyword, setSearchKeyword, searchResult } =
-    usePageSearch(resolvedPageId);
+  const { searchKeyword, setSearchKeyword, searchResult } = usePageSearch(
+    resolvedPageId,
+    'TITLE'
+  );
 
   // 클릭해서 들어간 페이지 정보 전역 변수로tj 저장
   const { setPageInfo } = usePageStore();

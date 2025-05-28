@@ -9,8 +9,10 @@ export default function BookmarkPage() {
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const pageId = usePageStore((state) => state.pageId);
 
-  const { searchKeyword, setSearchKeyword, searchResult } =
-    usePageSearch(pageId);
+  const { searchKeyword, setSearchKeyword, searchResult } = usePageSearch(
+    pageId,
+    'TITLE'
+  );
 
   const isMobile = useMobile();
 

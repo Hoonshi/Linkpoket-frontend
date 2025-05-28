@@ -13,8 +13,10 @@ export default function PersonalPage() {
   const setUser = useUserStore((state) => state.setUser);
   const pageId = usePageStore((state) => state.pageId);
 
-  const { searchKeyword, setSearchKeyword, searchResult } =
-    usePageSearch(pageId);
+  const { searchKeyword, setSearchKeyword, searchResult } = usePageSearch(
+    pageId,
+    'TITLE'
+  );
 
   const [view, setView] = useState<'grid' | 'list'>('grid');
 
