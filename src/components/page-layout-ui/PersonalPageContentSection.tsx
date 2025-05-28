@@ -10,6 +10,7 @@ import { useModalStore } from '@/stores/modalStore';
 
 export default function PersonalPageContentSection({
   view,
+  searchResult,
 }: PageContentSectionProps) {
   const { openLinkModal, openFolderModal } = useModalStore();
   const [isBookmark, setIsBookmark] = useState(false);
@@ -49,9 +50,15 @@ export default function PersonalPageContentSection({
 
   const folderData = selectedPageQuery.data?.data.directoryDetailRespons ?? [];
   const linkData = selectedPageQuery.data?.data.siteDetailResponses ?? [];
-  const mergedList = [...folderData, ...linkData].sort(
-    (a, b) => a.orderIndex - b.orderIndex
-  );
+  const mergedList = searchResult
+    ? [
+        ...(searchResult.directorySimpleResponses ?? []),
+        ...(searchResult.siteSimpleResponses ?? []),
+      ].map((item, index) => ({
+        ...item,
+        orderIndex: index, // orderIndex는 없기 때문에 임의 부여
+      }))
+    : [...folderData, ...linkData].sort((a, b) => a.orderIndex - b.orderIndex);
 
   console.log('합친 데이터', mergedList);
 
@@ -71,7 +78,7 @@ export default function PersonalPageContentSection({
           if ('folderId' in item) {
             return (
               <FolderItem
-                key={item.orderIndex}
+                key={`folder-${item.folderId}`}
                 isBookmark={item.isFavorite}
                 setIsBookmark={setIsBookmark}
                 item={{ id: item.folderId, title: item.folderName }}
@@ -81,7 +88,7 @@ export default function PersonalPageContentSection({
           } else if ('linkId' in item) {
             return (
               <LinkItem
-                key={item.orderIndex}
+                key={`link-${item.linkId}`}
                 isBookmark={item.isFavorite}
                 setIsBookmark={setIsBookmark}
                 item={{
