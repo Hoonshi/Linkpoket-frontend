@@ -81,6 +81,7 @@ export default function PageControllerSection({
           placeholder="폴더, 링크 검색"
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
+          onClear={() => setSearchKeyword('')}
         />
         <PageSortBox />
         <div className="hidden lg:block">
