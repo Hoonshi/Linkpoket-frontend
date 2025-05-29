@@ -6,6 +6,9 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import { useLinkActionStore } from '@/stores/linkActionStore';
 import { useUpdateLink } from '@/hooks/mutations/useUpdateLink';
 import { usePageStore } from '@/stores/pageStore';
+import { useModalStore } from '@/stores/modalStore';
+import FolderTransferModal from '../modal/folder/FolderTransferModal';
+import { useTransferActionStore } from '@/stores/transferActionStore';
 
 type DropDownInlineProps = {
   id: string;
@@ -39,9 +42,13 @@ const DropDownInline = ({
   const [title, setTitle] = useState(initialTitle);
   const [link, setLink] = useState(initialLink);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { openTransferFolderModal } = useModalStore();
   const deleteLink = useLinkActionStore((state) => state.deleteLink);
   const isModified = title !== initialTitle || link !== initialLink;
   const { mutate } = useUpdateLink();
+  const { isTransferFolderModalOpen, closeTransferFolderModal } =
+    useModalStore();
+  const transferFolder = useTransferActionStore((s) => s.transferFolder);
 
   const pageId = usePageStore((state) => state.pageId);
 
@@ -57,7 +64,8 @@ const DropDownInline = ({
     onLinkChange?.(id, value);
   };
 
-  useClickOutside(dropdownRef, setIsDropDownInline);
+  const modalRef = useRef<HTMLDivElement>(null);
+  useClickOutside(dropdownRef, setIsDropDownInline, modalRef);
 
   // TODO : 삭제하기 disabled의 경우, auth가 추가되면 분기처리예정
   return (
@@ -74,7 +82,9 @@ const DropDownInline = ({
             className="border-gray-30 rounded-lg border p-[8px] outline-none"
           />
           <button
-            onClick={() => onShare?.(id)}
+            onClick={() => {
+              openTransferFolderModal();
+            }}
             className="flex cursor-pointer items-center gap-[10px] px-[8px] py-[11px]"
           >
             <Transfer width={18} height={18} /> 전송하기
@@ -153,6 +163,14 @@ const DropDownInline = ({
           </button>
         </div>
       )}
+      <FolderTransferModal
+        ref={modalRef}
+        isOpen={isTransferFolderModalOpen}
+        onClose={closeTransferFolderModal}
+        directoryId={Number(id)}
+        folderName={title}
+        onSubmit={async (email) => transferFolder(email, Number(id))}
+      />
     </div>
   );
 };

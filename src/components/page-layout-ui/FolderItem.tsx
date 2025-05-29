@@ -37,6 +37,9 @@ export default function FolderItem({
         <ListBookmarkModal
           isBookmark={isBookmark}
           setIsBookmark={setIsBookmark}
+          itemId={item.id}
+          initialTitle={item.title}
+          item={item}
         />
       </div>
     </div>

@@ -55,6 +55,7 @@ export default function LinkItem({
           itemId={item.id}
           initialTitle={item.title}
           initialLink={item.linkUrl}
+          item={item}
         />
       </div>
     </div>

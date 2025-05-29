@@ -2,23 +2,27 @@ import { useEffect } from 'react';
 
 export function useClickOutside<T extends HTMLElement>(
   ref: React.RefObject<T>,
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  ignoreRef?: React.RefObject<HTMLElement>
 ) {
   useEffect(() => {
-    if (!ref.current) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
 
-    const handleClickOutside = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
+      if (
+        ref.current &&
+        !ref.current.contains(target) &&
+        !ignoreRef?.current?.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside, true);
-
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside, true);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [ref, setIsOpen]);
+  }, [ref, setIsOpen, ignoreRef]);
 }
 
 /* 
