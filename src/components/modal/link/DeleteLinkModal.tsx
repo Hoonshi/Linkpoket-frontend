@@ -13,7 +13,7 @@ type Props = {
 
 const DeleteLinkModal = forwardRef<HTMLDivElement, Props>(
   ({ isOpen, onClose, linkId, pageId }, ref) => {
-    const { mutate: deleteLink } = useDeleteLink();
+    const { mutate: deleteLink, isPending } = useDeleteLink();
 
     const handleDelete = () => {
       const requestBody: DeleteLinkData = {
@@ -23,9 +23,16 @@ const DeleteLinkModal = forwardRef<HTMLDivElement, Props>(
         },
         linkId,
       };
-      console.log('링크 삭제 요청 데이터', requestBody);
-      deleteLink(requestBody);
-      onClose();
+
+      deleteLink(requestBody, {
+        onSuccess: () => {
+          onClose();
+        },
+        onError: (error) => {
+          console.error('링크 삭제 실패:', error);
+          // TODO: 사용자에게 에러 메시지 표시
+        },
+      });
     };
 
     return (
@@ -47,7 +54,9 @@ const DeleteLinkModal = forwardRef<HTMLDivElement, Props>(
 
         <Modal.Footer className="pt-0">
           <Modal.CancelButton />
-          <Modal.ConfirmButton onClick={handleDelete}>삭제</Modal.ConfirmButton>
+          <Modal.ConfirmButton onClick={handleDelete} disabled={isPending}>
+            {isPending ? '삭제 중...' : '삭제'}
+          </Modal.ConfirmButton>
         </Modal.Footer>
       </Modal>
     );

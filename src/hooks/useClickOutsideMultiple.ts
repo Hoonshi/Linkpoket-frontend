@@ -9,19 +9,18 @@ export function useClickOutsideMultiple(
     if (!enabled) return;
 
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
+      const target = event.target as Node | null;
+      if (!target) return;
 
       const validRefs = refs.filter((ref) => ref.current !== null);
       if (validRefs.length === 0) return;
 
       let matchFound = false;
-
-      for (const ref of validRefs) {
+      validRefs.forEach((ref) => {
         if (ref.current!.contains(target)) {
           matchFound = true;
-          break;
         }
-      }
+      });
 
       if (!matchFound) {
         setIsOpen(false);
