@@ -1,17 +1,12 @@
 import { PageContentSectionProps } from '@/types/pageItems';
-import useFetchFavorite from '@/hooks/queries/useFetchFavorite';
 import FolderItem from './FolderItem';
 import LinkItem from './LinkItem';
 export default function BookmarkPageContentSection({
   view,
+  contentData,
 }: PageContentSectionProps) {
-  const favoriteQuery = useFetchFavorite();
-
-  // 실제 사용할 데이터
-  const data = favoriteQuery.favorite;
-
-  const folderData = data.directorySimpleResponses;
-  const linkData = data.siteSimpleResponses;
+  const folderData = contentData?.directorySimpleResponses ?? [];
+  const linkData = contentData?.siteSimpleResponses ?? [];
   const mergedList = [...folderData, ...linkData];
 
   return (

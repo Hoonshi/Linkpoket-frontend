@@ -22,7 +22,7 @@ export default function FolderItem({ item, view, isBookmark }: PageItemProps) {
   } = useModalStore();
 
   const handleDoubleClick = () => {
-    navigate(`folder/${item.id}`);
+    navigate(`/folder/${item.id}`);
   };
 
   const handleContextMenu = (e: React.MouseEvent) => {
