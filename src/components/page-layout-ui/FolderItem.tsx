@@ -88,6 +88,7 @@ export default function FolderItem({ item, view, isBookmark }: PageItemProps) {
           initialTitle={item.title}
           item={item}
           type={type}
+          handleBookmark={handleBookmark}
         />
       </div>
     </div>

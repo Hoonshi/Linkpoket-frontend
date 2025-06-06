@@ -20,9 +20,7 @@ export default function BookmarkPageContentSection({
             : 'flex flex-col gap-4'
         }`}
       >
-        {mergedList.map((item, idx) => {
-          console.log(idx, 'item', item);
-
+        {mergedList.map((item) => {
           if ('folderId' in item) {
             return (
               <FolderItem

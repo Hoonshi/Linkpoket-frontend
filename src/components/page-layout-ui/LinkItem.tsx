@@ -87,6 +87,7 @@ export default function LinkItem({ item, view, isBookmark }: PageItemProps) {
           initialLink={item.linkUrl}
           item={item}
           type={type}
+          handleBookmark={handleBookmark}
         />
       </div>
     </div>

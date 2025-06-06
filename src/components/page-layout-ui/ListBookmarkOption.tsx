@@ -5,6 +5,7 @@ import { useState } from 'react';
 import DropDownInline from '../common-ui/DropDownInline';
 interface ListBookmarkOptionInterface {
   isBookmark: boolean;
+  handleBookmark: (e: React.MouseEvent) => void;
   item: {
     id: number;
     title: string;
@@ -18,17 +19,13 @@ interface ListBookmarkOptionInterface {
 
 export default function ListBookMarkOption({
   isBookmark,
-  setIsBookmark,
   itemId,
   initialTitle,
   initialLink,
   type,
+  handleBookmark,
 }: ListBookmarkOptionInterface) {
   const [isDropDownInline, setIsDropDownInline] = useState(false);
-
-  const handleBookmark = () => {
-    setIsBookmark((prev) => !prev);
-  };
 
   const handleDropDownInline = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -36,7 +33,10 @@ export default function ListBookMarkOption({
 
   return (
     <div className="relative flex items-center">
-      <button className="h-[38px] w-[38px] px-[10px] py-[10px]">
+      <button
+        className="h-[38px] w-[38px] px-[10px] py-[10px]"
+        onClick={handleBookmark}
+      >
         {isBookmark === false ? (
           <InactiveBookmarkIcon className="cursor-pointer" />
         ) : (
