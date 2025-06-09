@@ -49,6 +49,9 @@ const ProfileChangeBody = ({ onBack }: { onBack: () => void }) => {
                 className="relative h-[55px] w-[55px] rounded-full"
                 style={{ backgroundColor: color }}
                 onClick={() => setProfileColor(color)}
+                type="button"
+                aria-label={`색상 ${color} 선택`}
+                aria-pressed={profileColor === color}
               >
                 {profileColor === color && (
                   <div className="absolute inset-0 flex items-center justify-center">

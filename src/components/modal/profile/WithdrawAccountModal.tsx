@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Modal from '@/components/common-ui/Modal';
 import Status from '@/assets/common-ui-assets/Status.svg?react';
 import { useDeleteAccountMutation } from '@/hooks/mutations/auth/useDeleteAccountMutation';
@@ -9,7 +10,12 @@ const WithdrawAccountModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const { mutate: deleteAccount } = useDeleteAccountMutation();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const { mutate: deleteAccount } = useDeleteAccountMutation({
+    onMutate: () => setIsDeleting(true),
+    onSettled: () => setIsDeleting(false),
+  });
 
   if (!isOpen) return null;
 
@@ -33,15 +39,13 @@ const WithdrawAccountModal = ({
       </Modal.Header>
 
       <Modal.Footer className="pt-0">
-        <Modal.CancelButton />
+        <Modal.CancelButton disabled={isDeleting} />
         <Modal.ConfirmButton
-          onClick={() => {
-            deleteAccount();
-            onClose();
-          }}
+          onClick={() => deleteAccount()}
           variant="primary"
+          disabled={isDeleting}
         >
-          탈퇴
+          {isDeleting ? '처리중...' : '탈퇴'}
         </Modal.ConfirmButton>
       </Modal.Footer>
     </Modal>

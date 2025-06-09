@@ -1,21 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 import { logout } from '@/apis/auth-apis/auth.api';
-import { useUserStore } from '@/stores/userStore';
-import { useNavigate } from 'react-router-dom';
 import { useProfileModalStore } from '@/stores/profileModalStore';
+import { clearAuthTokens } from '@/lib/clearAuthTokens';
 
 export const useLogoutMutation = () => {
   const { closeProfileModal } = useProfileModalStore();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      localStorage.removeItem('access_token');
-      useUserStore.getState().clearUser();
-
+      clearAuthTokens();
       closeProfileModal();
-      navigate('/login');
+
+      window.location.href = '/login';
     },
     onError: (error) => {
       console.error('로그아웃 실패', error);

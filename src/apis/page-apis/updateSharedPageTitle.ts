@@ -8,7 +8,7 @@ export default async function updateSharedPageTitle(data: UpdatePageTitleData) {
     });
     return response.data;
   } catch (error) {
-    console.error('Error updating personal page title:', error);
+    console.error('Error updating shared page title:', error);
     throw error;
   }
 }
