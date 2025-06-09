@@ -34,7 +34,11 @@ const BaseModal = forwardRef<
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+      const target = e.target as HTMLElement;
+
+      if (target.closest('[data-ignore-outside-click]')) return;
+
+      if (modalRef.current && !modalRef.current.contains(target)) {
         onClose();
       }
     };
@@ -54,6 +58,7 @@ const BaseModal = forwardRef<
             className
           )}
           ref={modalRef}
+          data-ignore-outside-click
         >
           {children}
         </div>
