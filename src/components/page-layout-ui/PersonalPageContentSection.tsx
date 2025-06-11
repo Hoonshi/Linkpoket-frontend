@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import { useFetchSelectedPage } from '@/hooks/queries/useFetchSharedPage';
 import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 import { useModalStore } from '@/stores/modalStore';
+import { useProfileModalStore } from '@/stores/profileModalStore';
+import ProfileSettingsModal from '../modal/profile/ProfileSettingsModal';
 
 export default function PersonalPageContentSection({
   view,
@@ -17,6 +19,7 @@ export default function PersonalPageContentSection({
     x: number;
     y: number;
   } | null>(null);
+  const { isProfileModalOpen, closeProfileModal } = useProfileModalStore();
 
   //만약 path param이 없다면 1로 간주하고, 있다면 그대로 꺼내와서 사용.
   const { pageId } = useParams();
@@ -111,6 +114,14 @@ export default function PersonalPageContentSection({
             onClose={() => setContextMenu(null)}
             onAddFolder={openFolderModal}
             onAddLink={openLinkModal}
+          />
+        )}
+
+        {/* 프로필 세팅 모달 */}
+        {isProfileModalOpen && (
+          <ProfileSettingsModal
+            isOpen={isProfileModalOpen}
+            onClose={() => closeProfileModal()}
           />
         )}
       </div>
