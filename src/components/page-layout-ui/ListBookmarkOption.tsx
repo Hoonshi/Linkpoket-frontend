@@ -29,6 +29,7 @@ export default function ListBookMarkOption({
 
   const handleDropDownInline = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    setIsDropDownInline((prev) => !prev);
   };
 
   return (
