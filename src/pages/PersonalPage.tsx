@@ -28,28 +28,31 @@ export default function PersonalPage() {
     }
   }, [isMobile]);
 
-  const { nickName, email, colorCode } = member || {};
-
   useEffect(() => {
-    if (nickName && email && colorCode) {
+    if (member?.nickName && member?.email && member?.colorCode) {
+      const { nickName, email, colorCode } = member;
       setUser(nickName, email, colorCode);
     }
-  }, [nickName, email, colorCode, setUser]);
+  }, [member, setUser]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
+  if (!pageDetails) return <div>No page data</div>;
 
   return (
     <div className="flex h-screen flex-col">
       {/* HEADER SECTION*/}
-      <PageHeaderSection
-        pageTitle={pageDetails?.pageTitle}
-        pageDescription={pageDetails?.pageDescription}
-        folderId={pageDetails?.rootFolderId}
-      />
-
-      {/* Boundary line */}
-      <div className="border-b-gray-30 mb-[40px] w-full border-b" />
+      {pageDetails && (
+        <>
+          <PageHeaderSection
+            pageTitle={pageDetails.pageTitle}
+            pageDescription={pageDetails.pageDescription}
+            folderId={pageDetails.rootFolderId}
+          />
+          {/* Boundary line */}
+          <div className="border-b-gray-30 mb-[40px] w-full border-b" />
+        </>
+      )}
 
       {/* CONTROLLER SECTION*/}
       <PageControllerSection
@@ -60,7 +63,11 @@ export default function PersonalPage() {
       />
 
       {/*CONTENT SECTION*/}
-      <PersonalPageContentSection view={view} searchResult={searchResult} />
+      <PersonalPageContentSection
+        view={view}
+        searchResult={searchResult}
+        pageDetails={pageDetails}
+      />
     </div>
   );
 }

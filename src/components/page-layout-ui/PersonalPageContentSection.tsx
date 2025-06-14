@@ -4,15 +4,16 @@ import LinkItem from './LinkItem';
 import { ContextMenu } from '../common-ui/ContextMenu';
 import { PageContentSectionProps } from '@/types/pageItems';
 import { useParams } from 'react-router-dom';
-import { useFetchSelectedPage } from '@/hooks/queries/useFetchSharedPage';
 import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useBreadcrumbStore } from '@/stores/breadcrumb';
 import { useProfileModalStore } from '@/stores/profileModalStore';
 import ProfileSettingsModal from '../modal/profile/ProfileSettingsModal';
+
 export default function PersonalPageContentSection({
   view,
   searchResult,
+  pageDetails,
 }: PageContentSectionProps) {
   const { openLinkModal, openFolderModal } = useModalStore();
   const [contextMenu, setContextMenu] = useState<{
@@ -33,17 +34,19 @@ export default function PersonalPageContentSection({
   const { setPageInfo } = usePageStore();
   const { setParentsFolderId } = useParentsFolderIdStore();
 
-  const selectedPageQuery = useFetchSelectedPage({
-    pageId: resolvedPageId,
-    commandType: 'VIEW',
-  });
-
-  console.log('선택한 페이지 데이터:', selectedPageQuery.data);
+  console.log('선택한 페이지 데이터:', pageDetails);
 
   useEffect(() => {
-    setPageInfo(resolvedPageId, 'VIEW');
-    setParentsFolderId(selectedPageQuery.data?.data.parentsFolderId);
-  }, [resolvedPageId, setPageInfo, setParentsFolderId, selectedPageQuery.data]);
+    if (pageDetails?.rootFolderId) {
+      setPageInfo(resolvedPageId, 'VIEW');
+      setParentsFolderId(pageDetails.rootFolderId);
+    }
+  }, [
+    resolvedPageId,
+    pageDetails?.rootFolderId,
+    setPageInfo,
+    setParentsFolderId,
+  ]);
 
   const { resetBreadcrumbs } = useBreadcrumbStore();
 
@@ -57,8 +60,9 @@ export default function PersonalPageContentSection({
     setContextMenu({ x: e.clientX, y: e.clientY });
   };
 
-  const folderData = selectedPageQuery.data?.data.directoryDetailRespons ?? [];
-  const linkData = selectedPageQuery.data?.data.siteDetailResponses ?? [];
+  const folderData = pageDetails?.directoryDetailRespons ?? [];
+  const linkData = pageDetails?.siteDetailResponses ?? [];
+
   const mergedList = searchResult
     ? [
         ...(searchResult.directorySimpleResponses ?? []),
@@ -68,11 +72,9 @@ export default function PersonalPageContentSection({
         orderIndex:
           'orderIndex' in item && typeof item.orderIndex === 'number'
             ? item.orderIndex
-            : index, // orderIndex가 없을 때만 index로 대체
+            : index,
       }))
     : [...folderData, ...linkData].sort((a, b) => a.orderIndex - b.orderIndex);
-
-  console.log('합친 데이터', mergedList);
 
   return (
     <div
@@ -92,7 +94,7 @@ export default function PersonalPageContentSection({
               <FolderItem
                 key={`folder-${item.folderId}`}
                 isBookmark={item.isFavorite}
-                item={{ id: item.folderId, title: item.folderName }}
+                item={{ id: Number(item.folderId), title: item.folderName }}
                 view={view}
               />
             );
@@ -102,7 +104,7 @@ export default function PersonalPageContentSection({
                 key={`link-${item.linkId}`}
                 isBookmark={item.isFavorite}
                 item={{
-                  id: item.linkId,
+                  id: Number(item.linkId),
                   title: item.linkName,
                   linkUrl: item.linkUrl,
                 }}
