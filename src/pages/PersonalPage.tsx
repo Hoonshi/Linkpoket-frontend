@@ -4,17 +4,20 @@ import PersonalPageContentSection from '@/components/page-layout-ui/PersonalPage
 import { useFetchPersonalPage } from '@/hooks/queries/useFetchPersonalPage';
 import { useMobile } from '@/hooks/useMobile';
 import { usePageSearch } from '@/hooks/usePageSearch';
-import { usePageStore } from '@/stores/pageStore';
+import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 import { useUserStore } from '@/stores/userStore';
 import { useEffect, useState } from 'react';
 
 export default function PersonalPage() {
   const { member, pageDetails, isLoading, error } = useFetchPersonalPage();
+  const { setPageInfo } = usePageStore();
+  const { setParentsFolderId } = useParentsFolderIdStore();
   const setUser = useUserStore((state) => state.setUser);
-  const pageId = usePageStore((state) => state.pageId);
+
+  const resolvedPageId = pageDetails?.pageId;
 
   const { searchKeyword, setSearchKeyword, searchResult } = usePageSearch(
-    pageId,
+    resolvedPageId,
     'TITLE'
   );
 
@@ -34,6 +37,13 @@ export default function PersonalPage() {
       setUser(nickName, email, colorCode);
     }
   }, [member, setUser]);
+
+  useEffect(() => {
+    if (pageDetails?.pageId && pageDetails?.rootFolderId) {
+      setPageInfo(pageDetails.pageId, 'VIEW');
+      setParentsFolderId(pageDetails.rootFolderId);
+    }
+  }, [pageDetails, setPageInfo, setParentsFolderId]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;

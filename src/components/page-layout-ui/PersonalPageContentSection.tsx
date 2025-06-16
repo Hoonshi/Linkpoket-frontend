@@ -3,8 +3,6 @@ import FolderItem from './FolderItem';
 import LinkItem from './LinkItem';
 import { ContextMenu } from '../common-ui/ContextMenu';
 import { PageContentSectionProps } from '@/types/pageItems';
-import { useParams } from 'react-router-dom';
-import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 import { useModalStore } from '@/stores/modalStore';
 import { useBreadcrumbStore } from '@/stores/breadcrumb';
 import { useProfileModalStore } from '@/stores/profileModalStore';
@@ -22,31 +20,7 @@ export default function PersonalPageContentSection({
   } | null>(null);
   const { isProfileModalOpen, closeProfileModal } = useProfileModalStore();
 
-  //만약 path param이 없다면 1로 간주하고, 있다면 그대로 꺼내와서 사용.
-  const { pageId } = useParams();
-
-  let resolvedPageId = 1;
-  if (pageId) {
-    resolvedPageId = parseInt(pageId);
-  }
-
-  // 클릭해서 들어간 페이지 정보 전역 변수로서 저장
-  const { setPageInfo } = usePageStore();
-  const { setParentsFolderId } = useParentsFolderIdStore();
-
   console.log('선택한 페이지 데이터:', pageDetails);
-
-  useEffect(() => {
-    if (pageDetails?.rootFolderId) {
-      setPageInfo(resolvedPageId, 'VIEW');
-      setParentsFolderId(pageDetails.rootFolderId);
-    }
-  }, [
-    resolvedPageId,
-    pageDetails?.rootFolderId,
-    setPageInfo,
-    setParentsFolderId,
-  ]);
 
   const { resetBreadcrumbs } = useBreadcrumbStore();
 
