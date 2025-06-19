@@ -7,6 +7,7 @@ import { Radio } from '@/components/common-ui/Radio';
 import PageSortBox from '@/components/page-layout-ui/PageSortBox';
 import { useLocation, useParams } from 'react-router-dom';
 import useFetchSharedPageDashboard from '@/hooks/queries/useFetchSharedPageDashboard';
+import InviteUserModal from './InviteUserModal';
 
 const TIERS = [
   { label: '베이직(5명)', value: 'BASIC' },
@@ -27,6 +28,13 @@ const ManageSharedPageModal = ({
     'RESTRICTED'
   );
   const [search, setSearch] = useState('');
+  const [isOpenInviteUserModal, setIsOpenInviteUserModal] = useState(false);
+
+  const handleClose = () => {
+    if (!isOpenInviteUserModal) {
+      onClose();
+    }
+  };
 
   const pathname = useLocation().pathname;
   const { pageId } = useParams();
@@ -90,7 +98,7 @@ const ManageSharedPageModal = ({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       className="p-[24px] md:max-w-[562px]"
     >
       <Modal.Header className="border-gray-40 mb-[16px] border-b-[1px] pb-[24px] text-[22px] font-bold">
@@ -155,9 +163,20 @@ const ManageSharedPageModal = ({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Button size="sm" variant="primary">
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={() => setIsOpenInviteUserModal(true)}
+          >
             멤버 초대
           </Button>
+          {isOpenInviteUserModal && (
+            <InviteUserModal
+              isOpen={isOpenInviteUserModal}
+              onClose={() => setIsOpenInviteUserModal(false)}
+              pageId={resolvedPageId ?? -1}
+            />
+          )}
         </div>
 
         <div className="max-h-[220px] overflow-y-auto">
@@ -199,7 +218,7 @@ const ManageSharedPageModal = ({
         </div>
       </div>
       <Modal.Footer className="pt-4">
-        <Button variant="ghost" onClick={onClose}>
+        <Button variant="ghost" onClick={handleClose}>
           닫기
         </Button>
       </Modal.Footer>

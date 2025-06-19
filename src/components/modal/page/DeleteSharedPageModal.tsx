@@ -21,7 +21,7 @@ const DeleteSharedPageModal = forwardRef<
     const requestBody: DeleteSharedPageData = {
       baseRequest: {
         pageId,
-        commandType: 'EDIT',
+        commandType: 'SHARED_PAGE_DELETION',
       },
     };
 
