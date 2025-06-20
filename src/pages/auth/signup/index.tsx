@@ -351,7 +351,7 @@ const SignupPage = () => {
               </div>
               <button
                 type="button"
-                className="text-gray-500 underline"
+                className="text-gray-500 underline hover:cursor-pointer"
                 onClick={() =>
                   term.modal === 'terms'
                     ? setShowTermsModal((prev) => !prev)
@@ -376,13 +376,13 @@ const SignupPage = () => {
       {showTermsModal && (
         <TermsModal
           isOpen={showTermsModal}
-          onClose={() => setShowTermsModal(!showTermsModal)}
+          onClose={() => setShowTermsModal(false)}
         />
       )}
       {showPrivacyModal && (
         <PrivacyModal
           isOpen={showPrivacyModal}
-          onClose={() => setShowPrivacyModal(!showPrivacyModal)}
+          onClose={() => setShowPrivacyModal(false)}
         />
       )}
     </main>

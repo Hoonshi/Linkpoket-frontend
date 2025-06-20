@@ -305,8 +305,8 @@ export const TermsModal = ({
         <p className="text-lg font-bold">Linkrew 서비스 이용약관</p>
       </Modal.Header>
       <Modal.Body className="max-h-[70vh] space-y-4 overflow-y-auto text-sm text-gray-700">
-        {termsData.map(({ title, content }, idx) => (
-          <section key={idx}>
+        {termsData.map(({ title, content }) => (
+          <section key={title}>
             <h2 className="mb-1 text-base font-semibold">{title}</h2>
             {content}
           </section>
