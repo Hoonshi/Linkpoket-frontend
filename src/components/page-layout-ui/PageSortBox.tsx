@@ -11,7 +11,7 @@ interface SortSelectProps {
 }
 
 export default function PageSortBox({
-  options = ['기본순', '최신순', '이름순', '호스트', '뷰어'],
+  options = ['기본순', '최신순', '이름순'],
   onChange,
   className,
 }: SortSelectProps) {

@@ -31,7 +31,7 @@ const EmailInputWithRole = ({
         <select
           value={role}
           onChange={onRoleChange}
-          className="border-gray-5 text-gray-60 bg-gray-5 h-[42px] w-[87px] rounded-lg border px-3 text-[16px] font-medium focus:outline-none"
+          className="border-gray-5 text-gray-60 bg-gray-5 h-[42px] w-[87px] rounded-lg border px-3 text-[14px] font-[600] focus:outline-none"
         >
           <option value="VIEWER">뷰어</option>
           <option value="EDITOR">에디터</option>

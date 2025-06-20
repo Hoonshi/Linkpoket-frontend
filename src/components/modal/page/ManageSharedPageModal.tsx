@@ -4,10 +4,11 @@ import { Button } from '@/components/common-ui/button';
 import ToggleButton from '@/components/common-ui/ToggleButton';
 import { Input } from '@/components/common-ui/Input';
 import { Radio } from '@/components/common-ui/Radio';
-import PageSortBox from '@/components/page-layout-ui/PageSortBox';
 import { useLocation, useParams } from 'react-router-dom';
 import useFetchSharedPageDashboard from '@/hooks/queries/useFetchSharedPageDashboard';
+import useUpdateSharedPageInvitation from '@/hooks/mutations/updateSharedPageInvitation';
 import InviteUserModal from './InviteUserModal';
+import ModalOptions from '@/components/common-ui/ModalOptions';
 
 const TIERS = [
   { label: '베이직(5명)', value: 'BASIC' },
@@ -43,7 +44,6 @@ const ManageSharedPageModal = ({
 
   const sharedPageDashboardQuery = useFetchSharedPageDashboard({
     pageId: resolvedPageId ?? -1,
-    commandType: 'VIEW',
   });
 
   // API 데이터가 로드된 후 state 업데이트
@@ -197,15 +197,12 @@ const ManageSharedPageModal = ({
                 </div>
                 <div className="text-[16px] text-gray-50">{m.email}</div>
               </div>
-              <div>
+              <div className="relative">
                 {m.isWaiting === false ? (
-                  <PageSortBox
-                    options={
-                      m.role === 'HOST'
-                        ? ['호스트', '뷰어', '에디터', '내보내기']
-                        : ['뷰어', '호스트', '에디터', '내보내기']
-                    }
-                    onChange={(v) => console.log(v)}
+                  <ModalOptions
+                    userRole={m.role}
+                    pageId={resolvedPageId ?? -1}
+                    email={m.email}
                   />
                 ) : (
                   <Button variant="ghost" className="bg-gray-20 text-gray-50">

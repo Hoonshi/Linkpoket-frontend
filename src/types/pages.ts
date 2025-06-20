@@ -17,7 +17,6 @@ export interface JoinedPageData {
 
 export interface PageParamsData {
   pageId: number;
-  commandType?: string;
 }
 
 export interface PageDetails {
