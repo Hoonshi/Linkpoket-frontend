@@ -5,13 +5,15 @@ import {
 } from '@tanstack/react-query';
 import { createFolder } from '@/apis/folder-apis/createFolder';
 import { CreateFolderData } from '@/types/folders';
-
+import { useLocation } from 'react-router-dom';
 export function useCreateFolder(
   pageId: number,
   options?: UseMutationOptions<any, unknown, CreateFolderData>
 ) {
   const queryClient = useQueryClient();
-  const isMainPage = pageId === 1;
+  const location = useLocation();
+  const isMainPage = location.pathname === '/';
+
   return useMutation({
     ...options,
     mutationFn: createFolder,
