@@ -86,39 +86,21 @@ export function useNotificationSSE(isLoggedIn: boolean) {
         }
       };
 
+      const SSE_CONFIG = {
+        HEALTH_CHECK_TIMEOUT: 3000,
+        RECONNECT_DELAY: 5000,
+        TOKEN_UPDATE_DELAY: 100,
+      } as const;
+
       eventSource.onerror = async (event) => {
         console.error('❌ SSE 연결 오류 발생:', event);
         eventSource.close();
 
-        // 헬스체크
-        const ac = new AbortController();
-        const timeoutId = setTimeout(() => ac.abort(), 3000);
-
-        try {
-          await fetch(
-            `${API_BASE_URL}/api/notification/subscribe?token=${encodeURIComponent(
-              sseToken
-            )}`,
-            { signal: ac.signal }
-          );
-        } catch (err) {
-          console.error('🔍 헬스체크 실패:', err);
-        } finally {
-          clearTimeout(timeoutId);
-        }
-
-        // 재연결 시도 (페이지 리로드 대신 토큰 재확인)
+        // 간단한 재연결 로직
         setTimeout(() => {
           console.log('🔄 SSE 재연결 시도');
-          const currentToken = localStorage.getItem('sse_token');
-          if (currentToken !== sseToken) {
-            setSseToken(currentToken); // 토큰이 변경되었다면 업데이트하여 재연결
-          } else {
-            // 토큰이 같다면 강제로 재연결을 위해 state 업데이트
-            setSseToken(null);
-            setTimeout(() => setSseToken(currentToken), 100);
-          }
-        }, 5000);
+          updateToken();
+        }, SSE_CONFIG.RECONNECT_DELAY);
       };
 
       return () => {
