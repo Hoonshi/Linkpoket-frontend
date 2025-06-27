@@ -5,6 +5,7 @@ export function useFetchPersonalPage() {
   const { data, ...rest } = useQuery({
     queryKey: ['personalPage'],
     queryFn: fetchPersonalPage,
+    placeholderData: (prev) => prev,
   });
 
   const member = data?.data?.member;

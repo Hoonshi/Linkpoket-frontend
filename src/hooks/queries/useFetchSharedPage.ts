@@ -12,6 +12,7 @@ export function useFetchSelectedPage({
     queryKey: ['sharedPage', pageId],
     queryFn: () => fetchSharedPage({ pageId }),
     enabled,
+    placeholderData: (prev) => prev,
   });
 
   return {
