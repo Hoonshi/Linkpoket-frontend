@@ -4,6 +4,7 @@ import BookMark from '@/assets/widget-ui-assets/BookMark.svg?react';
 import PersonalPage from '@/assets/widget-ui-assets/PersonalPage.svg?react';
 import PlusIcon from '@/assets/common-ui-assets/PlusIcon.svg?react';
 import SidebarOpen from '@/assets/widget-ui-assets/SidebarOpen.svg?react';
+import SidebarClose from '@/assets/widget-ui-assets/SidebarClose.svg?react';
 import { useMobile } from '@/hooks/useMobile';
 
 type MenubarProps = {
@@ -46,7 +47,12 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
     >
       <div className="flex flex-col gap-[8px] p-[16px]">
         <div className="flex justify-end">
-          <SidebarOpen />
+          <button
+            onClick={() => setShowSidebar(false)}
+            className="cursor-pointer"
+          >
+            <SidebarClose />
+          </button>
         </div>
         <ul>
           <li>
@@ -89,7 +95,7 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
               </div>
             </div>
 
-            <div className="group hover:bg-primary-5 focus:bg-primary-10 focus:text-primary-50 mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[500] text-gray-50 hover:rounded-[8px] focus:rounded-[8px]">
+            <div className="mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[500] text-gray-50 hover:rounded-[8px] focus:rounded-[8px]">
               <div className="group flex w-full items-center justify-between">
                 <div className="flex gap-[20px]">
                   <div>폴더</div>
@@ -107,27 +113,35 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
         </ul>
       </div>
     </aside>
-  ) : null;
+  ) : (
+    <aside className="border-gray-10 h-screen w-[80px] border-r p-4">
+      <div className="flex justify-end">
+        <button
+          onClick={() => setShowSidebar(true)}
+          className="mb-2 cursor-pointer"
+        >
+          <SidebarOpen />
+        </button>
+      </div>
+
+      <div className="flex flex-col items-center gap-[8px]">
+        <div className="p-3">
+          <PersonalPage
+            width={20}
+            height={20}
+            className="group-focus:text-primary-50 text-gray-70"
+          />
+        </div>
+        <div className="p-3">
+          <BookMark
+            width={20}
+            height={20}
+            className="text-gray-70 group-focus:text-primary-50 my-[2px]"
+          />
+        </div>
+      </div>
+    </aside>
+  );
 };
 
 export default SideBar;
-
-// 다음과 같이 사용함
-
-// import SideBar from '@/widgets/side-bar/SideBar';
-
-// const sharedPagesData = [
-//   { id: '1', title: '공유 페이지 1' },
-//   { id: '2', title: '공유 페이지 2' },
-// ];
-
-// export default function TEST() {
-//   return (
-//     <div>
-//       <SideBar
-//         sharedPages={sharedPagesData}
-//         showFooter={true}
-//       />
-//     </div>
-//   );
-// }
