@@ -11,7 +11,7 @@ export default function FolderCard({ isBookmark }: { isBookmark: boolean }) {
         <FolderImage />
       </div>
 
-      <div>
+      <div className="flex flex-1 flex-col justify-between">
         <div className="flex flex-col gap-1">
           <div>
             <p className="text-[15px] font-bold">Text</p>

@@ -11,20 +11,18 @@ export default function LinkCard({ isBookmark }: { isBookmark: boolean }) {
         <img src="/" alt="" className="h-full w-full object-cover" />
       </div>
 
-      <div>
+      <div className="flex flex-1 flex-col justify-between">
         <div className="flex flex-col gap-1">
           <div>
-            WW <p className="text-[15px] font-bold">Text</p>
+            <p className="text-[15px] font-bold">Text</p>
           </div>
-          <p className="text-[13px] font-[400] text-gray-50">
-            25.06.27 · 사이트명
-          </p>
+          <p className="text-[13px] font-[400] text-gray-50">25.06.27 · 폴더</p>
         </div>
         <div className="mt-2 flex items-center justify-between">
-          <button>
+          <button className="cursor-pointer">
             {isBookmark ? <ActiveBookmarkIcon /> : <InactiveBookmarkIcon />}
           </button>
-          <button>
+          <button className="cursor-pointer">
             <CardMenu />
           </button>
         </div>
