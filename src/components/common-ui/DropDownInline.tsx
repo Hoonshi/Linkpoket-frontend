@@ -2,14 +2,12 @@ import { useRef, useState } from 'react';
 import Transfer from '@/assets/common-ui-assets/Transfer.svg?react';
 import Copy from '@/assets/common-ui-assets/Copy.svg?react';
 import Delete from '@/assets/common-ui-assets/Delete.svg?react';
-import { useUpdateLink } from '@/hooks/mutations/useUpdateLink';
 import { usePageStore } from '@/stores/pageStore';
 import { useModalStore } from '@/stores/modalStore';
 import FolderTransferModal from '../modal/folder/FolderTransferModal';
 import { useTransferActionStore } from '@/stores/transferActionStore';
 import DeleteFolderModal from '../modal/folder/DeleteFolderModal';
 import DeleteLinkModal from '../modal/link/DeleteLinkModal';
-import useUpdateFolder from '@/hooks/mutations/useUpdateFolder';
 import { useClickOutsideMultiple } from '@/hooks/useClickOutsideMultiple';
 
 type DropDownInlineProps = {

@@ -75,12 +75,7 @@ export default function SharedPage() {
       )}
 
       {/* CONTROLLER SECTION*/}
-      <PageControllerSection
-        view={view}
-        setView={setView}
-        searchKeyword={searchKeyword}
-        setSearchKeyword={setSearchKeyword}
-      />
+      <PageControllerSection />
 
       {/*CONTENT SECTION*/}
       <SharedPageContentSection

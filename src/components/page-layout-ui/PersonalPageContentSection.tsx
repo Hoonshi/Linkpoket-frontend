@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import FolderItem from './FolderItem';
-import LinkItem from './LinkItem';
+
 import { ContextMenu } from '../common-ui/ContextMenu';
 import { PageContentSectionProps } from '@/types/pageItems';
 import { useModalStore } from '@/stores/modalStore';
@@ -55,33 +54,6 @@ export default function PersonalPageContentSection({
             : 'flex flex-col gap-4'
         }`}
       >
-        {mergedList.map((item) => {
-          if ('folderId' in item) {
-            return (
-              <FolderItem
-                key={`folder-${item.folderId}`}
-                isBookmark={item.isFavorite}
-                item={{ id: Number(item.folderId), title: item.folderName }}
-                view={view}
-              />
-            );
-          } else if ('linkId' in item) {
-            return (
-              <LinkItem
-                key={`link-${item.linkId}`}
-                isBookmark={item.isFavorite}
-                item={{
-                  id: Number(item.linkId),
-                  title: item.linkName,
-                  linkUrl: item.linkUrl,
-                }}
-                view={view}
-              />
-            );
-          }
-          return null;
-        })}
-
         {contextMenu && (
           <ContextMenu
             x={contextMenu.x}

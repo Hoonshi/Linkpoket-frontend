@@ -1,6 +1,7 @@
 import DropDownInline from '@/components/common-ui/DropDownInline';
-import FolderCard from '@/components/page-layout-ui/FolderCard';
-import LinkCard from '@/components/page-layout-ui/LinkCard';
+import FolderCard from '@/components/common-ui/FolderCard';
+import LinkCard from '@/components/common-ui/LinkCard';
+import PageControllerSection from '@/components/page-layout-ui/PageControllerSection';
 import { useState } from 'react';
 
 export default function TextPage() {
@@ -16,6 +17,7 @@ export default function TextPage() {
         isDropDownInline={false}
         setIsDropDownInline={() => {}}
       />
+      <PageControllerSection />
     </div>
   );
 }
