@@ -1,23 +1,17 @@
-import DropDownInline from '@/components/common-ui/DropDownInline';
-import FolderCard from '@/components/common-ui/FolderCard';
-import LinkCard from '@/components/common-ui/LinkCard';
 import PageControllerSection from '@/components/page-layout-ui/PageControllerSection';
+import PageHeaderSection from '@/components/page-layout-ui/PageHeaderSection';
+import LinkCard from '@/components/common-ui/LinkCard';
 import { useState } from 'react';
 
 export default function TextPage() {
   const [isBookmark, setIsBookmark] = useState(false);
   return (
-    <div className="flex flex-col gap-4">
-      <LinkCard isBookmark={isBookmark} />
-      <FolderCard isBookmark={isBookmark} />
-      <DropDownInline
-        id={1}
-        type="folder"
-        initialTitle="폴더"
-        isDropDownInline={false}
-        setIsDropDownInline={() => {}}
-      />
+    <div className="mx-auto flex h-screen max-w-[1180px] min-w-[328px] flex-col px-[102px] py-[56px]">
+      <PageHeaderSection pageTitle="폴더1" folderId={1} />
       <PageControllerSection />
+      <div>
+        <LinkCard isBookmark={isBookmark} />
+      </div>
     </div>
   );
 }

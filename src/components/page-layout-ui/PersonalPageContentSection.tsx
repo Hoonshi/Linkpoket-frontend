@@ -45,7 +45,7 @@ export default function PersonalPageContentSection({
   return (
     <div
       onContextMenu={handleContextMenu}
-      className={`mx-auto mt-[40px] w-full max-w-[1180px] flex-1 overflow-y-auto px-[104px] text-3xl font-bold`}
+      className={`mx-auto mt-[40px] w-full max-w-[1180px] flex-1 overflow-y-auto text-3xl font-bold`}
     >
       <div
         className={`w-full max-w-[1180px] min-w-[328px] ${

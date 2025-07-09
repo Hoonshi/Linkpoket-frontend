@@ -31,21 +31,13 @@ export default function BookmarkPage() {
   return (
     <div className="flex h-screen flex-col">
       {/* HEADER SECTION*/}
-      <PageHeaderSection
-        pageTitle="북마크 페이지"
-        pageDescription="즐겨찾기를 관리하는 페이지 입니다!"
-      />
+      <PageHeaderSection pageTitle="북마크 페이지" />
 
       {/* Boundary line */}
       <div className="border-b-gray-30 mb-[40px] w-full border-b" />
 
       {/* CONTROLLER SECTION*/}
-      <PageControllerSection
-        view={view}
-        setView={setView}
-        searchKeyword={searchKeyword}
-        setSearchKeyword={setSearchKeyword}
-      />
+      <PageControllerSection />
 
       {/*CONTENT SECTION*/}
       <BookmarkPageContentSection
