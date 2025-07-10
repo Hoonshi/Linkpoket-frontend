@@ -8,6 +8,7 @@ import PageControllerSection from '@/components/page-layout-ui/PageControllerSec
 import useFetchSharedPageMember from '@/hooks/queries/useFetchSharedPageMember';
 import { usePageSearch } from '@/hooks/usePageSearch';
 import SharedPageHeaderSection from '@/components/page-layout-ui/SharedPageHeaderSection';
+import PageHeaderSection from '@/components/page-layout-ui/PageHeaderSection';
 
 export default function SharedPage() {
   const { pageId } = useParams();
@@ -61,28 +62,10 @@ export default function SharedPage() {
   if (resolvedPageId === null) return <div>잘못된 접근입니다.</div>;
 
   return (
-    <div className="flex h-screen flex-col">
-      {/* HEADER SECTION*/}
-      {selectedPage && (
-        <>
-          <SharedPageHeaderSection
-            pageTitle={selectedPage.pageTitle}
-            pageDescription={selectedPage.pageDescription}
-          />
-          {/* Boundary line */}
-          <div className="border-b-gray-30 mb-[40px] w-full border-b" />
-        </>
-      )}
+    <div className="flex h-screen min-w-[328px] flex-col px-[64px] py-[56px] xl:px-[102px]">
+      <PageHeaderSection pageTitle="폴더1" folderId={1} />
+      <PageControllerSection />
 
-      {/* CONTROLLER SECTION*/}
-      <PageControllerSection
-        view={view}
-        setView={setView}
-        searchKeyword={searchKeyword}
-        setSearchKeyword={setSearchKeyword}
-      />
-
-      {/*CONTENT SECTION*/}
       <SharedPageContentSection
         view={view}
         contentData={selectedPage}

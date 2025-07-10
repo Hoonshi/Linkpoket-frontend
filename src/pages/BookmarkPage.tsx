@@ -29,25 +29,10 @@ export default function BookmarkPage() {
   const data = favoriteQuery.favorite;
 
   return (
-    <div className="flex h-screen flex-col">
-      {/* HEADER SECTION*/}
-      <PageHeaderSection
-        pageTitle="북마크 페이지"
-        pageDescription="즐겨찾기를 관리하는 페이지 입니다!"
-      />
-
-      {/* Boundary line */}
-      <div className="border-b-gray-30 mb-[40px] w-full border-b" />
-
-      {/* CONTROLLER SECTION*/}
-      <PageControllerSection
-        view={view}
-        setView={setView}
-        searchKeyword={searchKeyword}
-        setSearchKeyword={setSearchKeyword}
-      />
-
-      {/*CONTENT SECTION*/}
+    <div className="flex h-screen min-w-[328px] flex-col px-[64px] py-[56px] xl:px-[102px]">
+      <PageHeaderSection pageTitle="폴더1" folderId={1} />
+      <PageControllerSection />
+      {/* 컨텐츠 영역 */}
       <BookmarkPageContentSection
         view={view}
         searchResult={searchResult}
