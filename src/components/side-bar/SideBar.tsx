@@ -7,6 +7,8 @@ import SidebarOpen from '@/assets/widget-ui-assets/SidebarOpen.svg?react';
 import SidebarClose from '@/assets/widget-ui-assets/SidebarClose.svg?react';
 import { useMobile } from '@/hooks/useMobile';
 import useFetchJoinedPage from '@/hooks/queries/useFetchJoinedPage';
+import { useCreateSharedPage } from '@/hooks/mutations/useCreateSharedPage';
+import { toast } from 'react-hot-toast';
 
 type MenubarProps = {
   showSidebar: boolean;
@@ -43,6 +45,21 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
 
   const { joinedPage } = useFetchJoinedPage();
   console.log('joinedPage', joinedPage);
+
+  const { mutate: createSharedPage } = useCreateSharedPage({
+    onSuccess: () => {
+      toast.success('공유페이지 생성 완료');
+    },
+    onError: () => {
+      toast.error('공유페이지 생성 실패');
+    },
+  });
+
+  const handleCreateSharedPage = () => {
+    createSharedPage({
+      pageType: 'SHARED',
+    });
+  };
 
   return showSidebar ? (
     <aside
@@ -84,7 +101,7 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
               북마크
             </Link>
 
-            <div className="mt-[16px] flex items-center px-[8px] py-[4px] text-[14px] font-[500] text-gray-50 hover:rounded-[8px] focus:rounded-[8px]">
+            <div className="mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[500] text-gray-50 hover:rounded-[8px] focus:rounded-[8px]">
               <div className="group flex w-full items-center justify-between">
                 <div className="flex gap-[20px]">
                   <div>공유 페이지</div>
@@ -94,11 +111,26 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
+                    handleCreateSharedPage();
                   }}
                 />
               </div>
             </div>
 
+            {/* 공유페이지 리스트 */}
+            <div className="mt-2 flex flex-col gap-[2px]">
+              {joinedPage?.map((page: any) => (
+                <Link
+                  key={page.pageId}
+                  to={`/shared/${page.pageId}`}
+                  className="text-gray-70 hover:bg-gray-5 focus:bg-gray-5 py-2 pr-3 pl-2 text-[14px] font-[600] hover:rounded-[8px] focus:rounded-[8px]"
+                >
+                  {page.pageTitle}
+                </Link>
+              ))}
+            </div>
+
+            {/* 공유페이지에 따른 폴더 생성  */}
             <div className="mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[500] text-gray-50 hover:rounded-[8px] focus:rounded-[8px]">
               <div className="group flex w-full items-center justify-between">
                 <div className="flex gap-[20px]">
@@ -118,6 +150,7 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
       </div>
     </aside>
   ) : (
+    // 반응형 (사이드바 접힘) 화면
     <aside className="border-gray-10 h-screen w-[80px] border-r p-4">
       <div className="flex justify-end">
         <button
