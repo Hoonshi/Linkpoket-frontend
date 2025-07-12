@@ -2,6 +2,8 @@ import InactiveBookmarkIcon from '@/assets/common-ui-assets/FolderBookmarkInacti
 import ActiveBookmarkIcon from '@/assets/common-ui-assets/FolderBookmarkActive.svg?react';
 import CardMenu from '@/assets/widget-ui-assets/CardMenu.svg?react';
 import { FolderDetail } from '@/types/folders';
+import { useNavigate } from 'react-router-dom';
+import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 
 export default function FolderCard({
   isBookmark,
@@ -10,8 +12,20 @@ export default function FolderCard({
   isBookmark: boolean;
   item: FolderDetail;
 }) {
+  const navigate = useNavigate();
+  const { pageId } = usePageStore();
+  const { setParentsFolderId } = useParentsFolderIdStore();
+
+  const handleDoubleClick = () => {
+    navigate(`/folder/${item.folderId}`);
+    setParentsFolderId(pageId as string);
+  };
+
   return (
-    <div className="border-gray-10 flex h-[242px] min-w-[156px] flex-col gap-4 rounded-[16px] border p-[16px]">
+    <div
+      className="border-gray-10 flex h-[242px] min-w-[156px] flex-col gap-4 rounded-[16px] border p-[16px]"
+      onDoubleClick={handleDoubleClick}
+    >
       <div className="border-gray-10 flex h-[96px] items-center justify-center overflow-hidden rounded-lg bg-[url('@/assets/common-ui-assets/FolderImage.svg')] bg-cover bg-center bg-no-repeat"></div>
 
       <div className="flex flex-1 flex-col justify-between">

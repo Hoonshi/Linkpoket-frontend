@@ -37,25 +37,25 @@ export type FolderDetailResponse = Array<FolderDetail>;
 
 export type UpdateFolderData = {
   baseRequest: {
-    pageId: number;
+    pageId: string;
     commandType: string;
   };
   folderName: string;
-  folderId: number;
+  folderId: string;
   folderDescription?: string;
 };
 
 export type DeleteFolderData = {
   baseRequest: {
-    pageId: number;
+    pageId: string;
     commandType: string;
   };
-  folderId: number;
+  folderId: string;
 };
 
 export interface FetchFolderDetailsProps {
-  pageId: number;
+  pageId: string;
   commandType: string;
-  folderId: number;
+  folderId: string;
   sortType: string;
 }
