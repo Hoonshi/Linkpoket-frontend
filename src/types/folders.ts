@@ -1,11 +1,10 @@
 export type CreateFolderData = {
   baseRequest: {
-    pageId: number;
+    pageId: string;
     commandType: string;
   };
   folderName: string;
-  parentFolderId: number;
-  folderDescription: string;
+  parentFolderId: string;
 };
 
 export type TransferFolderData = {

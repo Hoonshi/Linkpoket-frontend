@@ -1,23 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
-import { usePageStore } from '@/stores/pageStore';
 import { useDebounce } from '@/hooks/useDebounce';
 import useUpdateSharedPageTitle from '@/hooks/mutations/useUpdateSharedPageTitle';
 import { Button } from '../common-ui/button';
 
 type PageHeaderSectionProps = {
   pageTitle: string;
+  pageId: string;
 };
 
 const MAX_TITLE_LENGTH = 12;
 
 export default function SharedPageHeaderSection({
   pageTitle,
+  pageId,
 }: PageHeaderSectionProps) {
   const [title, setTitle] = useState(pageTitle ?? '');
   const [isFocused, setIsFocused] = useState<'title' | null>(null);
   const lastUpdateTitle = useRef({ title });
-
-  const { pageId } = usePageStore();
   const { mutate: updateSharedPageTitle } = useUpdateSharedPageTitle(pageId);
 
   const updateSharedPageTitleImmediately = () => {

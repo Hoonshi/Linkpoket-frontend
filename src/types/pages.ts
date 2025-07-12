@@ -39,6 +39,11 @@ export interface UpdatePageTitleData {
   pageTitle: string;
 }
 
+export interface PageControllerSectionProps {
+  folderDataLength: number;
+  linkDataLength: number;
+}
+
 export interface UpdateSharedPageInvitationData {
   baseRequest: {
     pageId: string;

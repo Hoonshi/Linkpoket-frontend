@@ -8,7 +8,9 @@ import SidebarClose from '@/assets/widget-ui-assets/SidebarClose.svg?react';
 import { useMobile } from '@/hooks/useMobile';
 import useFetchJoinedPage from '@/hooks/queries/useFetchJoinedPage';
 import { useCreateSharedPage } from '@/hooks/mutations/useCreateSharedPage';
+import { useCreateFolder } from '@/hooks/mutations/useCreateFolder';
 import { toast } from 'react-hot-toast';
+import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 
 type MenubarProps = {
   showSidebar: boolean;
@@ -18,6 +20,8 @@ type MenubarProps = {
 const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
   const sidebarRef = useRef<HTMLElement | null>(null);
   const isMobile = useMobile();
+  const { pageId } = usePageStore();
+  const { parentsFolderId } = useParentsFolderIdStore();
 
   //768px 이하의 경우, showSidebar를 false처리, 이외엔 true처리
   useEffect(() => {
@@ -43,9 +47,11 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
     };
   }, [isMobile, setShowSidebar, showSidebar]);
 
+  //사이드바 페이지 목록 조회
   const { joinedPage } = useFetchJoinedPage();
   console.log('joinedPage', joinedPage);
 
+  //공유페이지 생성
   const { mutate: createSharedPage } = useCreateSharedPage({
     onSuccess: () => {
       toast.success('공유페이지 생성 완료');
@@ -58,6 +64,27 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
   const handleCreateSharedPage = () => {
     createSharedPage({
       pageType: 'SHARED',
+    });
+  };
+
+  //폴더 생성
+  const { mutate: createFolder } = useCreateFolder(pageId as string, {
+    onSuccess: () => {
+      toast.success('폴더 생성 완료');
+    },
+    onError: () => {
+      toast.error('폴더 생성 실패');
+    },
+  });
+
+  const handleCreateFolder = () => {
+    createFolder({
+      baseRequest: {
+        pageId: pageId as string,
+        commandType: 'CREATE',
+      },
+      folderName: '새 폴더',
+      parentFolderId: parentsFolderId as string,
     });
   };
 
@@ -141,6 +168,7 @@ const SideBar: React.FC<MenubarProps> = ({ showSidebar, setShowSidebar }) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
+                    handleCreateFolder();
                   }}
                 />
               </div>
