@@ -61,7 +61,11 @@ const SideBar: React.FC<MenubarProps> = ({
 
   //사이드바 폴더 목록 조회
   const { folderList } = useFetchFolderList(pageId as string);
-  console.log('folderList:', folderList);
+  const refinedFolderList = folderList?.data?.directories;
+  const subFolderList = refinedFolderList?.children;
+
+  console.log('사이드바 리스트 데이터', refinedFolderList);
+  console.log('하위폴더 리스트 데이터', subFolderList);
 
   //공유페이지 생성
   const { mutate: createSharedPage } = useCreateSharedPage({
@@ -188,6 +192,34 @@ const SideBar: React.FC<MenubarProps> = ({
                     }}
                   />
                 </div>
+              </div>
+
+              {/* 폴더 뎁스1  리스트 */}
+              <div className="mt-2 flex flex-col gap-[2px]">
+                {refinedFolderList?.map((folder: any) => (
+                  <Link
+                    key={folder.folderId}
+                    to={`/folder/${folder.folderId}`}
+                    className="text-gray-70 hover:text-primary-50 focus:text-primary-50 hover:bg-primary-5 focus:bg-primary-5 py-2 pr-3 pl-2 text-[14px] font-[600] hover:rounded-[8px] focus:rounded-[8px]"
+                  >
+                    {folder.folderTitle}
+                    {/* 폴더 뎁스2  리스트 */}
+                    {folder.children && (
+                      <div className="mt-2 flex flex-col gap-[2px]">
+                        {folder.children.map((child: any) => (
+                          <Link
+                            key={child.folderId}
+                            to={`/folder/${child.folderId}`}
+                            className="text-gray-70 hover:text-primary-50 focus:text-primary-50 hover:bg-primary-5 focus:bg-primary-5 py-2 pr-3 pl-2 text-[14px] font-[600] hover:rounded-[8px] focus:rounded-[8px]"
+                          >
+                            <span className="pr-2">•</span>
+                            <span>{child.folderTitle}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </Link>
+                ))}
               </div>
             </li>
           </ul>
