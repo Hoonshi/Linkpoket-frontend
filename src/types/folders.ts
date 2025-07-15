@@ -29,7 +29,6 @@ export type FolderDetail = {
   folderId: string;
   folderName: string;
   isFavorite: boolean;
-  createdDate: string;
   orderIndex: number;
 };
 
