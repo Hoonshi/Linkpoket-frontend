@@ -34,7 +34,8 @@ const SideBar: React.FC<MenubarProps> = ({
   //768px 이하의 경우, showSidebar를 false처리, 이외엔 true처리
   useEffect(() => {
     setShowSidebar(!isMobile);
-  }, [isMobile, setShowSidebar]);
+    setIsFoldSidebar(isMobile);
+  }, [isMobile, setShowSidebar, setIsFoldSidebar]);
 
   //useClickOutside 사용시 isMobile === false일 때도 계속 리스너가 등록되어 있어 명시적으로
   useEffect(() => {
@@ -57,15 +58,10 @@ const SideBar: React.FC<MenubarProps> = ({
 
   //사이드바 페이지 목록 조회
   const { joinedPage } = useFetchJoinedPage();
-  console.log('joinedPage', joinedPage);
 
   //사이드바 폴더 목록 조회
   const { folderList } = useFetchFolderList(pageId as string);
   const refinedFolderList = folderList?.data?.directories;
-  const subFolderList = refinedFolderList?.children;
-
-  console.log('사이드바 리스트 데이터', refinedFolderList);
-  console.log('하위폴더 리스트 데이터', subFolderList);
 
   //공유페이지 생성
   const { mutate: createSharedPage } = useCreateSharedPage({
@@ -104,8 +100,13 @@ const SideBar: React.FC<MenubarProps> = ({
     });
   };
 
-  return (
-    showSidebar && (
+  console.log('모바일?', isMobile);
+
+  if (
+    (showSidebar && !isFoldSidebar && !isMobile) ||
+    (isMobile && showSidebar)
+  ) {
+    return (
       <aside
         ref={sidebarRef}
         className={`border-gray-10 flex h-screen w-[220px] flex-col justify-between border-r ${isMobile ? 'bg-gray-0 absolute top-0 left-0 z-50' : 'relative'} `}
@@ -225,8 +226,43 @@ const SideBar: React.FC<MenubarProps> = ({
           </ul>
         </div>
       </aside>
-    )
-  );
+    );
+  } else if (!showSidebar && isFoldSidebar && !isMobile) {
+    return (
+      <aside className="border-gray-10 h-screen w-[80px] border-r p-4">
+        <div className="flex justify-end">
+          <button
+            onClick={() => {
+              setShowSidebar(true);
+              setIsFoldSidebar(false);
+            }}
+            className="mb-2 cursor-pointer"
+          >
+            <SidebarOpen />
+          </button>
+        </div>
+
+        <div className="flex flex-col items-center gap-[8px]">
+          <div className="p-3">
+            <PersonalPage
+              width={20}
+              height={20}
+              className="group-focus:text-primary-50 text-gray-70"
+            />
+          </div>
+          <div className="p-3">
+            <BookMark
+              width={20}
+              height={20}
+              className="text-gray-70 group-focus:text-primary-50 my-[2px]"
+            />
+          </div>
+        </div>
+      </aside>
+    );
+  } else if (isMobile && !showSidebar) {
+    return null;
+  }
 };
 
 export default SideBar;
