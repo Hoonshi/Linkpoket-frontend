@@ -32,13 +32,16 @@ export default function PersonalPage() {
   useEffect(() => {
     setPageInfo(pageId);
     setParentsFolderId(rootFolderId);
-    setUser(memberData?.nickName, memberData?.email, memberData?.colorCode);
+
+    if (memberData) {
+      setUser(memberData.nickName, memberData.email, memberData.colorCode);
+    }
   }, [
     pageId,
+    rootFolderId,
     setPageInfo,
     setParentsFolderId,
     setUser,
-    rootFolderId,
     memberData?.nickName,
     memberData?.email,
     memberData?.colorCode,
