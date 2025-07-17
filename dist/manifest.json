@@ -4,13 +4,21 @@
   "version": "1.0.0",
   "description": "웹페이지를 Linkrew에 저장하세요",
   "action": {
-    "default_popup": "extension.html",
+    "default_title": "사이드 패널 열기",
     "default_icon": {
       "16": "LinkrewForExtension.png",
       "48": "LinkrewForExtension.png",
       "128": "LinkrewForExtension.png"
     }
   },
-  "permissions": ["tabs", "activeTab"],
+  "side_panel": {
+    "default_path": "extension.html"
+  },
+  "permissions": ["sidePanel"],
   "host_permissions": ["http://localhost:8080/*"]
+  ,
+    "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  }
 }
