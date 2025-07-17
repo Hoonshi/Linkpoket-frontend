@@ -1,0 +1,1 @@
+import{j as r,b as t,c as o,r as s}from"./assets/global.oW105N5-.js";const i=()=>r.jsx("div",{children:"링크루 사이트의 크롬 확장프로그램 테스트"});window.addEventListener("error",e=>{t.isAxiosError(e.error)&&e.preventDefault()});o.createRoot(document.getElementById("root")).render(r.jsx(s.StrictMode,{children:r.jsx(i,{})}));

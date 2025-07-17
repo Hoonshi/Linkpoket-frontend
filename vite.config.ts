@@ -7,6 +7,21 @@ import tailwindcss from '@tailwindcss/vite';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
+  build: {
+    rollupOptions: {
+      input: {
+        web: resolve(__dirname, 'index.html'),
+        extension: resolve(__dirname, 'src/extension/main-extension.tsx'),
+      },
+      output: {
+        entryFileNames: '[name].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[ext]',
+      },
+    },
+    outDir: 'dist',
+    assetsDir: 'assets',
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
