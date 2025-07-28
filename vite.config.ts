@@ -3,41 +3,15 @@ import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { copyFileSync, readFileSync, writeFileSync } from 'fs';
+// import { copyFileSync, readFileSync, writeFileSync } from 'fs';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-    svgr(),
-    {
-      name: 'copy-extension-files',
-      async writeBundle() {
-        // manifest.json 복사
-        copyFileSync('src/extension/manifest.json', 'dist/manifest.json');
-
-        // content script 빌드
-        const contentScript = readFileSync('src/extension/content.ts', 'utf8');
-        writeFileSync('dist/content.js', `// Content script\n${contentScript}`);
-
-        // background script 빌드
-        const backgroundScript = readFileSync(
-          'src/extension/background.ts',
-          'utf8'
-        );
-        writeFileSync(
-          'dist/background.js',
-          `// Background script\n${backgroundScript}`
-        );
-      },
-    },
-  ],
+  plugins: [react(), tailwindcss(), svgr()],
   build: {
     rollupOptions: {
       input: {
         web: resolve(__dirname, 'index.html'),
-        extension: resolve(__dirname, 'src/extension/main-extension.tsx'),
       },
       output: {
         entryFileNames: '[name].js',
