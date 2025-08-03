@@ -48,7 +48,7 @@ const LoginPage = () => {
             bgColor="bg-gray-5"
             className="hover:bg-[#E6E6E6] active:bg-[#E6E6E6]"
             onClick={() =>
-              (window.location.href = `https://api.linkrew.com/oauth2/authorization/google`)
+              (window.location.href = `http://localhost:8080/oauth2/authorization/google`)
             }
           />
         </section>
