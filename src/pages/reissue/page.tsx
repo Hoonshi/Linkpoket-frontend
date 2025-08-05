@@ -29,7 +29,8 @@ export default function ReissuePage() {
           window.location.href = '/';
         }
       } catch (error) {
-        window.location.href = '/login';
+        console.log(error);
+        // window.location.href = '/login';
       }
     };
 
