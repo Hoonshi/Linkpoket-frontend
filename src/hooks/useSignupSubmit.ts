@@ -25,7 +25,7 @@ export const useSignupSubmit = () => {
       const tempAccessToken = localStorage.getItem('temp_access_token');
 
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/member/sign-up`,
+        `http://localhost:8080/api/member/sign-up`,
         {
           ageRange: data.ageRange,
           gender: genderValue,

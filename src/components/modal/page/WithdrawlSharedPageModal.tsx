@@ -30,9 +30,7 @@ const WithdrawSharedPageModal = forwardRef<
         onClose();
         navigate('/');
       },
-      onError: (error) => {
-        console.error('공유 페이지 탈퇴 실패:', error);
-      },
+      onError: (error) => {},
     });
 
     console.log('공유 페이지 탈퇴 데이터', requestBody);

@@ -10,6 +10,7 @@ import WithdrawSharedPageModal from './WithdrawlSharedPageModal';
 import ManageSharedPageModal from './ManageSharedPageModal';
 import SharedPage from '@/assets/widget-ui-assets/SharedPage.svg?react';
 import SiteIcon from '@/assets/common-ui-assets/SiteIcon.svg?react';
+import useFetchSharedPageDashboard from '@/hooks/queries/useFetchSharedPageDashboard';
 
 interface HeaderMenuProps {
   isHost: boolean;
@@ -49,6 +50,13 @@ export default function HeaderMenu({
 
   const { pageId: id } = usePageStore();
 
+  const { data: dashboardData } = useFetchSharedPageDashboard({
+    pageId: id,
+  });
+
+  const pageMemberLength = dashboardData?.data.pageMembers.length;
+  const pageMemberRole = dashboardData?.data.pageMembers[0].role;
+
   return (
     <div
       className="border-gray-30 bg-gray-0 absolute top-14 right-6 z-1 inline-flex w-[198px] flex-col justify-center rounded-[10px] border p-2 font-[500] shadow-lg"
@@ -76,13 +84,15 @@ export default function HeaderMenu({
               )}
 
               {/* 탈퇴 버튼 */}
-              <button
-                onClick={() => setisWithdrawSharedPageModalOpen(true)}
-                className="text-status-danger hover:bg-gray-10 active:bg-gray-5 flex cursor-pointer items-center gap-[10px] rounded-lg px-2 py-[11px] text-[14px] font-[500]"
-              >
-                <Withdraw />{' '}
-                <span className="text-[14px]">공유 페이지 탈퇴</span>
-              </button>
+              {pageMemberRole === 'HOST' && pageMemberLength === 1 ? null : (
+                <button
+                  onClick={() => setisWithdrawSharedPageModalOpen(true)}
+                  className="text-status-danger hover:bg-gray-10 active:bg-gray-5 flex cursor-pointer items-center gap-[10px] rounded-lg px-2 py-[11px] text-[14px] font-[500]"
+                >
+                  <Withdraw />
+                  <span className="text-[14px]">공유 페이지 탈퇴</span>
+                </button>
+              )}
 
               {isWithdrawSharedPageModalOpen && (
                 <WithdrawSharedPageModal
