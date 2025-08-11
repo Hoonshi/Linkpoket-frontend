@@ -5,12 +5,13 @@ import { useRef, useState } from 'react';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useLocation } from 'react-router-dom';
 import { usePageStore } from '@/stores/pageStore';
-import DeleteSharedPageModal from './DeleteSharedPageModal';
-import WithdrawSharedPageModal from './WithdrawlSharedPageModal';
-import ManageSharedPageModal from './ManageSharedPageModal';
+import DeleteSharedPageModal from '../modal/page/DeleteSharedPageModal';
+import WithdrawSharedPageModal from '../modal/page/WithdrawlSharedPageModal';
+import ManageSharedPageModal from '../modal/page/ManageSharedPageModal';
 import SharedPage from '@/assets/widget-ui-assets/SharedPage.svg?react';
 import SiteIcon from '@/assets/common-ui-assets/SiteIcon.svg?react';
 import useFetchSharedPageDashboard from '@/hooks/queries/useFetchSharedPageDashboard';
+import toast from 'react-hot-toast';
 
 interface HeaderMenuProps {
   isHost: boolean;
@@ -57,6 +58,16 @@ export default function HeaderMenu({
   const pageMemberLength = dashboardData?.data.pageMembers.length;
   const pageMemberRole = dashboardData?.data.pageMembers[0].role;
 
+  const handleCopyLink = async () => {
+    try {
+      const currentUrl = window.location.href;
+      await navigator.clipboard.writeText(`${currentUrl}`);
+      toast.success('링크가 복사되었습니다.');
+    } catch (error) {
+      console.error('링크 복사 실패:', error);
+    }
+  };
+
   return (
     <div
       className="border-gray-30 bg-gray-0 absolute top-14 right-6 z-1 inline-flex w-[198px] flex-col justify-center rounded-[10px] border p-2 font-[500] shadow-lg"
@@ -67,7 +78,7 @@ export default function HeaderMenu({
           <div className="flex flex-col">
             <>
               <button
-                onClick={() => setIsManageSharedPageModalOpen(true)}
+                onClick={handleCopyLink}
                 className="hover:bg-gray-10 active:bg-gray-5 text-gray-90 flex cursor-pointer items-center gap-[10px] rounded-lg px-2 py-[11px] text-[14px] font-[500]"
               >
                 <SiteIcon />
