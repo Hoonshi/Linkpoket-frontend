@@ -6,7 +6,7 @@ export default function ReissuePage() {
     const handleRedirection = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/jwt/access-token`,
+          `${import.meta.env.VITE_API_URL}/api/jwt/access-token`,
           {
             withCredentials: true,
           }
