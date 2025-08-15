@@ -1,5 +1,5 @@
-import updateDragandDrop from '@/apis/page-apis/updateDragandDrop';
-import { UpdateDragandDropProps } from '@/types/pages';
+import updateDragandDrop from '@/apis/folder-apis/updateDragandDrop';
+import { UpdateDragandDropProps } from '@/types/folders';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function useUpdateDragandDrop(data: UpdateDragandDropProps) {
