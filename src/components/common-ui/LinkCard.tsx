@@ -18,7 +18,16 @@ export default function LinkCard({
   const [isDropDownInline, setIsDropDownInline] = useState<boolean>(false);
   const { pageId } = usePageStore();
 
-  const handleDoubleClick = () => {
+  const handleCardClick = (e: React.MouseEvent) => {
+    // 드롭다운이나 버튼 영역인지 확인
+    const target = e.target as HTMLElement;
+    const isDropdownArea = target.closest('[data-dropdown]');
+    const isButtonArea = target.closest('[data-card-button]');
+    const isModalArea = target.closest('[data-ignore-outside-click]');
+
+    if (isDropdownArea || isButtonArea || isModalArea) return;
+
+    // 카드 클릭 시 링크 열기
     window.open(item.linkUrl, '_blank');
   };
 
@@ -29,6 +38,10 @@ export default function LinkCard({
 
   const handleBookmarkClick = () => {
     updateLinkBookmark(item.linkId);
+  };
+
+  const handleMenuClick = () => {
+    setIsDropDownInline((v) => !v);
   };
 
   const imageUrl = (() => {
@@ -52,13 +65,12 @@ export default function LinkCard({
 
   const isFaviconOnly = !item.representImageUrl && item.faviconUrl;
 
-  console.log('링크 카드 아이템:', item);
-
   return (
     <>
       <div
-        className="bg-gray-0 border-gray-10 flex h-[242px] min-w-[156px] flex-col gap-4 rounded-[16px] border p-[16px] hover:cursor-pointer"
-        onDoubleClick={handleDoubleClick}
+        className="bg-gray-0 border-gray-10 group relative flex h-[242px] min-w-[156px] flex-col gap-4 rounded-[16px] border p-[16px] hover:cursor-pointer"
+        onClick={handleCardClick}
+        onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="bg-gray-10 flex h-[96px] w-full items-center justify-center overflow-hidden rounded-lg">
           <img
@@ -68,9 +80,14 @@ export default function LinkCard({
             onError={(e) => {
               e.currentTarget.src = defaultImage;
             }}
-            className={isFaviconOnly ? 'h-10' : 'h-full w-full object-cover'}
+            className={
+              isFaviconOnly
+                ? 'h-10 transition-transform duration-300 ease-in-out group-hover:scale-110'
+                : 'h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110'
+            }
           />
         </div>
+
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex flex-col gap-1">
             <div>
@@ -80,29 +97,39 @@ export default function LinkCard({
               {item.createdDate} · {item.providerName}
             </p>
           </div>
+
           <div className="mt-2 flex items-center justify-between">
-            <button className="cursor-pointer" onClick={handleBookmarkClick}>
+            <button
+              data-card-button
+              className="cursor-pointer"
+              onClick={handleBookmarkClick}
+            >
               {isBookmark ? <ActiveBookmarkIcon /> : <InactiveBookmarkIcon />}
             </button>
-            <button
-              className="cursor-pointer p-1"
-              onClick={() => setIsDropDownInline(true)}
-            >
-              <CardMenu />
-            </button>
+
+            <div className="relative">
+              <button
+                data-card-button
+                className="cursor-pointer p-1"
+                onClick={handleMenuClick}
+              >
+                <CardMenu />
+              </button>
+
+              {isDropDownInline && (
+                <DropDownInline
+                  id={item.linkId}
+                  type="link"
+                  initialTitle={item.linkName}
+                  initialLink={item.linkUrl}
+                  isDropDownInline={isDropDownInline}
+                  setIsDropDownInline={setIsDropDownInline}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
-      {isDropDownInline && (
-        <DropDownInline
-          id={item.linkId}
-          type="link"
-          initialTitle={item.linkName}
-          initialLink={item.linkUrl}
-          isDropDownInline={isDropDownInline}
-          setIsDropDownInline={setIsDropDownInline}
-        />
-      )}
     </>
   );
 }

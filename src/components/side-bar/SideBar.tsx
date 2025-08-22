@@ -177,6 +177,8 @@ const SideBar: React.FC<MenubarProps> = ({
                       e.preventDefault();
                       handleCreateSharedPage();
                     }}
+                    height={18}
+                    width={18}
                   />
                 </div>
               </div>
@@ -211,6 +213,8 @@ const SideBar: React.FC<MenubarProps> = ({
                       e.preventDefault();
                       handleCreateFolder();
                     }}
+                    height={18}
+                    width={18}
                   />
                 </div>
               </div>
