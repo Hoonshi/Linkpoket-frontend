@@ -138,6 +138,7 @@ const NewSection = () => {
           <img
             src={폴더별정리이미지}
             className="mb-12 w-[312px] rounded-3xl object-cover md:mb-0 md:w-[466px]"
+            loading="lazy"
           />
           <div className="flex flex-col justify-center">
             {thirdData.map((feature, idx) => {
@@ -166,6 +167,7 @@ const NewSection = () => {
           <img
             src={공유페이지이미지}
             className="mb-12 w-[312px] rounded-3xl object-cover md:mb-0 md:w-[466px]"
+            loading="lazy"
           />
         </div>
       </div>
