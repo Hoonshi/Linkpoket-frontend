@@ -1,7 +1,3 @@
 export const SkeletonBase = () => {
-  return (
-    <div className="animate-pulse">
-      <div className="bg-gray-40 h-full w-full rounded-lg" />
-    </div>
-  );
+  return <div className="bg-gray-20 h-full w-full animate-pulse rounded-lg" />;
 };

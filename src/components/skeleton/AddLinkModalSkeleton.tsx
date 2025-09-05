@@ -2,8 +2,8 @@ import { SkeletonBase } from './SkeletonBase';
 
 export const AddLinkModalSkeleton = () => {
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50">
-      <div className="relative flex w-full max-w-[70%] flex-col overflow-hidden rounded-2xl bg-[var(--color-text-white)] p-[24px] md:max-w-[530px]">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-100/50">
+      <div className="bg-gray-0 relative flex w-full max-w-[70%] flex-col overflow-hidden rounded-2xl p-[24px] md:max-w-[530px]">
         {/* 헤더 스켈레톤 */}
         <div className="flex items-center justify-between">
           <div className="h-[24px] w-[100px] rounded">

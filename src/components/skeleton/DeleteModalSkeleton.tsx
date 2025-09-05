@@ -1,9 +1,9 @@
 import { SkeletonBase } from './SkeletonBase';
 
-export const DeleteFolderModalSkeleton = () => {
+export const DeleteModalSkeleton = () => {
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50">
-      <div className="relative flex w-full flex-col overflow-hidden rounded-2xl bg-[var(--color-text-white)] p-4 md:max-w-[544px]">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-100/50">
+      <div className="bg-gray-0 relative flex w-full flex-col overflow-hidden rounded-2xl p-4 md:max-w-[544px]">
         {/* 헤더 스켈레톤 */}
         <div className="flex flex-col">
           {/* 아이콘과 제목 영역 */}

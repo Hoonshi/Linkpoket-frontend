@@ -1,7 +1,7 @@
 import HelpIcon from '@/assets/common-ui-assets/CircleQuestion.svg?react';
 import Withdraw from '@/assets/common-ui-assets/Out(M).svg?react';
 import Deleted from '@/assets/common-ui-assets/Trash.svg?react';
-import { lazy, useRef, useState } from 'react';
+import { lazy, Suspense, useRef, useState } from 'react';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useLocation } from 'react-router-dom';
 import { usePageStore } from '@/stores/pageStore';
@@ -10,6 +10,8 @@ import SiteIcon from '@/assets/common-ui-assets/Link.svg?react';
 import useFetchSharedPageDashboard from '@/hooks/queries/useFetchSharedPageDashboard';
 import toast from 'react-hot-toast';
 import { ContactDetail } from './ContactDetail';
+import { ManageSharedPageModalSkeleton } from '../skeleton/ManageSharedPageModalSkeleton';
+import { DeleteModalSkeleton } from '../skeleton/DeleteModalSkeleton';
 
 const DeleteSharedPageModal = lazy(
   () => import('../modal/page/DeleteSharedPageModal')
@@ -117,11 +119,13 @@ export default function HeaderMenu({
               )}
 
               {isWithdrawSharedPageModalOpen && (
-                <WithdrawSharedPageModal
-                  isOpen={isWithdrawSharedPageModalOpen}
-                  onClose={() => setisWithdrawSharedPageModalOpen(false)}
-                  pageId={id}
-                />
+                <Suspense fallback={<DeleteModalSkeleton />}>
+                  <WithdrawSharedPageModal
+                    isOpen={isWithdrawSharedPageModalOpen}
+                    onClose={() => setisWithdrawSharedPageModalOpen(false)}
+                    pageId={id}
+                  />
+                </Suspense>
               )}
             </>
             {isShared && isHost && (
@@ -144,18 +148,22 @@ export default function HeaderMenu({
             )}
 
             {isManageSharedPageModalOpen && (
-              <ManageSharedPageModal
-                isOpen={isManageSharedPageModalOpen}
-                onClose={() => setIsManageSharedPageModalOpen(false)}
-              />
+              <Suspense fallback={<ManageSharedPageModalSkeleton />}>
+                <ManageSharedPageModal
+                  isOpen={isManageSharedPageModalOpen}
+                  onClose={() => setIsManageSharedPageModalOpen(false)}
+                />
+              </Suspense>
             )}
 
             {isDeleteSharedPageModalOpen && (
-              <DeleteSharedPageModal
-                isOpen={isDeleteSharedPageModalOpen}
-                onClose={() => setIsDeleteSharedPageModalOpen(false)}
-                pageId={id}
-              />
+              <Suspense fallback={<DeleteModalSkeleton />}>
+                <DeleteSharedPageModal
+                  isOpen={isDeleteSharedPageModalOpen}
+                  onClose={() => setIsDeleteSharedPageModalOpen(false)}
+                  pageId={id}
+                />
+              </Suspense>
             )}
           </div>
           <div className="border-gray-20 my-[4px] w-[166px] border" />

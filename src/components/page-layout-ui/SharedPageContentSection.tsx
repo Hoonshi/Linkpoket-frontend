@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState } from 'react';
+import { lazy, useEffect, useState, Suspense } from 'react';
 import {
   DndContext,
   DragEndEvent,
@@ -24,6 +24,7 @@ import useUpdateDragandDrop from '@/hooks/mutations/useUpdateDragandDrop';
 import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 import { LinkDetail } from '@/types/links';
 import { FolderDetail } from '@/types/folders';
+import { AddLinkModalSkeleton } from '../skeleton/AddLinkModalSkeleton';
 
 const AddLinkModal = lazy(() => import('../modal/link/AddLinkModal'));
 
@@ -233,7 +234,9 @@ export default function SharedPageContentSection({
       </DndContext>
 
       {isLinkModalOpen && (
-        <AddLinkModal isOpen={isLinkModalOpen} onClose={closeLinkModal} />
+        <Suspense fallback={<AddLinkModalSkeleton />}>
+          <AddLinkModal isOpen={isLinkModalOpen} onClose={closeLinkModal} />
+        </Suspense>
       )}
     </div>
   );
