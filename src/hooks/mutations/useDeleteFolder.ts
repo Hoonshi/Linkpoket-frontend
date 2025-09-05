@@ -35,6 +35,10 @@ export default function useDeleteFolder(
           queryKey: ['folderList', pageId],
           refetchType: 'active',
         }),
+        queryClient.invalidateQueries({
+          queryKey: ['favorite'],
+          refetchType: 'active',
+        }),
         // 메인 페이지에서만 personalPage 캐시 무효화
         isMainPage &&
           queryClient.invalidateQueries({
