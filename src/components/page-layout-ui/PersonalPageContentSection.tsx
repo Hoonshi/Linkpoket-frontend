@@ -88,7 +88,8 @@ export default function PersonalPageContentSection({
     targetId: '',
     itemType: '',
     newOrderIndex: 1,
-    parentFolderId: '',
+    toFolderId: '',
+    fromFolderId: '',
   });
 
   const [pageData, setPageData] = useState<(FolderDetail | LinkDetail)[] | []>(
@@ -199,7 +200,8 @@ export default function PersonalPageContentSection({
         targetId,
         itemType,
         newOrderIndex: newIndex + 1,
-        parentFolderId: parentsFolderId ?? '',
+        toFolderId: parentsFolderId ?? '',
+        fromFolderId: parentsFolderId ?? '',
       });
     } catch (error) {
       console.error('드래그 앤 드롭 업데이트 실패:', error);
