@@ -32,11 +32,9 @@ export default function SharedPage() {
   useEffect(() => {
     setPageInfo(pageId as string);
 
-    return () => {
-      if (rootFolderId) {
-        setParentsFolderId(rootFolderId);
-      }
-    };
+    if (rootFolderId) {
+      setParentsFolderId(rootFolderId);
+    }
   }, [pageId, setPageInfo, setParentsFolderId, rootFolderId]);
 
   const handleSort = (selectedSortType: string) => {
