@@ -23,6 +23,7 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { toast } from 'react-hot-toast';
 import useUpdateDragandDrop from '@/hooks/mutations/useUpdateDragandDrop';
 import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 
@@ -195,6 +196,7 @@ export default function BookmarkPageContentSection({
       });
     } catch (error) {
       console.error('드래그 앤 드롭 업데이트 실패:', error);
+      toast.error('순서 변경에 실패했습니다.');
       setPageData(pageData);
     }
   };

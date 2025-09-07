@@ -27,6 +27,7 @@ import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 import { FolderDetail } from '@/types/folders';
 import { LinkDetail } from '@/types/links';
 import { AddLinkModalSkeleton } from '../skeleton/AddLinkModalSkeleton';
+import { toast } from 'react-hot-toast';
 
 const AddLinkModal = lazy(() => import('../modal/link/AddLinkModal'));
 
@@ -205,6 +206,7 @@ export default function PersonalPageContentSection({
       });
     } catch (error) {
       console.error('드래그 앤 드롭 업데이트 실패:', error);
+      toast.error('순서 변경에 실패했습니다.');
       setPageData(pageData);
     }
   };
