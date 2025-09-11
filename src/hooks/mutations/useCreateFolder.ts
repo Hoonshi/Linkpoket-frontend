@@ -21,46 +21,140 @@ export function useCreateFolder(
   return useMutation({
     ...options,
     mutationFn: createFolder,
-    onSuccess: (response, variables, context) => {
-      // 현재 페이지의 모든 관련 쿼리 무효화
+
+    onMutate: async () => {
+      console.log('⚡ onMutate 실행됨');
+
+      const context: Record<string, any> = {};
+
+      // 관련 쿼리 취소
+      if (isSharedPage)
+        await queryClient.cancelQueries({ queryKey: ['sharedPage', pageId] });
+      if (isFolderPage)
+        await queryClient.cancelQueries({
+          queryKey: ['folderDetails', pageId],
+        });
+      if (isMainPage)
+        await queryClient.cancelQueries({ queryKey: ['personalPage'] });
+
+      // 기존 데이터 저장
+      if (isSharedPage)
+        context.sharedPage = queryClient.getQueryData(['sharedPage', pageId]);
+      if (isFolderPage)
+        context.folderDetails = queryClient.getQueryData([
+          'folderDetails',
+          pageId,
+        ]);
+      if (isMainPage)
+        context.personalPage = queryClient.getQueryData(['personalPage']);
+
+      // 임시 UI 업데이트
+      const tempFolder = {
+        folderId: Math.random().toString(36).substring(2, 15),
+        folderName: '새폴더',
+        orderIndex: 9999,
+        createdDate: new Date().toISOString(),
+        isFavorite: false,
+      };
+
+      if (isSharedPage) {
+        queryClient.setQueryData(['sharedPage', pageId], (old: any) => {
+          if (!old) return old;
+
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              directoryDetailResponses: [
+                ...(old.data?.directoryDetailResponses || []),
+                tempFolder,
+              ],
+            },
+          };
+        });
+      }
+
+      if (isFolderPage) {
+        queryClient.setQueryData(['folderDetails', pageId], (old: any) => {
+          if (!old) return old;
+
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              directoryDetailResponses: [
+                ...(old.data?.directoryDetailResponses || []),
+                tempFolder,
+              ],
+            },
+          };
+        });
+      }
+
+      if (isMainPage) {
+        queryClient.setQueryData(['personalPage'], (old: any) => {
+          if (!old) return old;
+
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              directoryDetailResponses: [
+                ...(old.data?.directoryDetailResponses || []),
+                tempFolder,
+              ],
+            },
+          };
+        });
+      }
+
+      return context;
+    },
+
+    onError: (error, variables, context: any) => {
+      // 롤백
+      if (context?.sharedPage)
+        queryClient.setQueryData(['sharedPage', pageId], context.sharedPage);
+      if (context?.folderDetails)
+        queryClient.setQueryData(
+          ['folderDetails', pageId],
+          context.folderDetails
+        );
+      if (context?.personalPage)
+        queryClient.setQueryData(['personalPage'], context.personalPage);
+
+      console.error('폴더 생성 에러:', error);
+      if (options?.onError) options.onError(error, variables, context);
+    },
+
+    onSettled: (data, error, variables, context) => {
+      console.log('⚡ onSettled 실행됨');
+
+      // folderList는 invalidate
       queryClient.invalidateQueries({
         queryKey: ['folderList', pageId],
         refetchType: 'active',
       });
 
-      // 일반 페이지 쿼리 무효화
-      if (!isFolderPage && isSharedPage) {
+      // 낙관적 업데이트 적용한 쿼리 동기화
+      if (isSharedPage)
         queryClient.invalidateQueries({
           queryKey: ['sharedPage', pageId],
           refetchType: 'active',
         });
-      }
-
-      // 폴더 상세 페이지 쿼리 무효화
-      if (isFolderPage) {
+      if (isFolderPage)
         queryClient.invalidateQueries({
           queryKey: ['folderDetails', pageId],
           refetchType: 'active',
         });
-      }
-
-      // 메인 페이지에서만 personalPage 캐시 무효화
-      if (isMainPage) {
+      if (isMainPage)
         queryClient.invalidateQueries({
           queryKey: ['personalPage'],
           refetchType: 'active',
         });
-      }
 
-      if (options?.onSuccess) {
-        options.onSuccess(response, variables, context);
-      }
-    },
-    onError: (error, variables, context) => {
-      console.error('폴더 생성 에러:', error);
-      if (options?.onError) {
-        options.onError(error, variables, context);
-      }
+      if (options?.onSettled)
+        options.onSettled(data, error, variables, context);
     },
   });
 }
