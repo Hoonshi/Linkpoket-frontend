@@ -23,8 +23,6 @@ export function useCreateFolder(
     mutationFn: createFolder,
 
     onMutate: async () => {
-      console.log('⚡ onMutate 실행됨');
-
       const context: Record<string, any> = {};
 
       // 관련 쿼리 취소
@@ -50,7 +48,7 @@ export function useCreateFolder(
 
       // 임시 UI 업데이트
       const tempFolder = {
-        folderId: Math.random().toString(36).substring(2, 15),
+        folderId: uuid,
         folderName: '새폴더',
         orderIndex: 9999,
         createdDate: new Date().toISOString(),
@@ -111,8 +109,8 @@ export function useCreateFolder(
       return context;
     },
 
-    onError: (error, variables, context: any) => {
-      // 롤백
+    onError: (error, context: any) => {
+      // rollback
       if (context?.sharedPage)
         queryClient.setQueryData(['sharedPage', pageId], context.sharedPage);
       if (context?.folderDetails)
@@ -122,21 +120,14 @@ export function useCreateFolder(
         );
       if (context?.personalPage)
         queryClient.setQueryData(['personalPage'], context.personalPage);
-
       console.error('폴더 생성 에러:', error);
-      if (options?.onError) options.onError(error, variables, context);
     },
 
-    onSettled: (data, error, variables, context) => {
-      console.log('⚡ onSettled 실행됨');
-
-      // folderList는 invalidate
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ['folderList', pageId],
         refetchType: 'active',
       });
-
-      // 낙관적 업데이트 적용한 쿼리 동기화
       if (isSharedPage)
         queryClient.invalidateQueries({
           queryKey: ['sharedPage', pageId],
@@ -152,9 +143,6 @@ export function useCreateFolder(
           queryKey: ['personalPage'],
           refetchType: 'active',
         });
-
-      if (options?.onSettled)
-        options.onSettled(data, error, variables, context);
     },
   });
 }
