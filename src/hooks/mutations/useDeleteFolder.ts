@@ -90,10 +90,13 @@ export default function useDeleteFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses:
-                old.data.directoryDetailResponses.filter(
-                  (f: any) => f.folderId !== variables.folderId
-                ),
+              pageDetails: {
+                ...old.data.pageDetails,
+                siteDetailResponses:
+                  old.data.pageDetails.siteDetailResponses.filter(
+                    (f: any) => f.folderId !== variables.folderId
+                  ),
+              },
             },
           };
         });

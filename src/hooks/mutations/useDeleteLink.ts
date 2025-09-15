@@ -90,9 +90,13 @@ export function useDeleteLink(
             ...old,
             data: {
               ...old.data,
-              siteDetailResponses: old.data.siteDetailResponses.filter(
-                (f: any) => f.linkId !== variables.linkId
-              ),
+              pageDetails: {
+                ...old.data.pageDetails,
+                siteDetailResponses:
+                  old.data.pageDetails.siteDetailResponses.filter(
+                    (f: any) => f.linkId !== variables.linkId
+                  ),
+              },
             },
           };
         });
