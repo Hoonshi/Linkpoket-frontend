@@ -14,3 +14,19 @@ scp -r dist/* linkrew-web-dev:~/temp-dist/
 
 echo "서버 접속"
 ssh linkrew-web-dev
+
+# # 기존 파일 삭제
+# sudo rm -rf /home/ubuntu/linkrew/*
+
+# # 새 파일 복사
+# sudo cp -r ~/temp-dist/* /home/ubuntu/linkrew/
+
+# # 권한 설정
+# sudo chown -R ubuntu:ubuntu /home/ubuntu/linkrew/
+# sudo chmod -R 755 /home/ubuntu/linkrew/
+
+# # 복사 결과 확인
+# ls -la /home/ubuntu/linkrew/
+
+# # nginx 재시작
+# sudo systemctl reload nginx
