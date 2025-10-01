@@ -1,16 +1,22 @@
 import { useRef } from 'react';
 import { usePageStore } from '@/stores/pageStore';
 import useUpdateFolder from '@/hooks/mutations/useUpdateFolder';
+import { useUpdateLink } from '@/hooks/mutations/useUpdateLink';
 import { useDebounce } from '@/hooks/useDebounce';
 
 type TitleUpdate = {
   title: string;
 };
 
-export function useUpdateTitle(folderId?: string, initialTitle: string = '') {
+export function useUpdateTitle(
+  folderId?: string,
+  initialTitle: string = '',
+  type?: string
+) {
   const lastUpdateRef = useRef({ title: initialTitle });
   const { pageId } = usePageStore();
   const { mutate: updateFolder } = useUpdateFolder(pageId);
+  const { mutate: updateLink } = useUpdateLink();
 
   const updateFolderImmediately = (title: string) => {
     if (!folderId) return;
@@ -33,13 +39,19 @@ export function useUpdateTitle(folderId?: string, initialTitle: string = '') {
 
   const handleDebouncedUpdate = (update: TitleUpdate) => {
     lastUpdateRef.current = update;
+    if (type !== null) {
+      updateFolderImmediately(update.title);
+    }
   };
 
   const debouncedUpdate = useDebounce<TitleUpdate>(handleDebouncedUpdate, 500);
 
   const handleBlur = (title: string) => {
     const currentPath = window.location.pathname;
-    if (currentPath === '/' || currentPath === '/bookmarks') {
+    if (
+      (type === null && currentPath === '/') ||
+      (type === null && currentPath === '/bookmarks')
+    ) {
       return;
     }
 

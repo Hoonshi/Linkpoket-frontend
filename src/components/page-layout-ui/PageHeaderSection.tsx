@@ -40,7 +40,7 @@ export default function PageHeaderSection({
           onBlur={() => {
             handleBlur(title);
           }}
-          className={`outline-nontext-gray-90' } inline-block text-[22px] font-bold`}
+          className="outline-nontext-gray-90 inline-block text-[22px] font-bold"
         />
       </div>
       <div className="hidden md:block">

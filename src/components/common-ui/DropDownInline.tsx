@@ -8,6 +8,7 @@ import { useClickOutsideMultiple } from '@/hooks/useClickOutsideMultiple';
 import { useTransferFolder } from '@/hooks/mutations/useTransferFolder';
 import toast from 'react-hot-toast';
 import { DeleteModalSkeleton } from '../skeleton/DeleteModalSkeleton';
+import { useUpdateTitle } from '@/hooks/useUpdateTitle';
 
 const FolderTransferModal = lazy(
   () => import('../modal/folder/FolderTransferModal')
@@ -40,6 +41,8 @@ const DropDownInline = ({
   className = '',
 }: DropDownInlineProps) => {
   const [title, setTitle] = useState(initialTitle);
+  const { debouncedUpdate, handleBlur } = useUpdateTitle(id, title, type);
+
   const [link, setLink] = useState(initialLink);
 
   const { pageId } = usePageStore();
@@ -69,6 +72,7 @@ const DropDownInline = ({
   });
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
     const value = e.target.value;
     setTitle(value);
     onTitleChange?.(id, value);
@@ -89,7 +93,6 @@ const DropDownInline = ({
 
   const handleCopyClick = () => {
     if (type === 'folder') {
-      // console.log('복사');
     } else {
       navigator.clipboard
         .writeText(link)
@@ -131,7 +134,14 @@ const DropDownInline = ({
         <div className="flex flex-col">
           <input
             value={title}
-            onChange={handleTitleChange}
+            onChange={(e) => {
+              const value = e.target.value;
+              setTitle(value);
+              debouncedUpdate({ title: value });
+            }}
+            onBlur={() => {
+              handleBlur(title);
+            }}
             placeholder="디렉토리명 입력"
             className="border-gray-20 mb-2 rounded-lg border px-[8px] py-[11px] outline-none"
           />
