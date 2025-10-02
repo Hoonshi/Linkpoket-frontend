@@ -8,6 +8,7 @@ import { useClickOutsideMultiple } from '@/hooks/useClickOutsideMultiple';
 import { useTransferFolder } from '@/hooks/mutations/useTransferFolder';
 import toast from 'react-hot-toast';
 import { DeleteModalSkeleton } from '../skeleton/DeleteModalSkeleton';
+import { useUpdateTitle } from '@/hooks/useUpdateTitle';
 
 const FolderTransferModal = lazy(
   () => import('../modal/folder/FolderTransferModal')
@@ -34,13 +35,18 @@ const DropDownInline = ({
   type,
   initialTitle = '',
   initialLink = '',
-  onTitleChange,
   onLinkChange,
   setIsDropDownInline,
   className = '',
 }: DropDownInlineProps) => {
   const [title, setTitle] = useState(initialTitle);
   const [link, setLink] = useState(initialLink);
+  const { debouncedUpdate, debouncedUpdateLink, handleBlur } = useUpdateTitle(
+    id,
+    title,
+    type,
+    link
+  );
 
   const { pageId } = usePageStore();
 
@@ -68,12 +74,6 @@ const DropDownInline = ({
     },
   });
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setTitle(value);
-    onTitleChange?.(id, value);
-  };
-
   const handleLinkChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setLink(value);
@@ -89,7 +89,6 @@ const DropDownInline = ({
 
   const handleCopyClick = () => {
     if (type === 'folder') {
-      // console.log('복사');
     } else {
       navigator.clipboard
         .writeText(link)
@@ -131,7 +130,14 @@ const DropDownInline = ({
         <div className="flex flex-col">
           <input
             value={title}
-            onChange={handleTitleChange}
+            onChange={(e) => {
+              const value = e.target.value;
+              setTitle(value);
+              debouncedUpdate({ title: value });
+            }}
+            onBlur={() => {
+              handleBlur(title);
+            }}
             placeholder="디렉토리명 입력"
             className="border-gray-20 mb-2 rounded-lg border px-[8px] py-[11px] outline-none"
           />
@@ -174,7 +180,11 @@ const DropDownInline = ({
           <div className="border-gray-20 flex flex-col overflow-hidden rounded-lg border">
             <input
               value={title}
-              onChange={handleTitleChange}
+              onChange={(e) => {
+                const value = e.target.value;
+                setTitle(value);
+                debouncedUpdateLink({ title: value });
+              }}
               placeholder="사이트명 입력"
               className="border-gray-20 border-b p-[12px] outline-none"
             />

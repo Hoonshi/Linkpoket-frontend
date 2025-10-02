@@ -22,10 +22,6 @@ export function useCreateLink(
     mutationFn: createLink,
     onSuccess: (response, variables, context) => {
       // 현재 페이지의 모든 관련 쿼리 무효화
-      queryClient.invalidateQueries({
-        queryKey: ['folderList', variables.baseRequest.pageId],
-        refetchType: 'active',
-      });
 
       // 일반 페이지 쿼리 무효화
       if (!isFolderPage && isSharedPage) {
