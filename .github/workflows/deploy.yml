@@ -17,54 +17,63 @@ jobs:
         with:
           node-version: 20
 
-      - run: |
+      - name: Create env file
+        run: |
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> .env.production
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.production
+          echo "VITE_GA_MEASUREMENT_ID=${{ secrets.VITE_GA_MEASUREMENT_ID }}" >> .env.production
+
+      - name: Build project
+        run: |
           npm ci
           npm run build
 
-      - uses: webfactory/ssh-agent@v0.9.0
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - run: |
+      - name: Configure SSH
+        run: |
           mkdir -p ~/.ssh
-          echo "
+          cat << 'EOF' > ~/.ssh/config
           Host bastion
-            HostName undertopia.com
-            Port 54222
-            User guest
+            HostName ${{ secrets.BASTION_HOST }}
+            Port ${{ secrets.BASTION_PORT }}
+            User ${{ secrets.BASTION_USER }}
 
-          Host linkrew-web-dev
-            HostName 192.168.0.79
-            User ubuntu
+          Host app-server
+            HostName ${{ secrets.APP_SERVER_HOST }}
+            User ${{ secrets.APP_SERVER_USER }}
             ProxyJump bastion
-          " > ~/.ssh/config
+          EOF
           chmod 600 ~/.ssh/config
 
-      - run: |
-          ssh-keyscan -p 54222 undertopia.com >> ~/.ssh/known_hosts || true
-          ssh-keyscan 192.168.0.79 >> ~/.ssh/known_hosts || true
+      - name: Add known_hosts
+        run: |
+          ssh-keyscan -p ${{ secrets.BASTION_PORT }} ${{ secrets.BASTION_HOST }} >> ~/.ssh/known_hosts || true
+          ssh-keyscan ${{ secrets.APP_SERVER_HOST }} >> ~/.ssh/known_hosts || true
 
-      - run: |
-          ssh -F ~/.ssh/config -o StrictHostKeyChecking=no linkrew-web-dev "rm -rf ~/temp-dist && mkdir -p ~/temp-dist"
+      - name: Prepare temp directory on server
+        run: |
+          ssh -F ~/.ssh/config -o StrictHostKeyChecking=no app-server \
+            "rm -rf ${{ secrets.TEMP_DIR }} && mkdir -p ${{ secrets.TEMP_DIR }}"
 
-      - run: |
-          scp -F ~/.ssh/config -r ./dist/* linkrew-web-dev:~/temp-dist/
+      - name: Upload dist files
+        run: |
+          scp -F ~/.ssh/config -r ./dist/* app-server:${{ secrets.TEMP_DIR }}/
 
-      - run: |
-          ssh -F ~/.ssh/config -o StrictHostKeyChecking=no linkrew-web-dev << 'EOF'
-            APP_DIR="/home/ubuntu/linkrew"
-            TEMP_DIR="/home/ubuntu/temp-dist"
+      - name: Deploy to app directory
+        run: |
+          ssh -F ~/.ssh/config -o StrictHostKeyChecking=no app-server << 'EOF'
+            APP_DIR="${{ secrets.APP_DIR }}"
+            TEMP_DIR="${{ secrets.TEMP_DIR }}"
 
             ls -la $TEMP_DIR/
-
             sudo /bin/rm -rf $APP_DIR/*
-
             sudo /bin/cp -r $TEMP_DIR/* $APP_DIR/
-
-            sudo /bin/chown -R ubuntu:ubuntu $APP_DIR/
+            sudo /bin/chown -R $USER:$USER $APP_DIR/
             sudo /bin/chmod -R 755 $APP_DIR/
-
             ls -la $APP_DIR/
-
             sudo /usr/bin/systemctl reload nginx
           EOF
