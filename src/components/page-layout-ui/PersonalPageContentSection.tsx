@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import LinkCard from '../common-ui/LinkCard';
-import FolderCard from '../common-ui/FolderCard';
+import LinkCard from '../link-card/LinkCard';
+import FolderCard from '../folder-card/FolderCard';
 import { useModalStore } from '@/stores/modalStore';
 import { useSearchStore } from '@/stores/searchStore';
 import { PageContentSectionProps } from '@/types/pages';

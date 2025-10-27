@@ -16,8 +16,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { PageContentSectionProps } from '@/types/pages';
-import LinkCard from '../common-ui/LinkCard';
-import FolderCard from '../common-ui/FolderCard';
+import LinkCard from '../link-card/LinkCard';
+import FolderCard from '../folder-card/FolderCard';
 import { useModalStore } from '@/stores/modalStore';
 import { useSearchStore } from '@/stores/searchStore';
 import useUpdateDragandDrop from '@/hooks/mutations/useUpdateDragandDrop';

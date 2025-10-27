@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PageContentSectionProps } from '@/types/pages';
-import LinkCard from '../common-ui/LinkCard';
-import FolderCard from '../common-ui/FolderCard';
+import LinkCard from '../link-card/LinkCard';
+import FolderCard from '../folder-card/FolderCard';
 import { useSearchStore } from '@/stores/searchStore';
 import { FolderDetail } from '@/types/folders';
 import { LinkDetail } from '@/types/links';
