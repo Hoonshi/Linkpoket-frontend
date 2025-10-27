@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Button } from '../common-ui/button';
 import { useModalStore } from '@/stores/modalStore';
 import { useLocation } from 'react-router-dom';
 import { useUpdateTitle } from '@/hooks/useUpdateTitle';
+import { useFolderColorStore } from '@/stores/folderColorStore';
+import { Button } from '../common-ui/button';
 
 type PageHeaderSectionProps = {
   pageTitle: string;
@@ -18,6 +19,8 @@ export default function PageHeaderSection({
   const [title, setTitle] = useState(pageTitle ?? '');
   const { debouncedUpdate, handleBlur } = useUpdateTitle(folderId, title);
   const { openLinkModal, openFolderModal } = useModalStore();
+  const { getCurrentColor } = useFolderColorStore();
+  const currentFolderColor = getCurrentColor();
   const location = useLocation();
   const currentLocation = location.pathname;
   const isLinkButtonVisible = currentLocation !== '/bookmarks';
@@ -46,7 +49,11 @@ export default function PageHeaderSection({
             <Button
               size="sm"
               variant="forHeader"
-              className="font-[500] whitespace-nowrap"
+              style={{
+                borderColor: currentFolderColor.previewColor,
+                color: currentFolderColor.previewColor,
+              }}
+              className="rounded-lg border-2 bg-white text-sm whitespace-nowrap transition-colors"
               onClick={openLinkModal}
             >
               + 링크추가
@@ -54,7 +61,11 @@ export default function PageHeaderSection({
             <Button
               size="sm"
               variant="forHeader"
-              className="font-[500] whitespace-nowrap"
+              style={{
+                borderColor: currentFolderColor.previewColor,
+                color: currentFolderColor.previewColor,
+              }}
+              className="rounded-lg border-2 bg-white text-sm whitespace-nowrap transition-colors"
               onClick={openFolderModal}
             >
               + 폴더추가

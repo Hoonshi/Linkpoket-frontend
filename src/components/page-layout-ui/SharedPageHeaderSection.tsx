@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
 import useUpdateSharedPageTitle from '@/hooks/mutations/useUpdateSharedPageTitle';
-import { Button } from '../common-ui/button';
 import { useModalStore } from '@/stores/modalStore';
 import { useLocation } from 'react-router-dom';
+import { useFolderColorStore } from '@/stores/folderColorStore';
+import { Button } from '../common-ui/button';
 
 type PageHeaderSectionProps = {
   pageTitle: string;
@@ -19,6 +20,8 @@ export default function SharedPageHeaderSection({
   const [title, setTitle] = useState(pageTitle ?? '');
   const lastUpdateTitle = useRef({ title });
   const { openLinkModal, openFolderModal } = useModalStore();
+  const { getCurrentColor } = useFolderColorStore();
+  const currentFolderColor = getCurrentColor();
   const { mutate: updateSharedPageTitle } = useUpdateSharedPageTitle(pageId);
   const location = useLocation();
   const currentLocation = location.pathname;
@@ -86,7 +89,11 @@ export default function SharedPageHeaderSection({
             <Button
               size="sm"
               variant="forHeader"
-              className="font-[500] whitespace-nowrap"
+              style={{
+                borderColor: currentFolderColor.previewColor,
+                color: currentFolderColor.previewColor,
+              }}
+              className="rounded-lg border-2 bg-white text-sm whitespace-nowrap transition-colors"
               onClick={openLinkModal}
             >
               + 링크추가
@@ -94,7 +101,11 @@ export default function SharedPageHeaderSection({
             <Button
               size="sm"
               variant="forHeader"
-              className="font-[500] whitespace-nowrap"
+              style={{
+                borderColor: currentFolderColor.previewColor,
+                color: currentFolderColor.previewColor,
+              }}
+              className="rounded-lg border-2 bg-white text-sm whitespace-nowrap transition-colors"
               onClick={openFolderModal}
             >
               + 폴더추가
