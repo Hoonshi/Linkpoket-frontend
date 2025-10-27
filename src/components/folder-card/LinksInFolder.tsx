@@ -2,18 +2,12 @@ import { useMobile } from '@/hooks/useMobile';
 import LinkLogo from '@/components/common-ui/LinkLogo';
 import { LinkDetail } from '@/types/links';
 
-export default function LinksInFolder({
-  displayLinks,
-}: {
+interface LinksInFolderProps {
   displayLinks: LinkDetail[];
-}) {
-  // 폴더 상세 정보를 가져와서 링크 정보 추출
+}
 
+export default function LinksInFolder({ displayLinks }: LinksInFolderProps) {
   const isMobile = useMobile();
-
-  if (!displayLinks || displayLinks.length === 0) {
-    return null;
-  }
 
   return (
     <>
@@ -28,9 +22,9 @@ export default function LinksInFolder({
       >
         {/* 첫 번째 링크 파비콘 */}
         {displayLinks &&
-          displayLinks[0] &&
+          displayLinks[2] &&
           (() => {
-            const firstLink = displayLinks[0];
+            const firstLink = displayLinks[2];
             const imageUrl = (() => {
               const url = firstLink.representImageUrl;
               if (
@@ -47,9 +41,7 @@ export default function LinksInFolder({
               return null;
             })();
 
-            const showLinkLogo = !imageUrl;
-
-            return showLinkLogo ? (
+            return !imageUrl ? (
               <div className="absolute top-2 right-2">
                 <LinkLogo
                   title={firstLink.linkName || '?'}
@@ -58,27 +50,9 @@ export default function LinksInFolder({
               </div>
             ) : (
               <img
-                src={imageUrl || ''}
+                src={imageUrl}
                 alt=""
                 className="absolute top-2 right-2 h-[18%] w-[18%] rounded-sm object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  const parent = e.currentTarget.parentElement;
-                  if (parent && !parent.querySelector('.link-logo-fallback')) {
-                    const containerSize = isMobile ? 14 : 18;
-                    const linkLogo = document.createElement('div');
-                    linkLogo.className =
-                      'link-logo-fallback absolute top-2 right-2';
-                    parent.appendChild(linkLogo);
-                    linkLogo.innerHTML = `
-                      <div class="link-logo-fallback-container flex items-center justify-center text-center font-bold select-none relative overflow-hidden" 
-                           style="width: ${containerSize}px; height: ${containerSize}px; background-color: #f8f8f8; font-size: ${Math.floor(containerSize * 0.45)}px; border-radius: 16px; cursor: pointer;">
-                        <span class="hover-text" 
-                              style="font-weight: 800; color: #000000; transition: transform 0.2s ease; position: relative;">${firstLink.linkName?.charAt(0)?.toUpperCase() || '?'}</span>
-                      </div>
-                    `;
-                  }
-                }}
               />
             );
           })()}
@@ -112,9 +86,7 @@ export default function LinksInFolder({
               return null;
             })();
 
-            const showLinkLogo = !imageUrl;
-
-            return showLinkLogo ? (
+            return !imageUrl ? (
               <div className="absolute top-2 right-2">
                 <LinkLogo
                   title={secondLink.linkName || '?'}
@@ -123,27 +95,9 @@ export default function LinksInFolder({
               </div>
             ) : (
               <img
-                src={imageUrl || ''}
+                src={imageUrl}
                 alt=""
                 className="absolute top-2 right-2 h-[18%] w-[18%] rounded-sm object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  const parent = e.currentTarget.parentElement;
-                  if (parent && !parent.querySelector('.link-logo-fallback')) {
-                    const containerSize = isMobile ? 14 : 18;
-                    const linkLogo = document.createElement('div');
-                    linkLogo.className =
-                      'link-logo-fallback absolute top-2 right-2';
-                    parent.appendChild(linkLogo);
-                    linkLogo.innerHTML = `
-                      <div class="link-logo-fallback-container flex items-center justify-center text-center font-bold select-none relative overflow-hidden" 
-                           style="width: ${containerSize}px; height: ${containerSize}px; background-color: #f8f8f8; font-size: ${Math.floor(containerSize * 0.45)}px; border-radius: 16px; cursor: pointer;">
-                        <span class="hover-text" 
-                              style="font-weight: 800; color: #000000; transition: transform 0.2s ease; position: relative;">${secondLink.linkName?.charAt(0)?.toUpperCase() || '?'}</span>
-                      </div>
-                    `;
-                  }
-                }}
               />
             );
           })()}
@@ -158,9 +112,9 @@ export default function LinksInFolder({
       >
         {/* 세 번째 링크 파비콘 */}
         {displayLinks &&
-          displayLinks[2] &&
+          displayLinks[0] &&
           (() => {
-            const thirdLink = displayLinks[2];
+            const thirdLink = displayLinks[0];
             const imageUrl = (() => {
               const url = thirdLink.representImageUrl;
               if (
@@ -174,41 +128,21 @@ export default function LinksInFolder({
               if (thirdLink.faviconUrl) {
                 return thirdLink.faviconUrl;
               }
-              return null;
+              return null; // 이미지가 없으면 null 반환
             })();
 
-            const showLinkLogo = !imageUrl;
-
-            return showLinkLogo ? (
+            return !imageUrl ? (
               <div className="absolute top-2 right-2">
                 <LinkLogo
                   title={thirdLink.linkName || '?'}
-                  size={isMobile ? 14 : 18}
+                  size={isMobile ? 24 : 36}
                 />
               </div>
             ) : (
               <img
-                src={imageUrl || ''}
+                src={imageUrl}
                 alt=""
-                className="absolute top-2 right-2 h-[18%] w-[18%] rounded-sm object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  const parent = e.currentTarget.parentElement;
-                  if (parent && !parent.querySelector('.link-logo-fallback')) {
-                    const containerSize = isMobile ? 14 : 18;
-                    const linkLogo = document.createElement('div');
-                    linkLogo.className =
-                      'link-logo-fallback absolute top-2 right-2';
-                    parent.appendChild(linkLogo);
-                    linkLogo.innerHTML = `
-                      <div class="link-logo-fallback-container flex items-center justify-center text-center font-bold select-none relative overflow-hidden" 
-                           style="width: ${containerSize}px; height: ${containerSize}px; background-color: #f8f8f8; font-size: ${Math.floor(containerSize * 0.45)}px; border-radius: 16px; cursor: pointer;">
-                        <span class="hover-text" 
-                              style="font-weight: 800; color: #000000; transition: transform 0.2s ease; position: relative;">${thirdLink.linkName?.charAt(0)?.toUpperCase() || '?'}</span>
-                    </div>
-                    `;
-                  }
-                }}
+                className="absolute top-2 right-2 h-[36%] w-[36%] rounded-sm object-cover"
               />
             );
           })()}
