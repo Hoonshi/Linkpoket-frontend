@@ -13,6 +13,10 @@ import { AddLinkModalSkeleton } from '../skeleton/AddLinkModalSkeleton';
 import { sortPageData } from '@/utils/pageData';
 import { usePageDragAndDrop } from '@/hooks/usePageDragAndDrop';
 import { useDragAndDropSensors } from '@/utils/dragAndDrop';
+import { useMobile } from '@/hooks/useMobile';
+import MobileFolderCard from '../folder-card/mobile/MobileFolderCard';
+import MobileFolderCardAddButton from '../folder-card/mobile/MobileFolderCardAddButton';
+import MobileLinkCardButton from '../link-card/mobile/MobileLinkCardButton';
 
 const AddLinkModal = lazy(() => import('../modal/link/AddLinkModal'));
 const AddFolderModal = lazy(() => import('../modal/folder/AddFolderModal'));
@@ -28,6 +32,8 @@ export default function SharedPageContentSection({
     isFolderModalOpen,
     closeFolderModal,
   } = useModalStore();
+
+  const isMobile = useMobile();
 
   // 검색 스토어 구독
   const searchKeyword = useSearchStore((state) => state.searchKeyword);
@@ -98,20 +104,50 @@ export default function SharedPageContentSection({
           )}
           strategy={rectSwappingStrategy}
         >
-          <div className="grid w-full grid-cols-2 gap-x-2 gap-y-8 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {pageData.length === 0 ? (
-              <div className="col-span-full py-8 text-center text-gray-50">
-                {searchKeyword ? '검색 결과가 없습니다.' : '데이터가 없습니다.'}
+          {isMobile ? (
+            <>
+              <div className="text-gray-90 mb-4 px-4 text-lg font-semibold">
+                폴더 ({folderData.length})
               </div>
-            ) : (
-              pageData.map((item) => (
-                <SortablePageItem
-                  key={'folderId' in item ? item.folderId : item.linkId}
-                  item={item}
-                />
-              ))
-            )}
-          </div>
+              <div className="relative mb-10 grid w-full grid-cols-2 gap-x-2 gap-y-8 sm:grid-cols-3">
+                <MobileFolderCardAddButton />
+                {folderData.map((item: FolderDetail, index: number) => (
+                  <MobileFolderCard
+                    key={item.folderId}
+                    folder={item}
+                    index={index}
+                    folderDataLength={folderData.length}
+                  />
+                ))}
+              </div>
+              <div className="text-gray-90 mb-4 px-4 text-lg font-semibold">
+                링크 ({linkData.length})
+              </div>
+              <div className="relative grid w-full grid-cols-2 justify-center gap-x-2 gap-y-8 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                <MobileLinkCardButton />
+                {linkData.map((item: LinkDetail) => (
+                  <SortablePageItem key={item.linkId} item={item} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="relative grid w-full grid-cols-2 justify-center gap-x-2 gap-y-8 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+              {pageData.length === 0 ? (
+                <div className="col-span-full py-8 text-center text-gray-50">
+                  {searchKeyword
+                    ? '검색 결과가 없습니다.'
+                    : '데이터가 없습니다.'}
+                </div>
+              ) : (
+                pageData.map((item) => (
+                  <SortablePageItem
+                    key={'folderId' in item ? item.folderId : item.linkId}
+                    item={item}
+                  />
+                ))
+              )}
+            </div>
+          )}
         </SortableContext>
       </DndContext>
 

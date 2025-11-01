@@ -3,6 +3,7 @@ import { useModalStore } from '@/stores/modalStore';
 import { useLocation } from 'react-router-dom';
 import { useUpdateTitle } from '@/hooks/useUpdateTitle';
 import { useFolderColorStore } from '@/stores/folderColorStore';
+import { useMobile } from '@/hooks/useMobile';
 import { Button } from '../common-ui/button';
 
 type PageHeaderSectionProps = {
@@ -24,6 +25,7 @@ export default function PageHeaderSection({
   const location = useLocation();
   const currentLocation = location.pathname;
   const isLinkButtonVisible = currentLocation !== '/bookmarks';
+  const isMobile = useMobile();
 
   return (
     <div className="mb-[24px] flex w-full items-center justify-between md:min-w-[328px]">
@@ -46,7 +48,9 @@ export default function PageHeaderSection({
           className="outline-nontext-gray-90 inline-block w-full text-[22px] font-bold"
         />
         {isLinkButtonVisible && (
-          <div className="flex items-center gap-[8px]">
+          <div
+            className={`flex items-center gap-[8px] ${isMobile ? 'hidden' : ''}`}
+          >
             <Button
               size="sm"
               style={{
