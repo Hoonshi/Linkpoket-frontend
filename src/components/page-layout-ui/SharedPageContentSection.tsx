@@ -1,23 +1,8 @@
 import { lazy, useEffect, useState, Suspense } from 'react';
-import {
-  DndContext,
-  DragEndEvent,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-  closestCenter,
-} from '@dnd-kit/core';
-import {
-  SortableContext,
-  arrayMove,
-  rectSwappingStrategy,
-  useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { SortableContext, rectSwappingStrategy } from '@dnd-kit/sortable';
 import { PageContentSectionProps } from '@/types/pages';
-import LinkCard from '../link-card/LinkCard';
-import FolderCard from '../folder-card/FolderCard';
+import { SortablePageItem } from '../common-ui/SortablePageItem';
 import { useModalStore } from '@/stores/modalStore';
 import { useSearchStore } from '@/stores/searchStore';
 import useUpdateDragandDrop from '@/hooks/mutations/useUpdateDragandDrop';
@@ -25,46 +10,12 @@ import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 import { LinkDetail } from '@/types/links';
 import { FolderDetail } from '@/types/folders';
 import { AddLinkModalSkeleton } from '../skeleton/AddLinkModalSkeleton';
-import { toast } from 'react-hot-toast';
+import { sortPageData } from '@/utils/pageData';
+import { usePageDragAndDrop } from '@/hooks/usePageDragAndDrop';
+import { useDragAndDropSensors } from '@/utils/dragAndDrop';
 
 const AddLinkModal = lazy(() => import('../modal/link/AddLinkModal'));
 const AddFolderModal = lazy(() => import('../modal/folder/AddFolderModal'));
-
-function SortableItem({ item }: { item: any; index: number }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: 'folderId' in item ? item.folderId : item.linkId,
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    zIndex: isDragging ? 50 : 'auto',
-    touchAction: 'none',
-    opacity: isDragging ? 0.3 : 1,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style as React.CSSProperties}
-      {...attributes}
-      {...listeners}
-    >
-      {'folderId' in item ? (
-        <FolderCard isBookmark={item.isFavorite} item={item} />
-      ) : (
-        <LinkCard isBookmark={item.isFavorite} item={item} />
-      )}
-    </div>
-  );
-}
 
 export default function SharedPageContentSection({
   folderData = [],
@@ -99,112 +50,34 @@ export default function SharedPageContentSection({
 
   const [pageData, setPageData] = useState<(FolderDetail | LinkDetail)[]>([]);
 
-  const sortData = (data: (FolderDetail | LinkDetail)[], sortType: string) => {
-    if (!data || data.length === 0) return [];
-
-    const sortedData = [...data];
-
-    switch (sortType) {
-      case '최신순':
-        return sortedData.sort((a, b) => {
-          if (a.orderIndex !== undefined && b.orderIndex !== undefined) {
-            return (b.orderIndex || 0) - (a.orderIndex || 0);
-          }
-          const dateA = new Date(a.createdDate || '').getTime();
-          const dateB = new Date(b.createdDate || '').getTime();
-          return dateB - dateA;
-        });
-
-      case '이름순':
-        return sortedData.sort((a, b) => {
-          const nameA = ('folderId' in a ? a.folderName : a.linkName) || '';
-          const nameB = ('folderId' in b ? b.folderName : b.linkName) || '';
-          return nameA.localeCompare(nameB);
-        });
-
-      case '기본순':
-      default:
-        return sortedData.sort((a, b) => {
-          if (a.orderIndex !== undefined && b.orderIndex !== undefined) {
-            return (a.orderIndex || 0) - (b.orderIndex || 0);
-          }
-          const dateA = new Date(a.createdDate || '').getTime();
-          const dateB = new Date(b.createdDate || '').getTime();
-          return dateA - dateB;
-        });
-    }
-  };
-
   useEffect(() => {
     if (searchKeyword && searchResult) {
       // 검색 모드
       const searchFolders = searchResult.directorySimpleResponses || [];
       const searchLinks = searchResult.siteSimpleResponses || [];
       const combinedSearchData = [...searchFolders, ...searchLinks];
-      const sortedData = sortData(combinedSearchData, sortType);
+      const sortedData = sortPageData(combinedSearchData, sortType);
       setPageData(sortedData);
     } else {
       // 일반 모드
       const safeFolderData = Array.isArray(folderData) ? folderData : [];
       const safeLinkData = Array.isArray(linkData) ? linkData : [];
       const combinedData = [...safeFolderData, ...safeLinkData];
-      const sortedData = sortData(combinedData, sortType);
+      const sortedData = sortPageData(combinedData, sortType);
       setPageData(sortedData);
     }
   }, [folderData, linkData, sortType, searchKeyword, searchResult]);
 
-  const sensors = useSensors(
-    useSensor(MouseSensor, {
-      activationConstraint: {
-        distance: 5,
-      },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 50,
-        tolerance: 5,
-      },
-    })
-  );
+  const sensors = useDragAndDropSensors();
 
-  const onDragEnd = async (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (!over) return;
-    if (active.id === over.id) return;
-
-    // 검색 중일 때는 드래그 비활성화
-    if (searchKeyword) return;
-
-    const oldIndex = pageData.findIndex(
-      (item) => ('folderId' in item ? item.folderId : item.linkId) === active.id
-    );
-    const newIndex = pageData.findIndex(
-      (item) => ('folderId' in item ? item.folderId : item.linkId) === over.id
-    );
-
-    const movedItem = pageData[oldIndex];
-    const targetId =
-      'folderId' in movedItem ? movedItem.folderId : movedItem.linkId;
-    const itemType = 'folderId' in movedItem ? 'FOLDER' : 'LINK';
-
-    const newData = arrayMove(pageData, oldIndex, newIndex);
-    setPageData(newData);
-
-    try {
-      await updateDragAndDropMutation.mutateAsync({
-        baseRequest: { pageId, commandType: 'EDIT' },
-        targetId,
-        itemType,
-        newOrderIndex: newIndex + 1,
-        toFolderId: parentsFolderId ?? '',
-        fromFolderId: parentsFolderId ?? '',
-      });
-    } catch (error) {
-      console.error('드래그 앤 드롭 업데이트 실패:', error);
-      toast.error('순서 변경에 실패했습니다.');
-      setPageData(pageData);
-    }
-  };
+  const { onDragEnd } = usePageDragAndDrop({
+    pageData,
+    searchKeyword,
+    pageId,
+    parentsFolderId: parentsFolderId ?? '',
+    onMutation: updateDragAndDropMutation.mutateAsync,
+    onDataChange: setPageData,
+  });
 
   return (
     <div className="h-screen w-full overflow-y-auto">
@@ -231,11 +104,10 @@ export default function SharedPageContentSection({
                 {searchKeyword ? '검색 결과가 없습니다.' : '데이터가 없습니다.'}
               </div>
             ) : (
-              pageData.map((item, index) => (
-                <SortableItem
+              pageData.map((item) => (
+                <SortablePageItem
                   key={'folderId' in item ? item.folderId : item.linkId}
                   item={item}
-                  index={index}
                 />
               ))
             )}
