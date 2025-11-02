@@ -1,6 +1,6 @@
 # 🔗 Linkpoket
 
-[🍀 Linkpoket 페이지](https://linkpoket.com)
+[Linkpoket 서비스](https://linkpoket.com)
 
 ## 서비스 소개
 
