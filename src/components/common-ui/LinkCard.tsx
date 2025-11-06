@@ -35,7 +35,7 @@ export default function LinkCard({
 
   const { mutate: updateLinkBookmark } = useUpdateLinkBookmark({
     linkId: item.linkId,
-    pageId: pageId as string,
+    pageId: pageId,
   });
 
   const handleBookmarkClick = () => {

@@ -19,12 +19,12 @@ const DeleteFolderModal = lazy(
 const DeleteLinkModal = lazy(() => import('../modal/link/DeleteLinkModal'));
 
 type DropDownInlineProps = {
-  id: string;
+  id: number;
   type: 'folder' | 'link';
   initialTitle: string;
   initialLink?: string;
-  onTitleChange?: (id: string, title: string) => void;
-  onLinkChange?: (id: string, link: string) => void;
+  onTitleChange?: (id: number, title: string) => void;
+  onLinkChange?: (id: number, link: string) => void;
   className?: string;
   isDropDownInline: boolean;
   setIsDropDownInline: React.Dispatch<React.SetStateAction<boolean>>;
@@ -230,14 +230,14 @@ const DropDownInline = ({
         onClose={closeTransferFolderModal}
         directoryId={id}
         folderName={title}
-        onSubmit={async (email) => {
-          if (!pageId || !id) {
+        onSubmit={async (email, directoryId) => {
+          if (!pageId || !directoryId) {
             toast.error('페이지/폴더 정보가 없습니다.');
             return;
           }
           transferFolder({
             receiverEmail: email,
-            folderId: id,
+            folderId: directoryId,
             baseRequest: {
               pageId,
               commandType: 'DIRECTORY_TRANSMISSION',

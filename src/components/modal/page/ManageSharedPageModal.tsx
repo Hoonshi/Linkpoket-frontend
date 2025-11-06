@@ -33,7 +33,7 @@ const ManageSharedPageModal = ({
   const path = useLocation().pathname;
   const pathname = 'http://linkrew.com' + path;
   const { pageId } = useParams();
-  const safePageId = pageId ?? '';
+  const safePageId = pageId ? Number(pageId) : 0;
 
   const sharedPageDashboardQuery = useFetchSharedPageDashboard({
     pageId: safePageId,

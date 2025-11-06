@@ -10,7 +10,7 @@ type TitleUpdate = {
 };
 
 export function useUpdateTitle(
-  id?: string,
+  id?: number,
   initialTitle: string = '',
   type?: string,
   link?: string
@@ -24,7 +24,7 @@ export function useUpdateTitle(
     if (!id) return;
 
     const updateData = {
-      baseRequest: { pageId: pageId as string, commandType: 'EDIT' },
+      baseRequest: { pageId: pageId, commandType: 'EDIT' },
       folderId: id,
       folderName: title,
     };

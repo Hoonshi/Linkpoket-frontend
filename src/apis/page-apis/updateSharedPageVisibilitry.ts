@@ -2,7 +2,7 @@ import { axiosInstance } from '../axiosInstance';
 
 export interface UpdateSharedPageVisibilitryData {
   baseRequest: {
-    pageId: string;
+    pageId: number;
     commandType: 'EDIT';
   };
   pageVisibility: 'PUBLIC' | 'RESTRICTED';

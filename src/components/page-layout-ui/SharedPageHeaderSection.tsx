@@ -6,7 +6,7 @@ import { useModalStore } from '@/stores/modalStore';
 
 type PageHeaderSectionProps = {
   pageTitle: string;
-  pageId: string;
+  pageId: number;
 };
 
 const MAX_TITLE_LENGTH = 12;

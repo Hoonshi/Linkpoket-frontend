@@ -14,8 +14,9 @@ const SharedPageContentSection = lazy(
 );
 
 export default function SharedPage() {
-  const { pageId } = useParams<{ pageId: string }>();
-  const { data } = useFetchSharedPage(pageId as string);
+  const { pageId: pageIdParam } = useParams<{ pageId: string }>();
+  const pageId = pageIdParam ? Number(pageIdParam) : 0;
+  const { data } = useFetchSharedPage(pageId);
 
   const { setPageInfo } = usePageStore();
   const { setParentsFolderId } = useParentsFolderIdStore();
@@ -44,10 +45,7 @@ export default function SharedPage() {
 
   return (
     <PageLayout>
-      <SharedPageHeaderSection
-        pageTitle={pageTitle}
-        pageId={pageId as string}
-      />
+      <SharedPageHeaderSection pageTitle={pageTitle} pageId={pageId} />
       <PageControllerSection
         folderDataLength={folderDataLength}
         linkDataLength={linkDataLength}

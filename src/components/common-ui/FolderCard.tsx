@@ -22,15 +22,15 @@ export default function FolderCard({
   const location = useLocation();
   const { pageId } = usePageStore();
   const { setParentsFolderId } = useParentsFolderIdStore();
-  const folderId = item.folderId?.toString();
+  const folderId = item.folderId;
 
   const { mutate: updateFolderBookmark } = useUpdateFolderBookmark({
     folderId: folderId,
-    pageId: pageId as string,
+    pageId: pageId,
   });
 
   // 현재 컨텍스트에 맞는 폴더 링크 생성
-  const getFolderLink = (folderId: string) => {
+  const getFolderLink = (folderId: number) => {
     const currentPath = location.pathname;
 
     if (currentPath.startsWith('/shared/')) {

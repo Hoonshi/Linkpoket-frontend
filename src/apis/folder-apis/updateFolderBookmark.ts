@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/apis/axiosInstance';
 
-export default async function updateFolderBookmark(itemId: string) {
+export default async function updateFolderBookmark(itemId: number) {
   try {
     const response = await axiosInstance.post('/api/favorite', {
       itemId,

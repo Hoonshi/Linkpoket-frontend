@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 interface DeleteSharedPageModalProps {
   isOpen: boolean;
-  pageId: string;
+  pageId: number;
   onClose: () => void;
 }
 

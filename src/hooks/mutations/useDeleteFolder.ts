@@ -8,7 +8,7 @@ import { DeleteFolderData } from '@/types/folders';
 import { useLocation } from 'react-router-dom';
 
 export default function useDeleteFolder(
-  pageId: string,
+  pageId: number,
   options?: UseMutationOptions<any, unknown, DeleteFolderData>
 ) {
   const queryClient = useQueryClient();

@@ -48,7 +48,7 @@ export function Header({
 
   // API 호출
   const { pageItems: searchResult, isLoading } = useSearchPageItems({
-    pageId: pageId ?? '',
+    pageId: pageId ?? 0,
     keyword: debouncedKeyword,
     searchType: 'TITLE',
   });

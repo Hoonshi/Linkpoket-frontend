@@ -82,7 +82,7 @@ const SideBar: React.FC<MenubarProps> = ({
   const isBookmarksActive =
     location.pathname === '/bookmarks' ||
     location.pathname.startsWith('/bookmarks/');
-  const isSharedPageActive = (pageId: string) => {
+  const isSharedPageActive = (pageId: number) => {
     return (
       location.pathname === `/shared/${pageId}` ||
       location.pathname.startsWith(`/shared/${pageId}/`)
@@ -90,7 +90,7 @@ const SideBar: React.FC<MenubarProps> = ({
   };
 
   // 폴더 링크 생성 헬퍼 함수
-  const getFolderLink = (folderId: string) => {
+  const getFolderLink = (folderId: number) => {
     switch (currentContext) {
       case 'shared':
         return `/shared/${params.pageId}/folder/${folderId}`;
@@ -101,7 +101,7 @@ const SideBar: React.FC<MenubarProps> = ({
   };
 
   // 현재 폴더가 활성화되어 있는지 확인
-  const isFolderActive = (folderId: string) => {
+  const isFolderActive = (folderId: number) => {
     return location.pathname === getFolderLink(folderId);
   };
 
@@ -129,7 +129,7 @@ const SideBar: React.FC<MenubarProps> = ({
   };
 
   //폴더 생성
-  const { mutate: createFolder } = useCreateFolder(pageId as string, {
+  const { mutate: createFolder } = useCreateFolder(pageId, {
     onSuccess: () => {
       toast.success('폴더 생성 완료');
     },
@@ -141,21 +141,21 @@ const SideBar: React.FC<MenubarProps> = ({
   const handleCreateFolder = () => {
     createFolder({
       baseRequest: {
-        pageId: pageId as string,
+        pageId: pageId,
         commandType: 'CREATE',
       },
       folderName: '새 폴더',
-      parentFolderId: parentsFolderId as string,
+      parentFolderId: parentsFolderId ?? 0,
     });
   };
 
   // 펼쳐진 폴더들의 ID를 저장 (초기값: 빈 Set = 모든 폴더 접힌 상태)
-  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
+  const [expandedFolders, setExpandedFolders] = useState<Set<number>>(
     new Set()
   );
 
   // 폴더 토글 함수
-  const toggleFolder = (folderId: string) => {
+  const toggleFolder = (folderId: number) => {
     setExpandedFolders((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(folderId)) {
@@ -172,7 +172,7 @@ const SideBar: React.FC<MenubarProps> = ({
     folderId,
   }: {
     isCollapsed: boolean;
-    folderId: string;
+    folderId: number;
   }) => {
     const isActive = isFolderActive(folderId);
 

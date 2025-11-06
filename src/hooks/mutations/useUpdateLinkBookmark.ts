@@ -12,7 +12,7 @@ export default function useUpdateLinkBookmark({
   options,
 }: {
   linkId: string;
-  pageId: string;
+  pageId: number;
   options?: UseMutationOptions<any, Error, string, unknown>;
 }) {
   const queryClient = useQueryClient();

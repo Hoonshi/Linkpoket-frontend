@@ -1,12 +1,12 @@
 export type PageItemSearchRequest = {
-  pageId: string;
+  pageId: number;
   keyword: string;
   searchType: 'TITLE' | 'CONTENT';
 };
 
 export type PageItemSearchResponse = {
   directorySimpleResponses: Array<{
-    folderId: string;
+    folderId: number;
     folderName: string;
     isFavorite: boolean;
   }>;
