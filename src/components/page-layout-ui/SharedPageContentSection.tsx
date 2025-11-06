@@ -84,11 +84,11 @@ export default function SharedPageContentSection({
       pageId: pageId,
       commandType: 'EDIT',
     },
-    targetId: '',
+    targetId: 0,
     itemType: '',
     newOrderIndex: 1,
-    toFolderId: '',
-    fromFolderId: '',
+    toFolderId: 0,
+    fromFolderId: 0,
   });
 
   const [pageData, setPageData] = useState<(FolderDetail | LinkDetail)[]>([]);
@@ -190,8 +190,8 @@ export default function SharedPageContentSection({
         targetId,
         itemType,
         newOrderIndex: newIndex + 1,
-        toFolderId: parentsFolderId ?? '',
-        fromFolderId: parentsFolderId ?? '',
+        toFolderId: parentsFolderId as number,
+        fromFolderId: parentsFolderId as number,
       });
     } catch (error) {
       console.error('드래그 앤 드롭 업데이트 실패:', error);
