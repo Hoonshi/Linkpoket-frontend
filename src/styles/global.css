@@ -580,6 +580,52 @@ html {
   --font-sans: 'Pretendard', sans-serif;
 }
 
+/* 1024px 미만에서 카드 크기를 0.7배로 조정 */
+@media (max-width: 1550px) {
+  /* 카드 컨테이너 (LinkCard & FolderCard) - 높이 242px → 170px */
+  .group.relative.flex[class*="h-[242px]"] {
+    height: 170px !important;
+  }
+  
+  /* 데스크탑 카드 너비 156px → 109px */
+  .group.relative.flex[class*="min-w-[156px]"] {
+    min-width: 109px !important;
+  }
+  
+  /* 이미지/아이콘 영역 크기 120px → 84px */
+  .group.relative.flex > div.relative.mx-auto,
+  .group.relative.flex > div[style*="width"] {
+    width: 84px !important;
+    height: 84px !important;
+    min-width: 84px !important;
+    min-height: 84px !important;
+    max-width: 84px !important;
+    max-height: 84px !important;
+  }
+  
+  /* 폴더 안의 링크 카드들 크기 및 위치 조정 (0.7배) */
+  /* 첫 번째 카드: 74px × 67px → 52px × 47px, top: 20px → 14px */
+  .group.relative.flex > div.relative.mx-auto > div.absolute[class*="top-5"] {
+    width: 52px !important;
+    height: 47px !important;
+    top: 14px !important;
+  }
+  
+  /* 두 번째 카드: 72px × 65px → 50px × 46px, top: 28px → 20px */
+  .group.relative.flex > div.relative.mx-auto > div.absolute[class*="top-7"] {
+    width: 50px !important;
+    height: 46px !important;
+    top: 20px !important;
+  }
+  
+  /* 세 번째 카드: 70px × 63px → 49px × 44px, top: 36px → 25px */
+  .group.relative.flex > div.relative.mx-auto > div.absolute[class*="top-9"] {
+    width: 49px !important;
+    height: 44px !important;
+    top: 25px !important;
+  }
+}
+
 body {
   @apply font-sans antialiased;
 }
