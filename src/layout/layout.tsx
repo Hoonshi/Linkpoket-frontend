@@ -77,7 +77,7 @@ export default function Layout() {
             initialCollapsed={isHomePage}
           />
         ) : null}
-        <main className="flex-1 overflow-auto">
+        <main id="app-scroll-container" className="flex-1 overflow-auto">
           <Suspense
             fallback={
               <div className="flex h-screen items-center justify-center">

@@ -79,7 +79,7 @@ export default function MobileHome() {
         firstCard: allCards[0]?.title,
         targetCard: allCards[START_GLOBAL_INDEX % L]?.title,
       });
-      centerOn(START_GLOBAL_INDEX, 'smooth');
+      centerOn(START_GLOBAL_INDEX, 'auto');
       setNearestGlobal(START_GLOBAL_INDEX);
       nearestRef.current = START_GLOBAL_INDEX;
     }, 100);

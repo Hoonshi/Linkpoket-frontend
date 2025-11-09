@@ -8,6 +8,7 @@ import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 import { usePageLayout } from '@/hooks/usePageLayout';
 import { getPageDataLength } from '@/utils/pageData';
 import { PageLayout } from '@/components/common-ui/PageLayout';
+import ScrollToTopButton from '@/components/common-ui/ScrollToTopButton';
 
 const SharedPageContentSection = lazy(
   () => import('@/components/page-layout-ui/SharedPageContentSection')
@@ -58,6 +59,7 @@ export default function SharedPage() {
         linkData={linkData}
         sortType={sortType}
       />
+      <ScrollToTopButton />
     </PageLayout>
   );
 }
