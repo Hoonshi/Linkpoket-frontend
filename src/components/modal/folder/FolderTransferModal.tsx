@@ -8,8 +8,8 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   folderName: string;
-  onSubmit: (email: string, directoryId: string) => void;
-  directoryId: string;
+  onSubmit: (email: string, directoryId: number) => void;
+  directoryId: number;
 };
 
 const FolderTransferModal = forwardRef<HTMLDivElement, Props>((props, ref) => {

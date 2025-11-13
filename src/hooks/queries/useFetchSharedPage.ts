@@ -1,7 +1,7 @@
 import { fetchSharedPage } from '@/apis/page-apis/fetchSharedPage';
 import { useQuery } from '@tanstack/react-query';
 
-export function useFetchSharedPage(pageId: string) {
+export function useFetchSharedPage(pageId: number) {
   const { data, ...rest } = useQuery({
     queryKey: ['sharedPage', pageId],
     queryFn: () => fetchSharedPage({ pageId }),

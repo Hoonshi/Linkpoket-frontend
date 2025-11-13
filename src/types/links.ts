@@ -1,12 +1,12 @@
 export type CommandType = 'CREATE' | 'EDIT' | 'DELETE' | 'VIEW';
 
 export type BaseRequest = {
-  pageId: string;
+  pageId: number;
   commandType: CommandType;
 };
 
 export interface LinkDetail {
-  linkId: string;
+  linkId: number;
   linkName: string;
   linkUrl: string;
   isFavorite: boolean;
@@ -21,20 +21,20 @@ export type CreateLinkData = {
   baseRequest: BaseRequest;
   linkName: string;
   linkUrl: string;
-  folderId: string;
+  folderId: number;
   description: string;
 };
 
 export type DeleteLinkData = {
   baseRequest: BaseRequest;
-  linkId: string;
+  linkId: number;
 };
 
 export type UpdateLinkData = {
   baseRequest: BaseRequest;
   linkName: string;
   linkUrl: string;
-  linkId: string;
+  linkId: number;
 };
 
 export type PreviewLinkData = {

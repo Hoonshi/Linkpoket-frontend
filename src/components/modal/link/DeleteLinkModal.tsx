@@ -7,8 +7,8 @@ import { DeleteLinkData } from '@/types/links';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  linkId: string;
-  pageId: string;
+  linkId: number;
+  pageId: number;
 };
 
 const DeleteLinkModal = forwardRef<HTMLDivElement, Props>(

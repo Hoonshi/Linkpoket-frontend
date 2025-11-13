@@ -9,7 +9,7 @@ export default function ModalOptions({
   memberId,
 }: {
   userRole: string;
-  pageId: string;
+  pageId: number;
   email: string;
   memberId: string;
 }) {

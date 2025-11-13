@@ -1,19 +1,19 @@
 export type CreateFolderData = {
   baseRequest: {
-    pageId: string;
+    pageId: number;
     commandType: string;
   };
   folderName: string;
-  parentFolderId: string;
+  parentFolderId: number;
 };
 
 export type TransferFolderData = {
   baseRequest: {
-    pageId: string;
+    pageId: number;
     commandType: 'DIRECTORY_TRANSMISSION';
   };
   receiverEmail: string;
-  folderId: string;
+  folderId: number;
 };
 
 export type TransferFolderResponse = {
@@ -26,7 +26,7 @@ export type TransferFolderResponse = {
 };
 
 export type FolderDetail = {
-  folderId: string;
+  folderId: number;
   folderName: string;
   isFavorite: boolean;
   orderIndex: number;
@@ -37,37 +37,37 @@ export type FolderDetailResponse = Array<FolderDetail>;
 
 export type UpdateFolderData = {
   baseRequest: {
-    pageId: string;
+    pageId: number;
     commandType: string;
   };
   folderName: string;
-  folderId: string;
+  folderId: number;
   folderDescription?: string;
 };
 
 export type DeleteFolderData = {
   baseRequest: {
-    pageId: string;
+    pageId: number;
     commandType: string;
   };
-  folderId: string;
+  folderId: number;
 };
 
 export interface FetchFolderDetailsProps {
-  pageId: string;
+  pageId: number;
   commandType: string;
-  folderId: string;
+  folderId: number;
   sortType: string;
 }
 
 export interface UpdateDragandDropProps {
   baseRequest: {
-    pageId: string;
+    pageId: number;
     commandType: string;
   };
-  targetId: string;
+  targetId: number;
   itemType: string;
   newOrderIndex: number;
-  fromFolderId: string;
-  toFolderId: string;
+  fromFolderId: number;
+  toFolderId: number;
 }

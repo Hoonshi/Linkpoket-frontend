@@ -9,7 +9,7 @@ import { Button } from '../common-ui/button';
 
 type PageHeaderSectionProps = {
   pageTitle: string;
-  pageId: string;
+  pageId: number;
 };
 
 const MAX_TITLE_LENGTH = 12;

@@ -8,7 +8,7 @@ import { UpdateFolderData } from '@/types/folders';
 import { useLocation } from 'react-router-dom';
 
 export default function useUpdateFolder(
-  pageId: string,
+  pageId: number,
   options?: UseMutationOptions<any, unknown, UpdateFolderData>
 ) {
   const queryClient = useQueryClient();

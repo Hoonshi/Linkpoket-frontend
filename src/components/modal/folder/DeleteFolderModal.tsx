@@ -8,8 +8,8 @@ const DeleteFolderModal = forwardRef<
   {
     isOpen: boolean;
     onClose: () => void;
-    folderId: string;
-    pageId: string;
+    folderId: number;
+    pageId: number;
   }
 >(({ isOpen, onClose, folderId, pageId }, ref) => {
   const { mutate: deleteFolder } = useDeleteFolder(pageId);
