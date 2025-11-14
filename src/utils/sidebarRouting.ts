@@ -22,7 +22,7 @@ export const isBookmarksActive = (pathname: string): boolean => {
 // 공유 페이지가 활성화되어 있는지 확인
 export const isSharedPageActive = (
   pathname: string,
-  pageId: number
+  pageId: string
 ): boolean => {
   return (
     pathname === `/shared/${pageId}` ||
@@ -33,7 +33,7 @@ export const isSharedPageActive = (
 // 컨텍스트에 따라 폴더 링크를 생성
 export const getFolderLink = (
   context: SidebarContext,
-  folderId: number,
+  folderId: string,
   pageId?: string
 ): string => {
   switch (context) {

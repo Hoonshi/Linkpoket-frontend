@@ -4,7 +4,7 @@ import { JoinedPageData } from '@/types/pages';
 
 type SharedPageListProps = {
   pages: JoinedPageData[];
-  isSharedPageActive: (pageId: number) => boolean;
+  isSharedPageActive: (pageId: string) => boolean;
 };
 
 const SharedPageList: React.FC<SharedPageListProps> = ({

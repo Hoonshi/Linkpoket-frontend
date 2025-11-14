@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 
 export function useCreateFolder(
-  pageId: number,
+  pageId: string,
   options?: UseMutationOptions<any, unknown, CreateFolderData>
 ) {
   const queryClient = useQueryClient();

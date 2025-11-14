@@ -6,19 +6,19 @@ export interface CreateSharedPageData {
 }
 
 export interface JoinedPageData {
-  pageId: number;
+  pageId: string;
   pageTitle: string;
   pageType: 'PERSONAL' | 'SHARED';
 }
 
 export interface PageParamsData {
-  pageId: number;
+  pageId: string;
 }
 
 export interface PageDetails {
-  pageId: number;
+  pageId: string;
   pageTitle: string;
-  rootFolderId: number;
+  rootFolderId: string;
   directoryDetailRespons: FolderDetail[];
   siteDetailResponses: LinkDetail[];
   fullPath: string;
@@ -26,14 +26,14 @@ export interface PageDetails {
 
 export interface DeleteSharedPageData {
   baseRequest: {
-    pageId: number;
+    pageId: string;
     commandType: string;
   };
 }
 
 export interface UpdatePageTitleData {
   baseRequest: {
-    pageId: number;
+    pageId: string;
     commandType: string;
   };
   pageTitle: string;
@@ -53,7 +53,7 @@ export interface PageContentSectionProps {
 
 export interface UpdateSharedPageInvitationData {
   baseRequest: {
-    pageId: number;
+    pageId: string;
     commandType: 'SHARED_PAGE_INVITATION';
   };
   receiverEmail: string;
@@ -62,7 +62,7 @@ export interface UpdateSharedPageInvitationData {
 
 export interface UpdateSharedPagePermissionData {
   baseRequest: {
-    pageId: number;
+    pageId: string;
     commandType: 'SHARED_PAGE_PERMISSION_CHANGE';
   };
   targetMemberId: string;
@@ -70,7 +70,7 @@ export interface UpdateSharedPagePermissionData {
 }
 
 export interface PatchSharedPageInvitationData {
-  dispatchRequestId: number;
+  dispatchRequestId: string;
   requestStatus: string;
   notificationType: string;
 }
@@ -79,9 +79,9 @@ export interface PageData {
   status: number;
   message: string;
   data: {
-    pageId: number;
+    pageId: string;
     pageTitle: string;
-    rootFolderId: number;
+    rootFolderId: string;
     directoryDetailRespons: any[];
     siteDetailResponses: any[];
     fullPath: string;

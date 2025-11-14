@@ -30,7 +30,7 @@ export default function FolderCard({
   });
 
   // 현재 컨텍스트에 맞는 폴더 링크 생성
-  const getFolderLink = (folderId: number) => {
+  const getFolderLink = (folderId: string) => {
     const currentPath = location.pathname;
 
     if (currentPath.startsWith('/shared/')) {

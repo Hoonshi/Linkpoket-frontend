@@ -1,6 +1,5 @@
 import { lazy, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-
 import SharedPageHeaderSection from '@/components/page-layout-ui/SharedPageHeaderSection';
 import PageControllerSection from '@/components/page-layout-ui/PageControllerSection';
 import { useFetchSharedPage } from '@/hooks/queries/useFetchSharedPage';
@@ -14,8 +13,8 @@ const SharedPageContentSection = lazy(
 );
 
 export default function SharedPage() {
-  const { pageId: pageIdParam } = useParams<{ pageId: string }>();
-  const pageId = pageIdParam ? Number(pageIdParam) : 0;
+  const { pageId: pageIdParam } = useParams();
+  const pageId = pageIdParam ?? '';
   const { data } = useFetchSharedPage(pageId);
 
   const { setPageInfo } = usePageStore();
@@ -25,6 +24,7 @@ export default function SharedPage() {
   const refinedData = data?.data;
   const folderData = refinedData?.directoryDetailResponses ?? [];
   const linkData = refinedData?.linkDetailResponses ?? [];
+
   const { folderDataLength, linkDataLength } = getPageDataLength(
     folderData,
     linkData

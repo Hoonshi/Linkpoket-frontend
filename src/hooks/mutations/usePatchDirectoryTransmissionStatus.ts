@@ -9,7 +9,7 @@ export function usePatchDirectoryTransmissionStatus() {
     unknown,
     unknown,
     {
-      dispatchRequestId: number;
+      dispatchRequestId: string;
       requestStatus: 'ACCEPTED' | 'REJECTED';
       notificationType: 'TRANSMIT_DIRECTORY';
     }

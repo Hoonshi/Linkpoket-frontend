@@ -83,7 +83,7 @@ export const useAddLinkForm = (isOpen: boolean, onClose: () => void) => {
       {
         linkUrl,
         linkName,
-        folderId: parentsFolderId ?? 0,
+        folderId: parentsFolderId ?? '',
         description: '',
         baseRequest: { pageId, commandType: 'CREATE' },
       },

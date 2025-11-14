@@ -19,12 +19,12 @@ const DeleteFolderModal = lazy(
 const DeleteLinkModal = lazy(() => import('../modal/link/DeleteLinkModal'));
 
 type DropDownInlineProps = {
-  id: number;
+  id: string;
   type: 'folder' | 'link';
   initialTitle: string;
   initialLink?: string;
-  onTitleChange?: (id: number, title: string) => void;
-  onLinkChange?: (id: number, link: string) => void;
+  onTitleChange?: (id: string, title: string) => void;
+  onLinkChange?: (id: string, link: string) => void;
   className?: string;
   isDropDownInline: boolean;
   setIsDropDownInline: React.Dispatch<React.SetStateAction<boolean>>;

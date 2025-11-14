@@ -2,23 +2,23 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface PageStoreState {
-  pageId: number;
-  setPageInfo: (pageId: number) => void;
+  pageId: string;
+  setPageInfo: (pageId: string) => void;
 }
 
 interface ParentsFolderIdStoreState {
-  parentsFolderId: number | null;
-  setParentsFolderId: (parentsFolderId: number) => void;
+  parentsFolderId: string | null;
+  setParentsFolderId: (parentsFolderId: string) => void;
 }
 
 export const usePageStore = create<PageStoreState>()(
   persist(
     (set) => ({
-      pageId: 0,
-      setPageInfo: (pageId: number) => set({ pageId }),
+      pageId: '',
+      setPageInfo: (pageId: string) => set({ pageId }),
     }),
     {
-      name: 'page-store', // localStorage에 저장될 키 이름
+      name: 'page-store',
     }
   )
 );
@@ -27,10 +27,10 @@ export const useParentsFolderIdStore = create<ParentsFolderIdStoreState>()(
   persist(
     (set) => ({
       parentsFolderId: null,
-      setParentsFolderId: (parentsFolderId: number) => set({ parentsFolderId }),
+      setParentsFolderId: (parentsFolderId: string) => set({ parentsFolderId }),
     }),
     {
-      name: 'parents-folder-store', // localStorage에 저장될 키 이름
+      name: 'parents-folder-store',
     }
   )
 );

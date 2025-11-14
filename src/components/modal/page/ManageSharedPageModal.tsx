@@ -33,7 +33,7 @@ const ManageSharedPageModal = ({
   const path = useLocation().pathname;
   const pathname = 'http://linkpoket.com' + path;
   const { pageId } = useParams();
-  const safePageId = pageId ? Number(pageId) : 0;
+  const safePageId = pageId ?? '';
 
   const sharedPageDashboardQuery = useFetchSharedPageDashboard({
     pageId: safePageId,

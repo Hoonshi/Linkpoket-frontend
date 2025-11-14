@@ -16,8 +16,8 @@ const SharedPageContentSection = lazy(
 );
 
 export default function FolderDetailPage() {
-  const { folderId: folderIdParam } = useParams<{ folderId: string }>();
-  const folderId = folderIdParam ? Number(folderIdParam) : 0;
+  const { folderId: folderIdParam } = useParams();
+  const folderId = folderIdParam ?? '';
   const { pageId } = usePageStore();
   const { setParentsFolderId } = useParentsFolderIdStore();
   const { sortType, handleSort } = usePageLayout();
@@ -57,7 +57,7 @@ export default function FolderDetailPage() {
 
   return (
     <PageLayout>
-      <PageHeaderSection pageTitle={folderName} folderId={folderIdParam} />
+      <PageHeaderSection pageTitle={folderName} folderId={folderId} />
       <PageControllerSection
         folderDataLength={folderDataLength}
         linkDataLength={linkDataLength}

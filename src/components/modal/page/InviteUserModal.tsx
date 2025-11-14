@@ -49,7 +49,7 @@ const EmailInputWithRole = ({
 interface InviteUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  pageId: number;
+  pageId: string;
 }
 
 const InviteUserModal = ({ isOpen, onClose, pageId }: InviteUserModalProps) => {

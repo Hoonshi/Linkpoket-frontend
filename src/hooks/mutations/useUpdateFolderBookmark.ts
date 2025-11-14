@@ -6,8 +6,8 @@ export default function useUpdateFolderBookmark({
   folderId,
   pageId,
 }: {
-  folderId: number;
-  pageId: number;
+  folderId: string;
+  pageId: string;
 }) {
   const queryClient = useQueryClient();
   const location = useLocation();

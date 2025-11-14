@@ -83,7 +83,7 @@ export function UserActions() {
 
   const handleStatusChange = useCallback(
     (
-      dispatchRequestId: number,
+      dispatchRequestId: string,
       requestStatus: 'ACCEPTED' | 'REJECTED',
       type: 'INVITE_PAGE' | 'TRANSMIT_DIRECTORY'
     ) => {
@@ -107,7 +107,7 @@ export function UserActions() {
   );
 
   const handleDelete = useCallback(
-    (dispatchRequestId: number, type: 'INVITE_PAGE' | 'TRANSMIT_DIRECTORY') => {
+    (dispatchRequestId: string, type: 'INVITE_PAGE' | 'TRANSMIT_DIRECTORY') => {
       if (type === 'INVITE_PAGE') {
         deleteInvitation({ dispatchRequestId });
       } else {

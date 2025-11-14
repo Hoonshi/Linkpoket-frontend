@@ -10,7 +10,7 @@ type TitleUpdate = {
 };
 
 export function useUpdateTitle(
-  id?: number,
+  id?: string,
   initialTitle: string = '',
   type?: string,
   link?: string

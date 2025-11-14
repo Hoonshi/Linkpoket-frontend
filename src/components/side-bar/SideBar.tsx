@@ -75,17 +75,17 @@ const SideBar: React.FC<MenubarProps> = ({
   // 메뉴 활성 상태 확인
   const isPersonalActive = checkPersonalActive(location.pathname);
   const isBookmarksActive = checkBookmarksActive(location.pathname);
-  const isSharedPageActive = (pageId: number) => {
+  const isSharedPageActive = (pageId: string) => {
     return checkSharedPageActive(location.pathname, pageId);
   };
 
   // 폴더 링크 생성 헬퍼 함수
-  const getFolderLink = (folderId: number) => {
+  const getFolderLink = (folderId: string) => {
     return createFolderLink(currentContext, folderId, params.pageId);
   };
 
   // 현재 폴더가 활성화되어 있는지 확인
-  const isFolderActive = (folderId: number) => {
+  const isFolderActive = (folderId: string) => {
     const folderLink = getFolderLink(folderId);
     return checkFolderActive(location.pathname, folderLink);
   };

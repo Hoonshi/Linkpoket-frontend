@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 export const useDeleteDirectoryRequest = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<unknown, unknown, { dispatchRequestId: number }>({
+  return useMutation<unknown, unknown, { dispatchRequestId: string }>({
     mutationFn: deleteDirectoryRequest,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notifications'] });

@@ -6,15 +6,15 @@ import NoColorUp from '@/assets/common-ui-assets/NoColorUp.svg?react';
 import NoColorDown from '@/assets/common-ui-assets/NoColorDown.svg?react';
 
 type Folder = {
-  folderId: number;
+  folderId: string;
   folderTitle: string;
   children?: Folder[];
 };
 
 type FolderListProps = {
   folders: Folder[];
-  getFolderLink: (folderId: number) => string;
-  isFolderActive: (folderId: number) => boolean;
+  getFolderLink: (folderId: string) => string;
+  isFolderActive: (folderId: string) => boolean;
 };
 
 const FolderToggleIcon = ({
@@ -44,11 +44,11 @@ const FolderList: React.FC<FolderListProps> = ({
   getFolderLink,
   isFolderActive,
 }) => {
-  const [expandedFolders, setExpandedFolders] = useState<Set<number>>(
+  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
     new Set()
   );
 
-  const toggleFolder = (folderId: number) => {
+  const toggleFolder = (folderId: string) => {
     setExpandedFolders((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(folderId)) {

@@ -9,7 +9,7 @@ export function usePatchShareInvitationStatus() {
     unknown,
     unknown,
     {
-      dispatchRequestId: number;
+      dispatchRequestId: string;
       requestStatus: 'ACCEPTED' | 'REJECTED';
       notificationType: 'INVITE_PAGE';
     }
