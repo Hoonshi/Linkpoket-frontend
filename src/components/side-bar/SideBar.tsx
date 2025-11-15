@@ -40,7 +40,6 @@ const SideBar: React.FC<MenubarProps> = ({
   const sidebarRef = useRef<HTMLElement | null>(null);
   const isMobile = useMobile();
   const { pageId } = usePageStore();
-  const { parentsFolderId } = useParentsFolderIdStore();
   const location = useLocation();
   const params = useParams();
 
@@ -110,27 +109,6 @@ const SideBar: React.FC<MenubarProps> = ({
   const handleCreateSharedPage = () => {
     createSharedPage({
       pageType: 'SHARED',
-    });
-  };
-
-  //폴더 생성
-  const { mutate: createFolder } = useCreateFolder(pageId, {
-    onSuccess: () => {
-      toast.success('폴더 생성 완료');
-    },
-    onError: (error: any) => {
-      toast.error((error as any).response.data.detail);
-    },
-  });
-
-  const handleCreateFolder = () => {
-    createFolder({
-      baseRequest: {
-        pageId: pageId,
-        commandType: 'CREATE',
-      },
-      folderName: '새 폴더',
-      parentFolderId: parentsFolderId ?? 0,
     });
   };
 
@@ -216,17 +194,21 @@ const SideBar: React.FC<MenubarProps> = ({
                 refinedFolderList && (
                   <>
                     <FolderSectionHeader
-                      onCreateClick={(e) => {
+                      isOpen={isFolderListOpen}
+                      showToggle={true}
+                      onToggleClick={(e) => {
                         e.stopPropagation();
                         e.preventDefault();
-                        handleCreateFolder();
+                        handleToggleFolderList();
                       }}
                     />
-                    <FolderList
-                      folders={refinedFolderList}
-                      getFolderLink={getFolderLink}
-                      isFolderActive={isFolderActive}
-                    />
+                    {isFolderListOpen && (
+                      <FolderList
+                        folders={refinedFolderList}
+                        getFolderLink={getFolderLink}
+                        isFolderActive={isFolderActive}
+                      />
+                    )}
                   </>
                 )}
             </li>

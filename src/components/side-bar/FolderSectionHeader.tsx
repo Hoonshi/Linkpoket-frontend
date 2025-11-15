@@ -1,5 +1,3 @@
-import React from 'react';
-import PlusIcon from '@/assets/common-ui-assets/PlusIcon.svg?react';
 import NoColorUp from '@/assets/common-ui-assets/NoColorUp.svg?react';
 import NoColorDown from '@/assets/common-ui-assets/NoColorDown.svg?react';
 
@@ -12,9 +10,8 @@ type FolderSectionHeaderProps = {
 
 const FolderSectionHeader: React.FC<FolderSectionHeaderProps> = ({
   isOpen,
-  onCreateClick,
   onToggleClick,
-  showToggle = false,
+  showToggle,
 }) => {
   return (
     <div className="mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[500] text-gray-50 hover:rounded-[8px] active:rounded-[8px]">
@@ -22,33 +19,23 @@ const FolderSectionHeader: React.FC<FolderSectionHeaderProps> = ({
         <div className="flex gap-[20px]">
           <div>폴더</div>
         </div>
-        {showToggle && onToggleClick ? (
-          isOpen ? (
-            <NoColorUp
-              className="text-gray-40 hover:text-gray-90 cursor-pointer"
-              onClick={onToggleClick}
-              aria-label="폴더 접기"
-              height={18}
-              width={18}
-            />
-          ) : (
-            <NoColorDown
-              className="text-gray-40 hover:text-gray-90 cursor-pointer"
-              onClick={onToggleClick}
-              aria-label="폴더 펼치기"
-              height={18}
-              width={18}
-            />
-          )
-        ) : onCreateClick ? (
-          <PlusIcon
+        {showToggle && isOpen ? (
+          <NoColorUp
             className="text-gray-40 hover:text-gray-90 cursor-pointer"
-            onClick={onCreateClick}
-            aria-label="폴더 추가"
+            onClick={onToggleClick}
+            aria-label="폴더 접기"
             height={18}
             width={18}
           />
-        ) : null}
+        ) : (
+          <NoColorDown
+            className="text-gray-40 hover:text-gray-90 cursor-pointer"
+            onClick={onToggleClick}
+            aria-label="폴더 펼치기"
+            height={18}
+            width={18}
+          />
+        )}
       </div>
     </div>
   );
