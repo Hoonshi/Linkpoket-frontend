@@ -8,6 +8,7 @@ import { useNotificationSSE } from '@/hooks/useNotificationSSE';
 import useRouteChangeTracker from '@/hooks/useRouteChangeTracker';
 import { ProfileSettingsModalSkeleton } from '@/components/skeleton/ProfileSettingModal';
 import { DeleteModalSkeleton } from '@/components/skeleton/DeleteModalSkeleton';
+import { useMobile } from '@/hooks/useMobile';
 
 const ProfileSettingsModal = lazy(
   () => import('@/components/modal/profile/ProfileSettingsModal')
@@ -22,7 +23,10 @@ export default function Layout() {
   const location = useLocation();
   const path = location.pathname;
   const isHomePage = path === '/home';
-  const [showSidebar, setShowSidebar] = useState(() => !isHomePage);
+  const isMobile = useMobile();
+  const [showSidebar, setShowSidebar] = useState(() =>
+    isMobile ? false : !isHomePage
+  );
   const [isFoldSidebar, setIsFoldSidebar] = useState(() => isHomePage);
   const {
     isProfileModalOpen,
@@ -51,9 +55,14 @@ export default function Layout() {
   useNotificationSSE(isLoggedIn);
 
   useEffect(() => {
-    setShowSidebar(!isHomePage);
-    setIsFoldSidebar(isHomePage);
-  }, [isHomePage]);
+    if (isMobile) {
+      setShowSidebar(false);
+      setIsFoldSidebar(true);
+    } else {
+      setShowSidebar(!isHomePage);
+      setIsFoldSidebar(isHomePage);
+    }
+  }, [isHomePage, isMobile]);
 
   return (
     <div className="flex h-screen flex-col">
