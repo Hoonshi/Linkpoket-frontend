@@ -9,6 +9,7 @@ import { getPageDataLength } from '@/utils/pageData';
 import { PageLayout } from '@/components/common-ui/PageLayout';
 import ScrollToTopButton from '@/components/common-ui/ScrollToTopButton';
 import { BackButton } from '@/components/common-ui/BackButton';
+import { CopyLinkButton } from '@/components/common-ui/CopyLinkButton';
 
 const SharedPageFolderContentSection = lazy(
   () => import('@/components/page-layout-ui/SharedPageFolderContentSection')
@@ -48,6 +49,7 @@ export default function SharedPage() {
   return (
     <>
       <BackButton />
+      <CopyLinkButton />
       <PageLayout>
         <PageHeaderSection pageTitle={pageTitle} pageId={pageId} />
         <PageControllerSection
