@@ -9,11 +9,11 @@ const inputVariants = cva(
     variants: {
       variant: {
         default:
-          'border-gray-30 focus:ring-primary-30 focus:border-primary-40 placeholder:text-gray-50',
+          'border-gray-30 focus:ring-gray-40 focus:border-gray-50 placeholder:text-gray-50',
         error:
           'border-error-50 focus:ring-error-30 focus:border-error-50 text-status-danger',
         disabled: 'bg-gray-5 text-gray-50 border-gray-20 cursor-not-allowed',
-        completed: 'border-primary-50 text-gray-90 placeholder:text-gray-50',
+        completed: 'border-gray-70 text-gray-90 placeholder:text-gray-50',
       },
       inputSize: {
         default: 'text-sm',

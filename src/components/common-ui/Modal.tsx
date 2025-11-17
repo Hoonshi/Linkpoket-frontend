@@ -165,8 +165,8 @@ const ConfirmButton = ({
   customColor?: string;
 }) => {
   const variantClasses = {
-    primary: 'bg-[var(--color-primary-50)] text-[var(--color-primary-0)]',
-    danger: 'bg-[var(--color-status-danger)] text-[var(--color-primary-0)]',
+    primary: 'bg-[var(--color-gray-70)] text-[var(--color-gray-0)]',
+    danger: 'bg-[var(--color-status-danger)] text-[var(--color-gray-0)]',
     default: 'bg-[var(--color-gray-20)] text-[var(--color-gray-50)]',
     check: 'bg-none text-gray-90 border border-gray-30',
   };

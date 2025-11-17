@@ -16,7 +16,7 @@ export const Checkbox = ({
         <div
           className={`h-4 w-4 rounded ${
             variant === 'default'
-              ? 'peer-checked:border-primary-50 peer-checked:bg-primary-50 border border-gray-300 bg-white'
+              ? 'peer-checked:border-gray-70 peer-checked:bg-gray-70 border border-gray-300 bg-white'
               : 'border-transparent bg-transparent'
           }`}
         ></div>
@@ -24,7 +24,7 @@ export const Checkbox = ({
           className={`pointer-events-none absolute inset-0 flex items-center justify-center ${
             variant === 'default'
               ? `text-white opacity-0 peer-checked:opacity-100`
-              : 'peer-checked:text-primary-50 text-gray-300'
+              : 'peer-checked:text-gray-70 text-gray-300'
           }`}
         >
           <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">

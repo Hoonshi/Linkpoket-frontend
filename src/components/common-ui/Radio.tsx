@@ -75,7 +75,7 @@ export const Radio = ({
             'peer appearance-none rounded-full border',
             error
               ? 'border-red-500 checked:border-0 checked:bg-red-500 focus:ring-red-500/50'
-              : 'border-gray-30 checked:border-0 checked:bg-[#FF9320] focus:ring-[#FF9320]/50',
+              : 'border-gray-30 checked:bg-gray-70 focus:ring-gray-70/50 checked:border-0',
             'focus:ring-2 focus:outline-none',
             'disabled:border-gray-30 disabled:bg-gray-10',
             isModal ? 'h-[18px] w-[18px]' : radioSize[size || 'md'],

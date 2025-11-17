@@ -23,7 +23,7 @@ const LoginPage = () => {
             return (
               <span
                 key={index}
-                className={`${index === 0 ? 'text-primary-50 mt-4' : 'text-gray-100'}`}
+                className={`${index === 0 ? 'mt-4 text-gray-50' : 'text-gray-100'}`}
               >
                 {text.text}
               </span>
