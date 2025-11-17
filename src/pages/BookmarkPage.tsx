@@ -6,6 +6,7 @@ import useFetchFavorite from '@/hooks/queries/useFetchFavorite';
 import { usePageLayout } from '@/hooks/usePageLayout';
 import { getPageDataLength } from '@/utils/pageData';
 import { PageLayout } from '@/components/common-ui/PageLayout';
+import { BackButton } from '@/components/common-ui/BackButton';
 
 const BookmarkPageContentSection = lazy(
   () => import('@/components/page-layout-ui/BookmarkPageContentSection')
@@ -23,18 +24,21 @@ export default function BookmarkPage() {
   );
 
   return (
-    <PageLayout>
-      <PageHeaderSection pageTitle="북마크" />
-      <PageControllerSection
-        folderDataLength={folderDataLength}
-        linkDataLength={linkDataLength}
-        onSortChange={handleSort}
-      />
-      <BookmarkPageContentSection
-        folderData={folderData}
-        linkData={linkData}
-        sortType={sortType}
-      />
-    </PageLayout>
+    <>
+      <BackButton />
+      <PageLayout>
+        <PageHeaderSection pageTitle="북마크" />
+        <PageControllerSection
+          folderDataLength={folderDataLength}
+          linkDataLength={linkDataLength}
+          onSortChange={handleSort}
+        />
+        <BookmarkPageContentSection
+          folderData={folderData}
+          linkData={linkData}
+          sortType={sortType}
+        />
+      </PageLayout>
+    </>
   );
 }

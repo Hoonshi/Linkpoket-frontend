@@ -34,7 +34,7 @@ export default function ScrollToTopButton() {
     <button
       onClick={handleScrollToTop}
       aria-label="맨 위로 이동"
-      className="bg-gray-90 hover:bg-gray-70 animate-bounce-slow fixed right-12 bottom-12 z-[9999] flex h-12 w-12 items-center justify-center rounded-full text-white shadow-lg transition"
+      className="bg-gray-90 hover:bg-gray-70 animate-bounce-slow fixed right-12 bottom-12 z-[9999] hidden h-12 w-12 items-center justify-center rounded-full text-white shadow-lg transition md:flex"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

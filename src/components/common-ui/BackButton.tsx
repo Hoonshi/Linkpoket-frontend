@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useMobile } from '@/hooks/useMobile';
 
 interface BackButtonProps {
   className?: string;
@@ -12,18 +13,25 @@ export const BackButton: React.FC<BackButtonProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useMobile();
 
-  // 개인페이지나 공유 페이지인지 확인
+  // 개인페이지, 공유 페이지, 북마크 페이지인지 확인
   const isPersonalPage =
     location.pathname === '/' || location.pathname.startsWith('/personal');
   const isSharedPage = location.pathname.startsWith('/shared');
-  const shouldShow = isPersonalPage || isSharedPage;
+  const isBookmarkPage = location.pathname.startsWith('/bookmarks');
+  const shouldShow = isPersonalPage || isSharedPage || isBookmarkPage;
 
   const handleBackClick = () => {
     if (onClick) {
       onClick();
     } else {
-      navigate(-1);
+      // 768px 이하(모바일)에서는 /home으로 이동
+      if (isMobile) {
+        navigate('/home');
+      } else {
+        navigate(-1);
+      }
     }
   };
 
