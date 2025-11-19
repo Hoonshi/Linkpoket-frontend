@@ -64,8 +64,8 @@ export function useCreateFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses: [
-                ...(old.data?.directoryDetailResponses || []),
+              folderDetailResponses: [
+                ...(old.data?.folderDetailResponses || []),
                 tempFolder,
               ],
             },
@@ -81,8 +81,8 @@ export function useCreateFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses: [
-                ...(old.data?.directoryDetailResponses || []),
+              folderDetailResponses: [
+                ...(old.data?.folderDetailResponses || []),
                 tempFolder,
               ],
             },
@@ -98,8 +98,8 @@ export function useCreateFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses: [
-                ...(old.data?.directoryDetailResponses || []),
+              folderDetailResponses: [
+                ...(old.data?.folderDetailResponses || []),
                 tempFolder,
               ],
             },

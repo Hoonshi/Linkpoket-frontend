@@ -28,6 +28,11 @@ export default function FolderDetailPage() {
     }
   }, [folderId, setParentsFolderId]);
 
+  // folderId가 UUID 형식인지 확인 (하이픈이 포함되어 있으면 UUID)
+  const isUUID = (id: string) =>
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+  const isValidFolderId = folderId && !isUUID(folderId);
+
   const requestParams = {
     pageId,
     commandType: 'VIEW' as const,
@@ -35,7 +40,10 @@ export default function FolderDetailPage() {
     sortType: 'BASIC' as const,
   };
 
-  const { data, isLoading, isError } = useFetchFolderDetails(requestParams);
+  const { data, isLoading, isError } = useFetchFolderDetails(
+    requestParams,
+    isValidFolderId
+  );
 
   const refinedData = data?.data;
   const folderData = refinedData?.folderDetailResponses ?? [];
