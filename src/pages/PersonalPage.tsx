@@ -17,14 +17,14 @@ const PersonalPageContentSection = lazy(
 );
 
 export default function PersonalPage() {
-  const { data } = useFetchPersonalPage('');
+  const { data } = useFetchPersonalPage();
 
   const { setUser } = useUserStore();
   const { setPageInfo } = usePageStore();
   const { setParentsFolderId } = useParentsFolderIdStore();
   const { sortType, handleSort } = usePageLayout();
 
-  const folderData = data?.data.directoryDetailResponses ?? [];
+  const folderData = data?.data.folderDetailResponses ?? [];
   const linkData = data?.data.linkDetailResponses ?? [];
   const { folderDataLength, linkDataLength } = getPageDataLength(
     folderData,

@@ -6,11 +6,11 @@ import NewSection from './sections/NewSection';
 
 export const LandingPage: React.FC = () => {
   return (
-    <>
+    <div className="min-h-screen bg-white">
       <HeroSection />
       <NewSection />
       <CtaSection />
       <Footer />
-    </>
+    </div>
   );
 };

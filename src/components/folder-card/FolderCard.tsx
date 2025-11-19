@@ -40,7 +40,12 @@ export default function FolderCard({
     pageId: pageId as string,
   });
 
-  // 폴더 상세 정보를 가져와서 링크 정보 추출
+  // folderId가 UUID 형식인지 확인 (하이픈이 포함되어 있으면 UUID)
+  const isUUID = (id: string) =>
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+  const isValidFolderId = item.folderId && !isUUID(item.folderId);
+
+  // 폴더 상세 정보를 가져와서 링크 정보 추출 (유효한 folderId일 때만)
   const requestParams = {
     pageId: pageId || '',
     commandType: 'VIEW',
@@ -48,7 +53,10 @@ export default function FolderCard({
     sortType: 'BASIC',
   };
 
-  const { data: folderDetailsData } = useFetchFolderDetails(requestParams);
+  const { data: folderDetailsData } = useFetchFolderDetails(
+    requestParams,
+    isValidFolderId
+  );
   const linkData = folderDetailsData?.data?.linkDetailResponses ?? [];
 
   const getFolderLink = (folderId: string) => {

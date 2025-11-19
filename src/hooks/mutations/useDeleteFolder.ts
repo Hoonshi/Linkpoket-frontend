@@ -59,14 +59,14 @@ export default function useDeleteFolder(
 
       if (isSharedPage) {
         queryClient.setQueryData(['sharedPage', pageId], (old: any) => {
-          if (!old) return old;
+          if (!old || !old.data) return old;
           return {
             ...old,
             data: {
               ...old.data,
-              foldeDetailResponses: old.data.folderDetailResponses.filter(
-                (f: any) => f.folderId !== variables.folderId
-              ),
+              folderDetailResponses: (
+                old.data.folderDetailResponses || []
+              ).filter((f: any) => f.folderId !== variables.folderId),
             },
           };
         });
@@ -74,14 +74,14 @@ export default function useDeleteFolder(
 
       if (isFolderPage) {
         queryClient.setQueryData(['folderDetails', pageId], (old: any) => {
-          if (!old) return old;
+          if (!old || !old.data) return old;
           return {
             ...old,
             data: {
               ...old.data,
-              folderDetailResponses: old.data.folderDetailResponses.filter(
-                (f: any) => f.folderId !== variables.folderId
-              ),
+              folderDetailResponses: (
+                old.data.folderDetailResponses || []
+              ).filter((f: any) => f.folderId !== variables.folderId),
             },
           };
         });
@@ -89,18 +89,14 @@ export default function useDeleteFolder(
 
       if (isMainPage) {
         queryClient.setQueryData(['personalPage'], (old: any) => {
-          if (!old) return old;
+          if (!old || !old.data) return old;
           return {
             ...old,
             data: {
               ...old.data,
-              pageDetails: {
-                ...old.data.pageDetails,
-                folderDetailResponses:
-                  old.data.pageDetails.folderDetailResponses.filter(
-                    (f: any) => f.folderId !== variables.folderId
-                  ),
-              },
+              folderDetailResponses: (
+                old.data.folderDetailResponses || []
+              ).filter((f: any) => f.folderId !== variables.folderId),
             },
           };
         });
