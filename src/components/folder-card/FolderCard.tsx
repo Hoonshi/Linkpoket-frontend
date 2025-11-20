@@ -40,7 +40,7 @@ export default function FolderCard({
     pageId: pageId as string,
   });
 
-  // 폴더 상세 정보를 가져와서 링크 정보 추출
+  // 폴더 상세 정보를 가져와서 링크 정보 추출 (유효한 folderId일 때만)
   const requestParams = {
     pageId: pageId || '',
     commandType: 'VIEW',

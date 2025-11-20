@@ -8,20 +8,23 @@ import { useUserStore } from '@/stores/userStore';
 import { usePageLayout } from '@/hooks/usePageLayout';
 import { getPageDataLength } from '@/utils/pageData';
 import { PageLayout } from '@/components/common-ui/PageLayout';
+import ScrollToTopButton from '@/components/common-ui/ScrollToTopButton';
+import { BackButton } from '@/components/common-ui/BackButton';
+import { CopyLinkButton } from '@/components/common-ui/CopyLinkButton';
 
 const PersonalPageContentSection = lazy(
   () => import('@/components/page-layout-ui/PersonalPageContentSection')
 );
 
 export default function PersonalPage() {
-  const { data } = useFetchPersonalPage('');
+  const { data } = useFetchPersonalPage();
 
   const { setUser } = useUserStore();
   const { setPageInfo } = usePageStore();
   const { setParentsFolderId } = useParentsFolderIdStore();
   const { sortType, handleSort } = usePageLayout();
 
-  const folderData = data?.data.directoryDetailResponses ?? [];
+  const folderData = data?.data.folderDetailResponses ?? [];
   const linkData = data?.data.linkDetailResponses ?? [];
   const { folderDataLength, linkDataLength } = getPageDataLength(
     folderData,
@@ -54,6 +57,8 @@ export default function PersonalPage() {
 
   return (
     <>
+      <BackButton />
+      <CopyLinkButton />
       <PageLayout>
         <PageHeaderSection pageTitle={pageTitle} />
         <PageControllerSection
@@ -66,6 +71,7 @@ export default function PersonalPage() {
           linkData={linkData}
           sortType={sortType}
         />
+        <ScrollToTopButton />
       </PageLayout>
     </>
   );

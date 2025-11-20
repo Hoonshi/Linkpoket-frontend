@@ -9,11 +9,11 @@ const inputVariants = cva(
     variants: {
       variant: {
         default:
-          'border-gray-30 focus:ring-primary-30 focus:border-primary-40 placeholder:text-gray-50',
+          'border-gray-30 focus:ring-gray-40 focus:border-gray-50 placeholder:text-gray-50',
         error:
           'border-error-50 focus:ring-error-30 focus:border-error-50 text-status-danger',
         disabled: 'bg-gray-5 text-gray-50 border-gray-20 cursor-not-allowed',
-        completed: 'border-primary-50 text-gray-90 placeholder:text-gray-50',
+        completed: 'border-gray-70 text-gray-90 placeholder:text-gray-50',
       },
       inputSize: {
         default: 'text-sm',
@@ -43,6 +43,7 @@ export interface InputProps
   maxLength?: number;
   showCharCount?: boolean;
   charCountClassName?: string;
+  focusColor?: string;
 }
 
 export const Input = ({
@@ -60,6 +61,7 @@ export const Input = ({
   charCountClassName,
   value,
   onChange,
+  focusColor,
   ...props
 }: InputProps) => {
   const inputVariant = disabled ? 'disabled' : variant;
@@ -68,6 +70,13 @@ export const Input = ({
     variant === 'error'
       ? 'border-status-danger focus:ring-status-danger focus:border-status-danger'
       : '';
+
+  const customFocusStyles = focusColor
+    ? ({
+        '--focus-ring-color': `${focusColor}40`,
+        '--focus-border-color': focusColor,
+      } as React.CSSProperties)
+    : {};
 
   const currentLength = typeof value === 'string' ? value.length : 0;
   const isNearLimit = maxLength && currentLength >= maxLength * 0.8;
@@ -101,8 +110,11 @@ export const Input = ({
           className={cn(
             inputVariants({ variant: inputVariant, inputSize, isModal }),
             errorStyles,
+            focusColor &&
+              'focus:border-[var(--focus-border-color)] focus:ring-[var(--focus-ring-color)]',
             className
           )}
+          style={customFocusStyles}
           disabled={disabled}
           maxLength={maxLength}
           value={value}

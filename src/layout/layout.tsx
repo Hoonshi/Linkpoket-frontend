@@ -8,6 +8,7 @@ import { useNotificationSSE } from '@/hooks/useNotificationSSE';
 import useRouteChangeTracker from '@/hooks/useRouteChangeTracker';
 import { ProfileSettingsModalSkeleton } from '@/components/skeleton/ProfileSettingModal';
 import { DeleteModalSkeleton } from '@/components/skeleton/DeleteModalSkeleton';
+import { useMobile } from '@/hooks/useMobile';
 
 const ProfileSettingsModal = lazy(
   () => import('@/components/modal/profile/ProfileSettingsModal')
@@ -21,8 +22,12 @@ export default function Layout() {
   useRouteChangeTracker();
   const location = useLocation();
   const path = location.pathname;
-  const [showSidebar, setShowSidebar] = useState(true);
-  const [isFoldSidebar, setIsFoldSidebar] = useState(false);
+  const isHomePage = path === '/home';
+  const isMobile = useMobile();
+  const [showSidebar, setShowSidebar] = useState(() =>
+    isMobile ? false : !isHomePage
+  );
+  const [isFoldSidebar, setIsFoldSidebar] = useState(() => isHomePage);
   const {
     isProfileModalOpen,
     isWithdrawModalOpen,
@@ -49,6 +54,16 @@ export default function Layout() {
 
   useNotificationSSE(isLoggedIn);
 
+  useEffect(() => {
+    if (isMobile) {
+      setShowSidebar(false);
+      setIsFoldSidebar(true);
+    } else {
+      setShowSidebar(!isHomePage);
+      setIsFoldSidebar(isHomePage);
+    }
+  }, [isHomePage, isMobile]);
+
   return (
     <div className="flex h-screen flex-col">
       {!isHideHeader ? (
@@ -68,9 +83,10 @@ export default function Layout() {
             setShowSidebar={setShowSidebar}
             isFoldSidebar={isFoldSidebar}
             setIsFoldSidebar={setIsFoldSidebar}
+            initialCollapsed={isHomePage}
           />
         ) : null}
-        <main className="flex-1 overflow-auto">
+        <main id="app-scroll-container" className="flex-1 overflow-auto">
           <Suspense
             fallback={
               <div className="flex h-screen items-center justify-center">

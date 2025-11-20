@@ -60,7 +60,7 @@ export const Select = ({
     <div ref={selectRef} className="relative">
       <button
         type="button"
-        className={`flex w-full items-center justify-between rounded-lg border p-3 transition-all focus:outline-none ${isError ? 'border-red-500' : 'border-gray-30'} ${isFocused ? 'ring-primary-30 border-primary-40 ring-2' : ''} `}
+        className={`flex w-full items-center justify-between rounded-lg border p-3 transition-all focus:outline-none ${isError ? 'border-red-500' : 'border-gray-30'} ${isFocused ? 'ring-gray-40 border-gray-50 ring-2' : ''} `}
         onClick={() => {
           setIsOpen(!isOpen);
           setIsFocused(true);

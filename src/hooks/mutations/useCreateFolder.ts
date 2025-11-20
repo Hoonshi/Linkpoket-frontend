@@ -6,7 +6,6 @@ import {
 import { createFolder } from '@/apis/folder-apis/createFolder';
 import { CreateFolderData } from '@/types/folders';
 import { useLocation } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 
 export function useCreateFolder(
   pageId: string,
@@ -49,7 +48,7 @@ export function useCreateFolder(
 
       // 임시 UI 업데이트
       const tempFolder = {
-        folderId: uuid(),
+        folderId: '',
         folderName: variables.folderName,
         orderIndex: 9999,
         createdDate: new Date().toISOString().split('T')[0],
@@ -64,8 +63,8 @@ export function useCreateFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses: [
-                ...(old.data?.directoryDetailResponses || []),
+              folderDetailResponses: [
+                ...(old.data?.folderDetailResponses || []),
                 tempFolder,
               ],
             },
@@ -81,8 +80,8 @@ export function useCreateFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses: [
-                ...(old.data?.directoryDetailResponses || []),
+              folderDetailResponses: [
+                ...(old.data?.folderDetailResponses || []),
                 tempFolder,
               ],
             },
@@ -98,8 +97,8 @@ export function useCreateFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses: [
-                ...(old.data?.directoryDetailResponses || []),
+              folderDetailResponses: [
+                ...(old.data?.folderDetailResponses || []),
                 tempFolder,
               ],
             },
