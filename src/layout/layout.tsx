@@ -87,15 +87,7 @@ export default function Layout() {
           />
         ) : null}
         <main id="app-scroll-container" className="flex-1 overflow-auto">
-          <Suspense
-            fallback={
-              <div className="flex h-screen items-center justify-center">
-                <div>로딩 중...</div>
-              </div>
-            }
-          >
-            <Outlet context={{ showSidebar }} />
-          </Suspense>
+          <Outlet context={{ showSidebar }} />
 
           {isProfileModalOpen && (
             <Suspense fallback={<ProfileSettingsModalSkeleton />}>

@@ -7,8 +7,8 @@ import useFetchFolderDetails from '@/hooks/queries/useFetchFolderDetails';
 import { usePageLayout } from '@/hooks/usePageLayout';
 import { getPageDataLength } from '@/utils/pageData';
 import { ErrorState } from '@/components/common-ui/ErrorState';
-import { LoadingState } from '@/components/common-ui/LoadingState';
 import { PageLayout } from '@/components/common-ui/PageLayout';
+import { Spinner } from '@/components/common-ui/Spinner';
 
 const SharedPageFolderContentSection = lazy(
   () => import('@/components/page-layout-ui/SharedPageFolderContentSection')
@@ -53,7 +53,11 @@ export default function FolderDetailPage() {
   }
 
   if (isLoading) {
-    return <LoadingState />;
+    return (
+      <div className="relative h-full w-full">
+        <Spinner display={true} position="center" />
+      </div>
+    );
   }
 
   return (

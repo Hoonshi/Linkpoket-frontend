@@ -11,13 +11,14 @@ import { PageLayout } from '@/components/common-ui/PageLayout';
 import ScrollToTopButton from '@/components/common-ui/ScrollToTopButton';
 import { BackButton } from '@/components/common-ui/BackButton';
 import { CopyLinkButton } from '@/components/common-ui/CopyLinkButton';
+import { Spinner } from '@/components/common-ui/Spinner';
 
 const PersonalPageContentSection = lazy(
   () => import('@/components/page-layout-ui/PersonalPageContentSection')
 );
 
 export default function PersonalPage() {
-  const { data } = useFetchPersonalPage();
+  const { data, isLoading } = useFetchPersonalPage();
 
   const { setUser } = useUserStore();
   const { setPageInfo } = usePageStore();
@@ -31,9 +32,9 @@ export default function PersonalPage() {
     linkData
   );
 
-  const pageId = data?.data.pageId;
-  const rootFolderId = data?.data.rootFolderId;
-  const pageTitle = data?.data.pageTitle;
+  const pageId = data?.data.pageId ?? '';
+  const rootFolderId = data?.data.rootFolderId ?? '';
+  const pageTitle = data?.data.pageTitle ?? '';
 
   useEffect(() => {
     if (!pageId) return;
@@ -44,7 +45,7 @@ export default function PersonalPage() {
       setParentsFolderId(rootFolderId);
     }
 
-    if (data?.data.pageDetails) {
+    if (data?.data) {
       localStorage.setItem(
         'personalPageData',
         JSON.stringify({
@@ -54,6 +55,14 @@ export default function PersonalPage() {
       );
     }
   }, [pageId, rootFolderId, data, setPageInfo, setParentsFolderId, setUser]);
+
+  if (isLoading) {
+    return (
+      <div className="relative h-full w-full">
+        <Spinner display={true} position="center" />
+      </div>
+    );
+  }
 
   return (
     <>

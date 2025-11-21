@@ -10,6 +10,7 @@ import { PageLayout } from '@/components/common-ui/PageLayout';
 import ScrollToTopButton from '@/components/common-ui/ScrollToTopButton';
 import { BackButton } from '@/components/common-ui/BackButton';
 import { CopyLinkButton } from '@/components/common-ui/CopyLinkButton';
+import { Spinner } from '@/components/common-ui/Spinner';
 
 const SharedPageFolderContentSection = lazy(
   () => import('@/components/page-layout-ui/SharedPageFolderContentSection')
@@ -18,7 +19,7 @@ const SharedPageFolderContentSection = lazy(
 export default function SharedPage() {
   const { pageId: pageIdParam } = useParams();
   const pageId = pageIdParam ?? '';
-  const { data } = useFetchSharedPage(pageId);
+  const { data, isLoading } = useFetchSharedPage(pageId);
 
   const { setPageInfo } = usePageStore();
   const { setParentsFolderId } = useParentsFolderIdStore();
@@ -33,8 +34,8 @@ export default function SharedPage() {
     linkData
   );
 
-  const rootFolderId = refinedData?.rootFolderId;
-  const pageTitle = refinedData?.pageTitle;
+  const rootFolderId = refinedData?.rootFolderId ?? '';
+  const pageTitle = refinedData?.pageTitle ?? '';
 
   useEffect(() => {
     if (!pageId) return;
@@ -45,6 +46,14 @@ export default function SharedPage() {
       setParentsFolderId(rootFolderId);
     }
   }, [pageId, rootFolderId, setPageInfo, setParentsFolderId]);
+
+  if (isLoading) {
+    return (
+      <div className="relative h-full w-full">
+        <Spinner display={true} position="center" />
+      </div>
+    );
+  }
 
   return (
     <>

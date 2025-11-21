@@ -8,13 +8,14 @@ import { getPageDataLength } from '@/utils/pageData';
 import { PageLayout } from '@/components/common-ui/PageLayout';
 import { BackButton } from '@/components/common-ui/BackButton';
 import { CopyLinkButton } from '@/components/common-ui/CopyLinkButton';
+import { Spinner } from '@/components/common-ui/Spinner';
 
 const BookmarkPageContentSection = lazy(
   () => import('@/components/page-layout-ui/BookmarkPageContentSection')
 );
 
 export default function BookmarkPage() {
-  const { favorite: refinedData } = useFetchFavorite();
+  const { favorite: refinedData, isLoading } = useFetchFavorite();
   const { sortType, handleSort } = usePageLayout();
 
   const folderData = refinedData?.directorySimpleResponses ?? [];
@@ -23,6 +24,14 @@ export default function BookmarkPage() {
     folderData,
     linkData
   );
+
+  if (isLoading) {
+    return (
+      <div className="relative h-full w-full">
+        <Spinner display={true} position="center" />
+      </div>
+    );
+  }
 
   return (
     <>
