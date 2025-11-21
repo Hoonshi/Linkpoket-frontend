@@ -22,6 +22,7 @@ export const useAddLinkForm = (isOpen: boolean, onClose: () => void) => {
       new URL(urlString);
       return true;
     } catch (error) {
+      console.error('URL 유효성 검사 실패:', error);
       return false;
     }
   };
@@ -68,7 +69,9 @@ export const useAddLinkForm = (isOpen: boolean, onClose: () => void) => {
       setIsPreviewing(false);
     },
     onError: (err) => {
-      toast.error(err.message || '링크명을 가져올 수 없습니다.');
+      toast.error(
+        err instanceof Error ? err.message : '링크명을 가져올 수 없습니다.'
+      );
       console.error('링크 프리뷰 실패:', err);
       setIsPreviewing(false);
     },

@@ -1,3 +1,5 @@
+import { LinkDetail } from './links';
+
 // 공통 타입 및 상수
 
 export interface BaseRequest {
@@ -6,11 +8,6 @@ export interface BaseRequest {
 }
 
 // 내부 재사용 타입
-
-interface FolderBaseFields {
-  folderId: string;
-  folderName: string;
-}
 
 interface ApiResponseStructure<T> {
   status: number;
@@ -53,7 +50,7 @@ export interface UpdateDragandDropProps {
   toFolderId: string;
 }
 
-export interface FetchFolderDetailsProps {
+export interface FolderDetailsProps {
   pageId: string;
   commandType: string;
   folderId: string;
@@ -62,13 +59,45 @@ export interface FetchFolderDetailsProps {
 
 // 응답 데이터 타입
 
-export interface FolderDetail extends FolderBaseFields {
+export interface FolderDetail {
   isFavorite: boolean;
   orderIndex: number;
   createdDate: string;
+  folderId: string;
+  folderName: string;
 }
 
 export type FolderDetailResponse = Array<FolderDetail>;
+
+interface FolderDetailsResponseContent {
+  folderDetailResponses: FolderDetail[];
+  linkDetailResponses: LinkDetail[];
+  targetFolderId: string;
+  targetFolderName: string;
+  targetFolderDepth: number;
+  folderCount: number;
+  linkCount: number;
+}
+
+export type FolderDetailsResponse =
+  ApiResponseStructure<FolderDetailsResponseContent>;
+
+interface SidebarDirectoryItem {
+  folderId: string;
+  folderTitle: string;
+  children: Array<{
+    folderId: string;
+    folderTitle: string;
+  }>;
+}
+
+interface FolderListResponseContent {
+  pageId: string;
+  directories: SidebarDirectoryItem[];
+}
+
+export type FolderListResponse =
+  ApiResponseStructure<FolderListResponseContent>;
 
 interface TransferFolderResponseContent {
   receiverEmail: string;

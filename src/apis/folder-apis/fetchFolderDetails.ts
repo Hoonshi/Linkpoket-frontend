@@ -1,9 +1,9 @@
 import { axiosInstance } from '../axiosInstance';
-import { FetchFolderDetailsProps } from '@/types/folders';
+import { FolderDetailsProps, FolderDetailsResponse } from '@/types/folders';
 
 export default async function fetchFolderDetails(
-  data: FetchFolderDetailsProps
-) {
+  data: FolderDetailsProps
+): Promise<FolderDetailsResponse> {
   try {
     const response = await axiosInstance.get('/api/folders/details', {
       params: {

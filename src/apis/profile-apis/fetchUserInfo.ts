@@ -1,6 +1,7 @@
 import { axiosInstance } from '../axiosInstance';
+import { PersonalUserInfoResponse } from '@/types/members';
 
-export default async function fetchUserInfo(): Promise<any> {
+export default async function fetchUserInfo(): Promise<PersonalUserInfoResponse> {
   try {
     const response = await axiosInstance.get('/api/member/me');
     return response.data;

@@ -58,8 +58,9 @@ export interface PatchSharedPageInvitationData {
   notificationType: string;
 }
 
-// 응답 데이터 타입 (Response Data Types)
+// 응답 데이터 타입
 
+//개인 페이지 데이터 타입
 export interface PageDetails extends PageBaseFields {
   rootFolderId: string;
   directoryDetailRespons: FolderDetail[];
@@ -80,6 +81,7 @@ interface PageDataContent {
 
 export type PageData = ApiResponseStructure<PageDataContent>;
 
+//들어와있는 페이지 데이터 타입
 export interface JoinedPageData extends PageBaseFields {
   pageType: 'PERSONAL' | 'SHARED';
 }
@@ -102,6 +104,7 @@ export type FetchJoinedPageResponseData = ApiResponseStructure<
   JoinedPageItem[]
 >;
 
+//초대 응답 데이터 타입
 interface PatchSharedPageInvitationResponseContent {
   dispatchRequestId: string;
   requestStatus: 'ACCEPTED' | 'REJECTED';
@@ -111,6 +114,21 @@ interface PatchSharedPageInvitationResponseContent {
 
 export type PatchSharedPageInvitationResponseData =
   ApiResponseStructure<PatchSharedPageInvitationResponseContent>;
+
+//북마크 타입
+type BookmarkDirectorySimpleResponse = Omit<FolderDetail, 'orderIndex'>;
+
+type BookmarkSiteSimpleResponse = Omit<LinkDetail, 'orderIndex'> & {
+  createdDate: string;
+};
+
+interface BookmarkResponseContent {
+  email: string;
+  directorySimpleResponses: BookmarkDirectorySimpleResponse[];
+  siteSimpleResponses: BookmarkSiteSimpleResponse[];
+}
+
+export type BookmarkResponse = ApiResponseStructure<BookmarkResponseContent>;
 
 // 컴포넌트 Props 타입
 

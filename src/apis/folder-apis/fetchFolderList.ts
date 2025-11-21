@@ -1,6 +1,9 @@
 import { axiosInstance } from '../axiosInstance';
+import { FolderListResponse } from '@/types/folders';
 
-export default async function fetchFolderList(pageId: string) {
+export default async function fetchFolderList(
+  pageId: string
+): Promise<FolderListResponse> {
   try {
     const response = await axiosInstance.get('/api/folders/sidebar', {
       params: {

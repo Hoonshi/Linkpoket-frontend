@@ -1,6 +1,7 @@
 import { axiosInstance } from '../axiosInstance';
+import { BookmarkResponse } from '@/types/pages';
 
-export async function fetchFavorite() {
+export async function fetchFavorite(): Promise<BookmarkResponse> {
   try {
     const response = await axiosInstance.get('/api/favorite');
     return response.data;

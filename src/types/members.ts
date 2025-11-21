@@ -1,3 +1,13 @@
+// 공통 타입 및 상수
+
+interface ApiResponseStructure<T> {
+  status: number;
+  message: string;
+  data: T;
+}
+
+// 응답 데이터 타입
+
 export interface PageMember {
   memberId: number;
   email: string;
@@ -7,24 +17,33 @@ export interface PageMember {
   isWaiting: boolean;
 }
 
-export interface SharedPageDashboardResponse {
-  status: number;
-  message: string;
-  data: {
-    pageId: string;
-    visibility: 'PUBLIC' | 'RESTRICTED';
-    pageType: 'SHARED';
-    pageMembers: PageMember[];
-  };
+interface SharedPageDashboardResponseContent {
+  pageId: string;
+  visibility: 'PUBLIC' | 'RESTRICTED';
+  pageType: 'SHARED';
+  pageMembers: PageMember[];
 }
 
-export interface SharedPageMemberList {
-  status: number;
-  message: string;
-  data: {
-    memberId: string;
-    email: string;
-    nickName: string;
-    colorCode: string;
-  };
+export type SharedPageDashboardResponse =
+  ApiResponseStructure<SharedPageDashboardResponseContent>;
+
+interface SharedPageMemberListContent {
+  memberId: string;
+  email: string;
+  nickName: string;
+  colorCode: string;
 }
+
+export type SharedPageMemberList =
+  ApiResponseStructure<SharedPageMemberListContent>;
+
+interface PersonalUserInfoResponseContent {
+  memberId: string;
+  email: string;
+  nickName: string;
+  colorCode: string;
+  foldeerColorCode: string;
+}
+
+export type PersonalUserInfoResponse =
+  ApiResponseStructure<PersonalUserInfoResponseContent>;
