@@ -1,5 +1,6 @@
 import { axiosInstance } from '../axiosInstance';
 import { PageData, PageParamsData } from '@/types/pages';
+import { pageDataSchema } from '@/schemas/pages';
 
 export async function fetchSharedPage(data: PageParamsData): Promise<PageData> {
   try {
@@ -12,7 +13,13 @@ export async function fetchSharedPage(data: PageParamsData): Promise<PageData> {
         },
       }
     );
-    return response.data;
+
+    const validation = pageDataSchema.safeParse(response.data);
+    if (!validation.success) {
+      console.error('공유 페이지 검증 실패:', validation.error);
+      throw new Error('공유 페이지 검증 실패');
+    }
+    return validation.data;
   } catch (error) {
     console.error('공유 페이지 조회 실패:', error);
     throw error;

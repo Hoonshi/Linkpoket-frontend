@@ -25,27 +25,17 @@ export default function SharedPage() {
   const { setParentsFolderId } = useParentsFolderIdStore();
   const { sortType, handleSort } = usePageLayout();
 
-  const refinedData = data?.data;
-  const folderData = refinedData?.folderDetailResponses ?? [];
-  const linkData = refinedData?.linkDetailResponses ?? [];
-
-  const { folderDataLength, linkDataLength } = getPageDataLength(
-    folderData,
-    linkData
-  );
-
-  const rootFolderId = refinedData?.rootFolderId ?? '';
-  const pageTitle = refinedData?.pageTitle ?? '';
-
   useEffect(() => {
-    if (!pageId) return;
+    if (!pageId || !data) return;
+
+    const rootFolderId = data.data.rootFolderId;
 
     setPageInfo(pageId);
 
     if (rootFolderId) {
       setParentsFolderId(rootFolderId);
     }
-  }, [pageId, rootFolderId, setPageInfo, setParentsFolderId]);
+  }, [pageId, data, setPageInfo, setParentsFolderId]);
 
   if (isLoading) {
     return (
@@ -54,6 +44,20 @@ export default function SharedPage() {
       </div>
     );
   }
+
+  // data가 없으면 렌더링하지 않음 (Zod 검증 실패 또는 에러 상태)
+  if (!data) {
+    return null;
+  }
+
+  const folderData = data.data.folderDetailResponses;
+  const linkData = data.data.linkDetailResponses;
+  const { folderDataLength, linkDataLength } = getPageDataLength(
+    folderData,
+    linkData
+  );
+
+  const pageTitle = data.data.pageTitle;
 
   return (
     <>

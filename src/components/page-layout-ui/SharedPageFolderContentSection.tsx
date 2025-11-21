@@ -66,9 +66,7 @@ export default function SharedPageFolderContentSection({
       setPageData(sortedData);
     } else {
       // 일반 모드
-      const safeFolderData = Array.isArray(folderData) ? folderData : [];
-      const safeLinkData = Array.isArray(linkData) ? linkData : [];
-      const combinedData = [...safeFolderData, ...safeLinkData];
+      const combinedData = [...folderData, ...linkData];
       const sortedData = sortPageData(combinedData, sortType);
       setPageData(sortedData);
     }

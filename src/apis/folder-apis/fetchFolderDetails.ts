@@ -1,5 +1,6 @@
 import { axiosInstance } from '../axiosInstance';
 import { FolderDetailsProps, FolderDetailsResponse } from '@/types/folders';
+import { folderDetailsResponseSchema } from '@/schemas/folders';
 
 export default async function fetchFolderDetails(
   data: FolderDetailsProps
@@ -13,7 +14,13 @@ export default async function fetchFolderDetails(
         sortType: 'BASIC',
       },
     });
-    return response.data;
+
+    const validation = folderDetailsResponseSchema.safeParse(response.data);
+    if (!validation.success) {
+      console.error('폴더 상세 정보 검증 실패:', validation.error);
+      throw new Error('폴더 상세 정보 검증 실패');
+    }
+    return validation.data;
   } catch (error) {
     console.error('폴더 상세 정보 조회 실패:', error);
     throw error;

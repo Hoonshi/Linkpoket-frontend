@@ -24,8 +24,8 @@ const AddLinkModal = lazy(() => import('../modal/link/AddLinkModal'));
 const AddFolderModal = lazy(() => import('../modal/folder/AddFolderModal'));
 
 export default function PersonalPageContentSection({
-  folderData = [],
-  linkData = [],
+  folderData,
+  linkData,
   sortType,
 }: PageContentSectionProps) {
   const {
@@ -68,9 +68,7 @@ export default function PersonalPageContentSection({
       setPageData(sortedData);
     } else {
       // 일반 모드
-      const safeFolderData = Array.isArray(folderData) ? folderData : [];
-      const safeLinkData = Array.isArray(linkData) ? linkData : [];
-      const combinedData = [...safeFolderData, ...safeLinkData];
+      const combinedData = [...folderData, ...linkData];
       const sortedData = sortPageData(combinedData, sortType);
       setPageData(sortedData);
     }

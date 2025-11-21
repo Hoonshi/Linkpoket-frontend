@@ -25,19 +25,11 @@ export default function PersonalPage() {
   const { setParentsFolderId } = useParentsFolderIdStore();
   const { sortType, handleSort } = usePageLayout();
 
-  const folderData = data?.data.folderDetailResponses ?? [];
-  const linkData = data?.data.linkDetailResponses ?? [];
-  const { folderDataLength, linkDataLength } = getPageDataLength(
-    folderData,
-    linkData
-  );
-
-  const pageId = data?.data.pageId ?? '';
-  const rootFolderId = data?.data.rootFolderId ?? '';
-  const pageTitle = data?.data.pageTitle ?? '';
-
   useEffect(() => {
-    if (!pageId) return;
+    if (!data) return;
+
+    const pageId = data.data.pageId;
+    const rootFolderId = data.data.rootFolderId;
 
     setPageInfo(pageId);
 
@@ -45,16 +37,14 @@ export default function PersonalPage() {
       setParentsFolderId(rootFolderId);
     }
 
-    if (data?.data) {
-      localStorage.setItem(
-        'personalPageData',
-        JSON.stringify({
-          data,
-          lastUpdated: new Date().toISOString(),
-        })
-      );
-    }
-  }, [pageId, rootFolderId, data, setPageInfo, setParentsFolderId, setUser]);
+    localStorage.setItem(
+      'personalPageData',
+      JSON.stringify({
+        data,
+        lastUpdated: new Date().toISOString(),
+      })
+    );
+  }, [data, setPageInfo, setParentsFolderId, setUser]);
 
   if (isLoading) {
     return (
@@ -63,6 +53,21 @@ export default function PersonalPage() {
       </div>
     );
   }
+
+  // data가 없으면 렌더링하지 않음 (Zod 검증 실패 또는 에러 상태)
+  if (!data) {
+    return null;
+  }
+
+  // Zod 검증을 통과했다면 구조가 보장됨 (옵셔널 체이닝과 기본값 제거)
+  const folderData = data.data.folderDetailResponses;
+  const linkData = data.data.linkDetailResponses;
+  const { folderDataLength, linkDataLength } = getPageDataLength(
+    folderData,
+    linkData
+  );
+
+  const pageTitle = data.data.pageTitle;
 
   return (
     <>
