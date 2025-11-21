@@ -36,20 +36,8 @@ export default function FolderDetailPage() {
 
   const { data, isLoading, isError } = useFetchFolderDetails(requestParams);
 
-  const refinedData = data?.data;
-  const folderData = refinedData?.folderDetailResponses ?? [];
-  const linkData = refinedData?.linkDetailResponses ?? [];
-  const { folderDataLength, linkDataLength } = getPageDataLength(
-    folderData,
-    linkData
-  );
-
-  console.log('refinedData', refinedData);
-
-  const folderName = refinedData?.targetFolderName;
-
   if (isError) {
-    return <ErrorState message="폴더를 불러올 수 없습니다." />;
+    return <ErrorState message="폴더 데이터를 불러올 수 없습니다." />;
   }
 
   if (isLoading) {
@@ -60,10 +48,23 @@ export default function FolderDetailPage() {
     );
   }
 
+  if (!data) {
+    return null;
+  }
+
+  const folderData = data.data.folderDetailResponses;
+  const linkData = data.data.linkDetailResponses;
+  const { folderDataLength, linkDataLength } = getPageDataLength(
+    folderData,
+    linkData
+  );
+
+  const folderName = data.data.targetFolderName;
+
   return (
     <PageLayout>
       <PageHeaderSection
-        pageTitle={folderName ?? ''}
+        pageTitle={folderName}
         pageId={pageId}
         folderId={folderId}
       />

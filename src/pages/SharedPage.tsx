@@ -11,6 +11,7 @@ import ScrollToTopButton from '@/components/common-ui/ScrollToTopButton';
 import { BackButton } from '@/components/common-ui/BackButton';
 import { CopyLinkButton } from '@/components/common-ui/CopyLinkButton';
 import { Spinner } from '@/components/common-ui/Spinner';
+import { ErrorState } from '@/components/common-ui/ErrorState';
 
 const SharedPageFolderContentSection = lazy(
   () => import('@/components/page-layout-ui/SharedPageFolderContentSection')
@@ -19,7 +20,7 @@ const SharedPageFolderContentSection = lazy(
 export default function SharedPage() {
   const { pageId: pageIdParam } = useParams();
   const pageId = pageIdParam ?? '';
-  const { data, isLoading } = useFetchSharedPage(pageId);
+  const { data, isLoading, isError } = useFetchSharedPage(pageId);
 
   const { setPageInfo } = usePageStore();
   const { setParentsFolderId } = useParentsFolderIdStore();
@@ -37,6 +38,10 @@ export default function SharedPage() {
     }
   }, [pageId, data, setPageInfo, setParentsFolderId]);
 
+  if (isError) {
+    return <ErrorState message="공유 페이지를 불러올 수 없습니다." />;
+  }
+
   if (isLoading) {
     return (
       <div className="relative h-full w-full">
@@ -45,7 +50,6 @@ export default function SharedPage() {
     );
   }
 
-  // data가 없으면 렌더링하지 않음 (Zod 검증 실패 또는 에러 상태)
   if (!data) {
     return null;
   }

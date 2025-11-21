@@ -12,13 +12,14 @@ import ScrollToTopButton from '@/components/common-ui/ScrollToTopButton';
 import { BackButton } from '@/components/common-ui/BackButton';
 import { CopyLinkButton } from '@/components/common-ui/CopyLinkButton';
 import { Spinner } from '@/components/common-ui/Spinner';
+import { ErrorState } from '@/components/common-ui/ErrorState';
 
 const PersonalPageContentSection = lazy(
   () => import('@/components/page-layout-ui/PersonalPageContentSection')
 );
 
 export default function PersonalPage() {
-  const { data, isLoading } = useFetchPersonalPage();
+  const { data, isLoading, isError } = useFetchPersonalPage();
 
   const { setUser } = useUserStore();
   const { setPageInfo } = usePageStore();
@@ -46,6 +47,10 @@ export default function PersonalPage() {
     );
   }, [data, setPageInfo, setParentsFolderId, setUser]);
 
+  if (isError) {
+    return <ErrorState message="개인 페이지를 불러올 수 없습니다." />;
+  }
+
   if (isLoading) {
     return (
       <div className="relative h-full w-full">
@@ -54,12 +59,10 @@ export default function PersonalPage() {
     );
   }
 
-  // data가 없으면 렌더링하지 않음 (Zod 검증 실패 또는 에러 상태)
   if (!data) {
     return null;
   }
 
-  // Zod 검증을 통과했다면 구조가 보장됨 (옵셔널 체이닝과 기본값 제거)
   const folderData = data.data.folderDetailResponses;
   const linkData = data.data.linkDetailResponses;
   const { folderDataLength, linkDataLength } = getPageDataLength(
