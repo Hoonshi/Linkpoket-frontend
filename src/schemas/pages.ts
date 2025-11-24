@@ -14,7 +14,7 @@ export const linkDetailSchema = z.object({
   linkName: z.string(),
   linkUrl: z.string(),
   linkId: z.string(),
-  description: z.string(),
+  description: z.string().nullable(),
   isFavorite: z.boolean(),
   faviconUrl: z.string(),
   representImageUrl: z.string(),

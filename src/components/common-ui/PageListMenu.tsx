@@ -108,8 +108,8 @@ export default function PageListMenu({
           />
 
           {/* 메뉴 */}
-          <div className="fixed bottom-24 left-6 z-50 rounded-2xl bg-white/90 px-4 py-3 shadow-lg backdrop-blur-md">
-            <div className="max-h-[60vh] space-y-2 overflow-y-auto">
+          <div className="fixed bottom-24 left-6 z-50">
+            <div className="max-h-[28rem] space-y-5 overflow-y-auto">
               {pageList.length > 0 ? (
                 pageList.map((page, idx) => {
                   const isActive = page.index === activeIndex;
@@ -117,7 +117,7 @@ export default function PageListMenu({
                     <button
                       key={`${page.title}-${idx}`}
                       onClick={() => handleMenuItemClick(page.index)}
-                      className="flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left transition-all hover:bg-gray-100/50"
+                      className="flex w-full items-center gap-3 text-left transition-all"
                     >
                       {/* 원형 이미지 */}
                       <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
@@ -129,10 +129,10 @@ export default function PageListMenu({
                       </div>
                       {/* 페이지 이름 */}
                       <span
-                        className={`font-medium ${
+                        className={`text-2xl font-medium ${
                           isActive
-                            ? 'font-semibold text-black'
-                            : 'text-gray-800'
+                            ? 'font-semibold text-white'
+                            : 'text-white/70'
                         }`}
                       >
                         {page.title}
@@ -141,7 +141,7 @@ export default function PageListMenu({
                   );
                 })
               ) : (
-                <div className="px-2 py-2.5 text-center text-gray-500">
+                <div className="px-2 py-2.5 text-center text-xl text-white/70">
                   페이지가 없습니다
                 </div>
               )}
