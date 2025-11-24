@@ -109,7 +109,7 @@ export default function PageListMenu({
 
           {/* 메뉴 */}
           <div className="fixed bottom-24 left-6 z-50">
-            <div className="max-h-[28rem] space-y-5 overflow-y-auto">
+            <div className="scrollbar-hide max-h-[28rem] space-y-6 overflow-y-auto">
               {pageList.length > 0 ? (
                 pageList.map((page, idx) => {
                   const isActive = page.index === activeIndex;
