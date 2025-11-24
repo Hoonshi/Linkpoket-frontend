@@ -13,6 +13,7 @@ import {
   HomeCard,
 } from '@/constants/homeCards';
 import { resolvePageImageUrl } from '@/utils/resolvePageImageUrl';
+import PageListMenu from '@/components/common-ui/PageListMenu';
 
 export default function MobileHome() {
   const isMobile = useMobile();
@@ -307,6 +308,11 @@ export default function MobileHome() {
     }
   };
 
+  // 목록 항목 클릭 핸들러
+  const handleMenuItemClick = (index: number) => {
+    goToDot(index);
+  };
+
   return (
     <div className="min-h-screen w-full bg-white">
       {/* 헤더 */}
@@ -451,6 +457,15 @@ export default function MobileHome() {
           })}
         </div>
       </div>
+
+      {/* 페이지 목록 메뉴 */}
+      <PageListMenu
+        personalPage={personalPage}
+        sharedPages={sharedPages}
+        allCards={allCards}
+        activeIndex={activeIndex}
+        onItemClick={handleMenuItemClick}
+      />
     </div>
   );
 }
