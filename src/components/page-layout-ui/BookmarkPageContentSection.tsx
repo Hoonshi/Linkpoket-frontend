@@ -60,6 +60,14 @@ export default function BookmarkPageContentSection({
     }
   }, [folderData, linkData, sortType, searchKeyword, searchResult]);
 
+  // 정렬된 pageData에서 폴더와 링크 분리
+  const sortedFolderData = pageData.filter(
+    (item): item is FolderDetail => 'folderId' in item
+  );
+  const sortedLinkData = pageData.filter(
+    (item): item is LinkDetail => 'linkId' in item
+  );
+
   const sensors = useDragAndDropSensors();
 
   const { activeId, onDragStart, onDragEnd, getActiveItem } =
@@ -95,26 +103,26 @@ export default function BookmarkPageContentSection({
           {isMobile ? (
             <>
               <div className="text-gray-90 mb-4 px-4 text-lg font-semibold">
-                폴더 ({folderData.length})
+                폴더 ({sortedFolderData.length})
               </div>
               <div className="relative mb-10 grid w-full grid-cols-2 gap-x-2 gap-y-8 sm:grid-cols-3">
                 <MobileFolderCardAddButton />
-                {folderData.map((item: FolderDetail, index: number) => (
+                {sortedFolderData.map((item: FolderDetail, index: number) => (
                   <MobileFolderCard
                     key={item.folderId}
                     folder={item}
                     index={index}
-                    folderDataLength={folderData.length}
+                    folderDataLength={sortedFolderData.length}
                     pageImageUrl={pageImageUrl}
                   />
                 ))}
               </div>
               <div className="text-gray-90 mb-4 px-4 text-lg font-semibold">
-                링크 ({linkData.length})
+                링크 ({sortedLinkData.length})
               </div>
               <div className="relative grid w-full grid-cols-3 justify-center gap-x-2 gap-y-8 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 <MobileLinkCardButton />
-                {linkData.map((item: LinkDetail) => (
+                {sortedLinkData.map((item: LinkDetail) => (
                   <SortablePageItem key={item.linkId} item={item} />
                 ))}
               </div>
