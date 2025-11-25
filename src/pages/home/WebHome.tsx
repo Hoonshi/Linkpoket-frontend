@@ -51,15 +51,17 @@ export default function WebHome() {
   });
 
   // Overview API 응답에서 데이터 추출
-  const personalPage = useMemo(
-    () => overviewData?.data?.find((p: any) => p.pageType === 'PERSONAL'),
-    [overviewData?.data]
-  );
+  const { personalPage, sharedPages } = useMemo(() => {
+    const pagesLocal = overviewData?.data || [];
+    const personalPage = pagesLocal.find((p: any) => p.pageType === 'PERSONAL');
+    const sharedPages = pagesLocal.filter((p: any) => p.pageType === 'SHARED');
 
-  const sharedPages = useMemo(
-    () => overviewData?.data?.filter((p: any) => p.pageType === 'SHARED') || [],
-    [overviewData?.data]
-  );
+    console.log('📦 Overview 데이터:', pagesLocal);
+    console.log('👤 개인 페이지:', personalPage);
+    console.log('👥 공유 페이지들:', sharedPages);
+
+    return { personalPage, sharedPages };
+  }, [overviewData?.data]);
 
   // 북마크 데이터만 별도로 가져오기 (북마크는 페이지가 아니므로)
   const { favorite: bookmarkData, isLoading: bookmarkLoading } =
@@ -124,6 +126,7 @@ export default function WebHome() {
       }));
 
       const updatedCards = [...updatedBaseCards, ...sharedPageCards];
+      console.log('🎯 최종 카드:', updatedCards);
       setCards(updatedCards);
       setIsDataLoaded(true);
       setVisibleCount(Math.min(12, updatedCards.length));
