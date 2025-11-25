@@ -38,8 +38,7 @@ export const BackButton: React.FC<BackButtonProps> = ({
   return (
     <button
       onClick={handleBackClick}
-      className={`hover:bg-gray-10 active:bg-gray-20 fixed top-4 left-4 z-[9999] flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-md transition-colors ${className}`}
-      style={{ position: 'fixed' }}
+      className={`hover:bg-gray-10 active:bg-gray-20 absolute top-4 left-4 z-20 flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-md transition-colors ${className}`}
       aria-label="뒤로가기"
     >
       <svg

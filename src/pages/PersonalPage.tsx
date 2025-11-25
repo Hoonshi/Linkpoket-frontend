@@ -9,8 +9,6 @@ import { usePageLayout } from '@/hooks/usePageLayout';
 import { getPageDataLength } from '@/utils/pageData';
 import { PageLayout } from '@/components/common-ui/PageLayout';
 import ScrollToTopButton from '@/components/common-ui/ScrollToTopButton';
-import { BackButton } from '@/components/common-ui/BackButton';
-import { CopyLinkButton } from '@/components/common-ui/CopyLinkButton';
 import { Spinner } from '@/components/common-ui/Spinner';
 import { ErrorState } from '@/components/common-ui/ErrorState';
 
@@ -74,8 +72,6 @@ export default function PersonalPage() {
 
   return (
     <>
-      <BackButton />
-      <CopyLinkButton />
       <PageLayout>
         <PageHeaderSection pageTitle={pageTitle} />
         <PageControllerSection

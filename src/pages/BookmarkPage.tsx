@@ -6,8 +6,6 @@ import useFetchFavorite from '@/hooks/queries/useFetchFavorite';
 import { usePageLayout } from '@/hooks/usePageLayout';
 import { getPageDataLength } from '@/utils/pageData';
 import { PageLayout } from '@/components/common-ui/PageLayout';
-import { BackButton } from '@/components/common-ui/BackButton';
-import { CopyLinkButton } from '@/components/common-ui/CopyLinkButton';
 import { Spinner } from '@/components/common-ui/Spinner';
 
 const BookmarkPageContentSection = lazy(
@@ -35,8 +33,6 @@ export default function BookmarkPage() {
 
   return (
     <>
-      <BackButton />
-      <CopyLinkButton />
       <PageLayout>
         <PageHeaderSection pageTitle="북마크" />
         <PageControllerSection
