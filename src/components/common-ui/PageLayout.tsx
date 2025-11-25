@@ -27,7 +27,7 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
         />
       )}
       <div
-        className={`bg-gray-5 flex min-h-screen min-w-[328px] flex-col px-[24px] py-[20px] md:px-[64px] md:py-[56px] xl:px-[102px] ${className}`}
+        className={`bg-gray-5 flex min-h-screen min-w-[328px] flex-col px-[24px] py-[20px] md:px-[64px] md:py-[56px] xl:px-[102px] ${isMobile ? 'pb-24' : ''} ${className}`}
       >
         {children}
         {isMobile && <MobileNavigation />}
