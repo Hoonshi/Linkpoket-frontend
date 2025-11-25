@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { resolvePageImageUrl } from '@/utils/resolvePageImageUrl';
 import { DEFAULT_SHARED_PAGE_IMAGE, baseCards } from '@/constants/homeCards';
 
@@ -18,10 +19,17 @@ export default function PageListMenu({
   onItemClick,
 }: PageListMenuProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   // 페이지 이름 목록 생성 (처음에 불러온 데이터 그대로 사용)
   const pageList = useMemo(() => {
-    const pages: Array<{ title: string; index: number; imageUrl: string }> = [];
+    const pages: Array<{
+      title: string;
+      index: number;
+      imageUrl: string;
+      pageId?: string;
+      pageType: 'personal' | 'shared' | 'bookmark';
+    }> = [];
 
     // 개인 페이지 추가
     if (personalPage?.pageTitle) {
@@ -41,6 +49,7 @@ export default function PageListMenu({
             personalPage.pageImageUrl,
             fallbackImage
           ),
+          pageType: 'personal',
         });
       }
     }
@@ -58,17 +67,53 @@ export default function PageListMenu({
             page.pageImageUrl,
             DEFAULT_SHARED_PAGE_IMAGE
           ),
+          pageId: page.pageId,
+          pageType: 'shared',
         });
       }
     });
 
+    // 북마크 페이지 추가
+    const bookmarkCardIndex = allCards.findIndex(
+      (card) => card.id === 'ocean-life'
+    );
+    if (bookmarkCardIndex !== -1) {
+      const bookmarkCard = baseCards.find((card) => card.id === 'ocean-life');
+      pages.push({
+        title: '북마크',
+        index: bookmarkCardIndex,
+        imageUrl: bookmarkCard?.backgroundImage || DEFAULT_SHARED_PAGE_IMAGE,
+        pageType: 'bookmark',
+      });
+    }
+
     return pages;
   }, [personalPage, sharedPages, allCards]);
 
-  // 목록 항목 클릭 핸들러
-  const handleMenuItemClick = (index: number) => {
-    onItemClick(index);
+  // 목록 항목 클릭 핸들러 - 실제 페이지로 이동
+  const handleMenuItemClick = (page: {
+    title: string;
+    index: number;
+    imageUrl: string;
+    pageId?: string;
+    pageType: 'personal' | 'shared' | 'bookmark';
+  }) => {
     setIsMenuOpen(false);
+
+    // 페이지 타입에 따라 라우팅
+    switch (page.pageType) {
+      case 'personal':
+        navigate('/');
+        break;
+      case 'shared':
+        if (page.pageId) {
+          navigate(`/shared/${page.pageId}`);
+        }
+        break;
+      case 'bookmark':
+        navigate('/bookmarks');
+        break;
+    }
   };
 
   return (
@@ -116,7 +161,7 @@ export default function PageListMenu({
                   return (
                     <button
                       key={`${page.title}-${idx}`}
-                      onClick={() => handleMenuItemClick(page.index)}
+                      onClick={() => handleMenuItemClick(page)}
                       className="flex w-full items-center gap-3 text-left transition-all"
                     >
                       {/* 원형 이미지 */}
