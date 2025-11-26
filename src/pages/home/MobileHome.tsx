@@ -311,11 +311,6 @@ export default function MobileHome() {
     }
   };
 
-  // 목록 항목 클릭 핸들러
-  const handleMenuItemClick = (index: number) => {
-    goToDot(index);
-  };
-
   return (
     <div className="min-h-screen w-full bg-white">
       {/* 헤더 */}
@@ -467,10 +462,8 @@ export default function MobileHome() {
         sharedPages={sharedPages}
         allCards={allCards}
         activeIndex={activeIndex}
-        onItemClick={handleMenuItemClick}
         isMenuOpen={isPageListMenuOpen}
         setIsMenuOpen={setIsPageListMenuOpen}
-        hideFloatingButton={true}
       />
       {/* 모바일 네비게이션 */}
       <MobileNavigation

@@ -105,16 +105,26 @@ export default function BookmarkPageContentSection({
               <div className="text-gray-90 mb-4 px-4 text-lg font-semibold">
                 폴더 ({sortedFolderData.length})
               </div>
-              <div className="relative mb-10 grid w-full grid-cols-2 gap-x-2 gap-y-8 sm:grid-cols-3">
-                <MobileFolderCardAddButton />
+              <div
+                className="scrollbar-hide relative mb-10 flex w-full gap-x-2 overflow-x-auto pb-2"
+                style={{
+                  WebkitOverflowScrolling: 'touch' as any,
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                }}
+              >
+                <div className="flex-shrink-0">
+                  <MobileFolderCardAddButton />
+                </div>
                 {sortedFolderData.map((item: FolderDetail, index: number) => (
-                  <MobileFolderCard
-                    key={item.folderId}
-                    folder={item}
-                    index={index}
-                    folderDataLength={sortedFolderData.length}
-                    pageImageUrl={pageImageUrl}
-                  />
+                  <div key={item.folderId} className="flex-shrink-0">
+                    <MobileFolderCard
+                      folder={item}
+                      index={index}
+                      folderDataLength={sortedFolderData.length}
+                      pageImageUrl={pageImageUrl}
+                    />
+                  </div>
                 ))}
               </div>
               <div className="text-gray-90 mb-4 px-4 text-lg font-semibold">
