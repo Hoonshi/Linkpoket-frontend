@@ -39,11 +39,11 @@ export default function PageListMenu({
     // 개인 페이지 추가
     if (personalPage?.pageTitle) {
       const personalCardIndex = allCards.findIndex(
-        (card) => card.id === 'space-travel'
+        (card) => card.id === 'personal-page'
       );
       if (personalCardIndex !== -1) {
         const personalCard = baseCards.find(
-          (card) => card.id === 'space-travel'
+          (card) => card.id === 'personal-page'
         );
         const fallbackImage =
           personalCard?.backgroundImage || DEFAULT_SHARED_PAGE_IMAGE;

@@ -21,7 +21,7 @@ export interface HomeCard {
 // 기본 카드들 (개인 페이지, 북마크)
 export const baseCards: HomeCard[] = [
   {
-    id: 'space-travel',
+    id: 'personal-page',
     title: '개인 페이지',
     category: 'space',
     tags: ['personal', 'collection'],

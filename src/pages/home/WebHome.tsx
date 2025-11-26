@@ -82,7 +82,7 @@ export default function WebHome() {
         let backgroundImage = card.backgroundImage;
 
         switch (card.id) {
-          case 'space-travel': // 개인 페이지
+          case 'personal-page': // 개인 페이지
             folders =
               personalPage?.folders?.map((folder: any) => ({
                 folderId: folder.folderId,
@@ -165,7 +165,7 @@ export default function WebHome() {
 
     // 기본 카드들
     switch (card.id) {
-      case 'space-travel': // 개인 페이지
+      case 'personal-page': // 개인 페이지
         navigate('/');
         break;
       case 'bookmark': // 북마크
