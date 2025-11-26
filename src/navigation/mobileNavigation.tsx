@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMobile } from '@/hooks/useMobile';
-import HomeIcon from '@/assets/widget-ui-assets/Home.svg?react';
 import BookMarkIcon from '@/assets/widget-ui-assets/BookMark.svg?react';
 import PersonalPageIcon from '@/assets/widget-ui-assets/PersonalPage.svg?react';
+import GridIcon from '@/assets/widget-ui-assets/GridIcon.svg?react';
 
 interface NavItem {
   id: string;
@@ -11,17 +11,24 @@ interface NavItem {
   icon: React.ReactNode;
 }
 
-export default function MobileNavigation() {
+interface MobileNavigationProps {
+  onPageListMenuToggle?: () => void;
+}
+
+export default function MobileNavigation({
+  onPageListMenuToggle,
+}: MobileNavigationProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const isMobile = useMobile();
+  const isHomePage = location.pathname === '/home';
 
   const navItems: NavItem[] = [
     {
       id: 'home',
       label: '홈',
       path: '/home',
-      icon: <HomeIcon className="h-7 w-7" />,
+      icon: <GridIcon className="h-7 w-7" />,
     },
     {
       id: 'bookmarks',
@@ -47,7 +54,12 @@ export default function MobileNavigation() {
 
   const currentNavId = getCurrentNavId();
 
-  const handleNavClick = (path: string) => {
+  const handleNavClick = (path: string, itemId: string) => {
+    // /home 페이지에서 home 아이콘(Menu 아이콘) 클릭 시 PageListMenu 토글
+    if (itemId === 'home' && isHomePage && onPageListMenuToggle) {
+      onPageListMenuToggle();
+      return;
+    }
     navigate(path);
   };
 
@@ -61,7 +73,7 @@ export default function MobileNavigation() {
           return (
             <button
               key={item.id}
-              onClick={() => handleNavClick(item.path)}
+              onClick={() => handleNavClick(item.path, item.id)}
               className={`flex flex-col items-center justify-center gap-1 rounded-lg px-3 py-2 transition-all ${
                 isActive ? 'text-black' : 'hover:text-gray-70 text-gray-50'
               }`}

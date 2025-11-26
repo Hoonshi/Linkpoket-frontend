@@ -9,6 +9,9 @@ interface PageListMenuProps {
   allCards: any[];
   activeIndex: number;
   onItemClick: (index: number) => void;
+  isMenuOpen?: boolean;
+  setIsMenuOpen?: (isOpen: boolean) => void;
+  hideFloatingButton?: boolean;
 }
 
 export default function PageListMenu({
@@ -17,8 +20,14 @@ export default function PageListMenu({
   allCards,
   activeIndex,
   onItemClick,
+  isMenuOpen: externalIsMenuOpen,
+  setIsMenuOpen: externalSetIsMenuOpen,
+  hideFloatingButton = false,
 }: PageListMenuProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [internalIsMenuOpen, setInternalIsMenuOpen] = useState(false);
+  const isMenuOpen =
+    externalIsMenuOpen !== undefined ? externalIsMenuOpen : internalIsMenuOpen;
+  const setIsMenuOpen = externalSetIsMenuOpen || setInternalIsMenuOpen;
   const navigate = useNavigate();
 
   // 페이지 이름 목록 생성 (처음에 불러온 데이터 그대로 사용)
@@ -118,30 +127,32 @@ export default function PageListMenu({
 
   return (
     <>
-      {/* 좌측 하단 목록 아이콘 버튼 */}
-      <button
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-black text-white shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95"
-        aria-label="목록 보기"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-6 w-6"
+      {/* 좌측 하단 목록 아이콘 버튼 - hideFloatingButton이 true면 숨김 */}
+      {!hideFloatingButton && (
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-black text-white shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95"
+          aria-label="목록 보기"
         >
-          <line x1="8" y1="6" x2="21" y2="6"></line>
-          <line x1="8" y1="12" x2="21" y2="12"></line>
-          <line x1="8" y1="18" x2="21" y2="18"></line>
-          <line x1="3" y1="6" x2="3.01" y2="6"></line>
-          <line x1="3" y1="12" x2="3.01" y2="12"></line>
-          <line x1="3" y1="18" x2="3.01" y2="18"></line>
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-6 w-6"
+          >
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+        </button>
+      )}
 
       {/* 목록 메뉴 오버레이 */}
       {isMenuOpen && (
@@ -149,7 +160,11 @@ export default function PageListMenu({
           {/* 배경 오버레이 */}
           <div
             className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={() => {
+              if (setIsMenuOpen) {
+                setIsMenuOpen(false);
+              }
+            }}
           />
 
           {/* 메뉴 */}

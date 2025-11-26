@@ -14,6 +14,7 @@ import {
 } from '@/constants/homeCards';
 import { resolvePageImageUrl } from '@/utils/resolvePageImageUrl';
 import PageListMenu from '@/components/common-ui/PageListMenu';
+import MobileNavigation from '@/navigation/mobileNavigation';
 
 export default function MobileHome() {
   const isMobile = useMobile();
@@ -271,6 +272,9 @@ export default function MobileHome() {
     };
   }, []);
 
+  // PageListMenu 상태 관리 - 조건부 return 이전에 선언
+  const [isPageListMenuOpen, setIsPageListMenuOpen] = useState(false);
+
   if (!isMobile) return null;
 
   const activeIndex = nearestGlobal % L;
@@ -464,6 +468,13 @@ export default function MobileHome() {
         allCards={allCards}
         activeIndex={activeIndex}
         onItemClick={handleMenuItemClick}
+        isMenuOpen={isPageListMenuOpen}
+        setIsMenuOpen={setIsPageListMenuOpen}
+        hideFloatingButton={true}
+      />
+      {/* 모바일 네비게이션 */}
+      <MobileNavigation
+        onPageListMenuToggle={() => setIsPageListMenuOpen(!isPageListMenuOpen)}
       />
     </div>
   );
