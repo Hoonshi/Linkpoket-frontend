@@ -10,11 +10,20 @@ export interface SenderInfo {
 }
 
 export interface NotificationItem {
-  id: string;
+  dispatchRequestId: string;
   senderInfo: SenderInfo;
   requestStatus: NotificationRequestStatus;
   notificationType: NotificationType;
   message: string;
+}
+
+export interface NotificationsResponse {
+  status: number;
+  message: string;
+  data: {
+    SharePageInvitationRequests: NotificationItem[];
+    FolderTransmissionRequests: NotificationItem[];
+  };
 }
 
 export interface NotificationModalProps {
@@ -23,10 +32,13 @@ export interface NotificationModalProps {
   notifications: NotificationItem[];
   isProcessing: boolean;
   isShareProcessing: boolean;
-  onAccept?: (params: { id: string; type: NotificationType }) => void;
-  onReject?: (params: { id: string; type: NotificationType }) => void;
-  onDelete?: (
-    dispatch: string,
-    type: 'INVITE_PAGE' | 'TRANSMIT_DIRECTORY'
-  ) => void;
+  onAccept?: (params: {
+    dispatchRequestId: string;
+    type: NotificationType;
+  }) => void;
+  onReject?: (params: {
+    dispatchRequestId: string;
+    type: NotificationType;
+  }) => void;
+  onDelete?: (dispatchRequestId: string, type: NotificationType) => void;
 }

@@ -1,51 +1,56 @@
-import 확장프로그램이미지 from '@/assets/common-ui-assets/확장 프로그램 이미지.webp';
-import 폴더별정리이미지 from '@/assets/common-ui-assets/폴더별정리이미지.webp';
-import 공유페이지이미지 from '@/assets/common-ui-assets/공유페이지이미지.webp';
+import { useEffect, useRef, useState } from 'react';
+import 확장프로그램이미지 from '@/assets/common-ui-assets/크롬브라우저 이미지.webp';
+import 폴더별정리이미지 from '@/assets/common-ui-assets/폴더별정리이미지_LINKPOKET.webp';
+import 공유페이지이미지 from '@/assets/common-ui-assets/공유페이지이미지_LINKPOKET.webp';
 
 const NewSection = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
   const featureData = [
     {
       description: (
         <>
-          모든 링크를 한 곳에,
+          링크 포켓은 링크 공유, 저장, 관리를 위한
           <br />
-          쉽게 정리하고 꺼내보세요
+          통합 링크 관리 서비스입니다.
         </>
       ),
-      className: 'font-bold mb-4 text-[24px] md:text-[28px]',
-    },
-    {
-      description: (
-        <>
-          링크 저장부터 공유까지, 개인은 물론 <br />
-          팀까지 함께 쓰는 통합 링크 관리 서비스입니다.
-        </>
-      ),
-      className: 'text-[14px] md:text-[18px]',
+      className: 'font-bold mb-4 text-[20px] md:text-[35px]',
     },
   ];
 
   const secondData = [
     {
-      item: (
-        <>
-          다시 보고 싶은 링크,
-          <br />
-          클릭 한 번으로 저장하세요
-        </>
-      ),
+      item: <>간편한 링크 저장</>,
       className: 'font-bold mb-4 text-[28px]',
     },
     {
       item: (
         <>
-          브라우저 주소창 우측에 있는
+          주소창 우측의 링크포켓 아이콘을 클릭하면,
           <br />
-          링크포켓 확장 프로그램 버튼을 클릭하면,
-          <br />
-          현재 보고 있는 사이트를 원하는 폴더에
-          <br />
-          즉시 저장할 수 있어요.
+          현재 사이트가 원하는 폴더에 즉시 저장됩니다.
         </>
       ),
       className: '',
@@ -79,7 +84,7 @@ const NewSection = () => {
     {
       item: (
         <>
-          함께 쓰면 더 강력해지는
+          함께 쓰면 더 강력한
           <br />
           공유 페이지
         </>
@@ -89,13 +94,9 @@ const NewSection = () => {
     {
       item: (
         <>
-          프로젝트별 공유 페이지를 만들어 팀이 함께
+          팀, 스터디, 프로젝트 별로
           <br />
-          사용할 수 있는 협업 공간을 제공합니다.
-          <br />
-          업무, 스터디, 회의 자료에 필요한 링크를 함께
-          <br />
-          정리하고 공유할 수 있어요.
+          필요한 자료를 함께 정리하고 공유하세요.
         </>
       ),
       className: '',
@@ -107,7 +108,15 @@ const NewSection = () => {
       {/* 1번째 */}
       {featureData.map((feature, idx) => {
         return (
-          <p key={idx} className={`${feature.className} text-center`}>
+          <p
+            ref={idx === 0 ? sectionRef : undefined}
+            key={idx}
+            className={`${feature.className} text-center transition-all duration-1000 ease-out ${
+              isVisible
+                ? 'translate-y-0 opacity-100'
+                : 'translate-y-8 opacity-0'
+            }`}
+          >
             {feature.description}
           </p>
         );
@@ -139,7 +148,7 @@ const NewSection = () => {
         <div className="mt-[138px] flex flex-col md:w-full md:flex-row md:place-content-between">
           <img
             src={폴더별정리이미지}
-            className="mb-12 w-[312px] rounded-3xl object-cover md:mb-0 md:w-[466px]"
+            className="mb-12 w-[400px] rounded-3xl object-cover md:mb-0 md:w-[520px]"
             loading="lazy"
             fetchPriority="low"
           />

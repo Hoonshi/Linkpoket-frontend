@@ -6,7 +6,7 @@ import {
 import { createFolder } from '@/apis/folder-apis/createFolder';
 import { CreateFolderData } from '@/types/folders';
 import { useLocation } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
+import toast from 'react-hot-toast';
 
 export function useCreateFolder(
   pageId: string,
@@ -49,7 +49,7 @@ export function useCreateFolder(
 
       // 임시 UI 업데이트
       const tempFolder = {
-        folderId: uuid(),
+        folderId: '',
         folderName: variables.folderName,
         orderIndex: 9999,
         createdDate: new Date().toISOString().split('T')[0],
@@ -64,8 +64,8 @@ export function useCreateFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses: [
-                ...(old.data?.directoryDetailResponses || []),
+              folderDetailResponses: [
+                ...(old.data?.folderDetailResponses || []),
                 tempFolder,
               ],
             },
@@ -81,8 +81,8 @@ export function useCreateFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses: [
-                ...(old.data?.directoryDetailResponses || []),
+              folderDetailResponses: [
+                ...(old.data?.folderDetailResponses || []),
                 tempFolder,
               ],
             },
@@ -98,8 +98,8 @@ export function useCreateFolder(
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses: [
-                ...(old.data?.directoryDetailResponses || []),
+              folderDetailResponses: [
+                ...(old.data?.folderDetailResponses || []),
                 tempFolder,
               ],
             },
@@ -122,28 +122,27 @@ export function useCreateFolder(
       if (context?.personalPage)
         queryClient.setQueryData(['personalPage'], context.personalPage);
       console.error('폴더 생성 에러:', error);
+      toast.error(
+        error instanceof Error ? error.message : '폴더 생성에 실패했습니다.'
+      );
       options?.onError?.(error, variables, context);
     },
 
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: ['folderList', pageId],
-        refetchType: 'active',
       });
       if (isSharedPage)
         queryClient.invalidateQueries({
           queryKey: ['sharedPage', pageId],
-          refetchType: 'active',
         });
       if (isFolderPage)
         queryClient.invalidateQueries({
           queryKey: ['folderDetails', pageId],
-          refetchType: 'active',
         });
       if (isMainPage)
         queryClient.invalidateQueries({
           queryKey: ['personalPage'],
-          refetchType: 'active',
         });
       options?.onSuccess?.(data, variables, context);
     },

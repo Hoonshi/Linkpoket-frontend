@@ -18,7 +18,7 @@ export const usePageStore = create<PageStoreState>()(
       setPageInfo: (pageId: string) => set({ pageId }),
     }),
     {
-      name: 'page-store', // localStorage에 저장될 키 이름
+      name: 'page-store',
     }
   )
 );
@@ -30,7 +30,7 @@ export const useParentsFolderIdStore = create<ParentsFolderIdStoreState>()(
       setParentsFolderId: (parentsFolderId: string) => set({ parentsFolderId }),
     }),
     {
-      name: 'parents-folder-store', // localStorage에 저장될 키 이름
+      name: 'parents-folder-store',
     }
   )
 );

@@ -1,17 +1,22 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { Spinner } from '@/components/common-ui/Spinner';
 
 export const RedirectIfAuthenticated = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
   // 인증 상태 로딩 중일 때는 로딩 표시
   if (isLoading) {
-    return <div>로딩 중...</div>;
+    return (
+      <div className="relative h-full w-full">
+        <Spinner display={true} position="center" />
+      </div>
+    );
   }
 
-  // 이미 인증된 사용자는 메인 페이지로 리다이렉트
+  // 이미 인증된 사용자는 /home으로 리다이렉트
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   // 인증되지 않은 경우 원래 라우트 렌더링 (로그인/회원가입 페이지)

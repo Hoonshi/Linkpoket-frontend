@@ -155,27 +155,35 @@ const ConfirmButton = ({
   disabled = false,
   variant = 'primary',
   className,
+  customColor,
 }: {
   children: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
   variant?: 'primary' | 'danger' | 'default' | 'check';
   className?: string;
+  customColor?: string;
 }) => {
   const variantClasses = {
-    primary: 'bg-[var(--color-primary-50)] text-[var(--color-primary-0)]',
-    danger: 'bg-[var(--color-status-danger)] text-[var(--color-primary-0)]',
+    primary: 'bg-[var(--color-gray-70)] text-[var(--color-gray-0)]',
+    danger: 'bg-[var(--color-status-danger)] text-[var(--color-gray-0)]',
     default: 'bg-[var(--color-gray-20)] text-[var(--color-gray-50)]',
     check: 'bg-none text-gray-90 border border-gray-30',
   };
+
+  const customStyle =
+    customColor && variant === 'primary'
+      ? { backgroundColor: customColor, color: 'white' }
+      : {};
 
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
+      style={customStyle}
       className={cn(
-        `cursor-pointer rounded-lg px-5 py-3 ${variantClasses[variant]}`,
+        `cursor-pointer rounded-lg px-5 py-3 ${!customColor ? variantClasses[variant] : ''}`,
         className
       )}
     >

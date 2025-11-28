@@ -6,6 +6,7 @@ import {
 import deleteFolder from '@/apis/folder-apis/deleteFolder';
 import { DeleteFolderData } from '@/types/folders';
 import { useLocation } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function useDeleteFolder(
   pageId: string,
@@ -59,15 +60,14 @@ export default function useDeleteFolder(
 
       if (isSharedPage) {
         queryClient.setQueryData(['sharedPage', pageId], (old: any) => {
-          if (!old) return old;
+          if (!old || !old.data) return old;
           return {
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses:
-                old.data.directoryDetailResponses.filter(
-                  (f: any) => f.folderId !== variables.folderId
-                ),
+              folderDetailResponses: (
+                old.data.folderDetailResponses || []
+              ).filter((f: any) => f.folderId !== variables.folderId),
             },
           };
         });
@@ -75,15 +75,14 @@ export default function useDeleteFolder(
 
       if (isFolderPage) {
         queryClient.setQueryData(['folderDetails', pageId], (old: any) => {
-          if (!old) return old;
+          if (!old || !old.data) return old;
           return {
             ...old,
             data: {
               ...old.data,
-              directoryDetailResponses:
-                old.data.directoryDetailResponses.filter(
-                  (f: any) => f.folderId !== variables.folderId
-                ),
+              folderDetailResponses: (
+                old.data.folderDetailResponses || []
+              ).filter((f: any) => f.folderId !== variables.folderId),
             },
           };
         });
@@ -91,18 +90,14 @@ export default function useDeleteFolder(
 
       if (isMainPage) {
         queryClient.setQueryData(['personalPage'], (old: any) => {
-          if (!old) return old;
+          if (!old || !old.data) return old;
           return {
             ...old,
             data: {
               ...old.data,
-              pageDetails: {
-                ...old.data.pageDetails,
-                directoryDetailResponses:
-                  old.data.pageDetails.directoryDetailResponses.filter(
-                    (f: any) => f.folderId !== variables.folderId
-                  ),
-              },
+              folderDetailResponses: (
+                old.data.folderDetailResponses || []
+              ).filter((f: any) => f.folderId !== variables.folderId),
             },
           };
         });
@@ -131,20 +126,17 @@ export default function useDeleteFolder(
       //사이드바 폴더 리스트 업데이트
       queryClient.invalidateQueries({
         queryKey: ['folderList', pageId],
-        refetchType: 'active',
       });
 
       if (isSharedPage) {
         queryClient.invalidateQueries({
           queryKey: ['sharedPage', pageId],
-          refetchType: 'active',
         });
       }
       // 폴더 상세 페이지 쿼리 무효화 (모든 폴더 ID에 대해)
       if (isFolderPage) {
         queryClient.invalidateQueries({
           queryKey: ['folderDetails', pageId],
-          refetchType: 'active',
         });
       }
 
@@ -152,35 +144,29 @@ export default function useDeleteFolder(
       if (isMainPage) {
         queryClient.invalidateQueries({
           queryKey: ['personalPage'],
-          refetchType: 'active',
         });
       }
 
       if (isBookmarksPage) {
         queryClient.invalidateQueries({
           queryKey: ['favorite'],
-          refetchType: 'active',
         });
         queryClient.invalidateQueries({
           queryKey: ['folderList', pageId],
-          refetchType: 'active',
         });
         queryClient.invalidateQueries({
           queryKey: ['sharedPage', pageId],
-          refetchType: 'active',
         });
         queryClient.invalidateQueries({
           queryKey: ['folderDetails', pageId],
-          refetchType: 'active',
         });
         queryClient.invalidateQueries({
           queryKey: ['personalPage'],
-          refetchType: 'active',
         });
       }
     },
 
-    onError: (error, context: any) => {
+    onError: (error, variables, context: any) => {
       // rollback
       if (context?.sharedPage)
         queryClient.setQueryData(['sharedPage', pageId], context.sharedPage);
@@ -191,7 +177,11 @@ export default function useDeleteFolder(
         );
       if (context?.personalPage)
         queryClient.setQueryData(['personalPage'], context.personalPage);
-      console.error('폴더 생성 에러:', error);
+      console.error('폴더 삭제 에러:', error);
+      toast.error(
+        error instanceof Error ? error.message : '폴더 삭제에 실패했습니다.'
+      );
+      options?.onError?.(error, variables, context);
     },
   });
 }

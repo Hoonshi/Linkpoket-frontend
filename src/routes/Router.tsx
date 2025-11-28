@@ -1,9 +1,14 @@
 import { lazy } from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import {
+  RouterProvider,
+  createBrowserRouter,
+  Navigate,
+} from 'react-router-dom';
 import { ProtectedRoute } from './guards/ProtectedRoute';
 import { RedirectIfAuthenticated } from './guards/RedirectIfAuthenticated';
 import Layout from '../layout/layout';
 import { LandingPage } from '@/pages/landing/LandingPage';
+import HomePage from '@/pages/home/HomePage';
 import PersonalPage from '@/pages/PersonalPage';
 
 const LoginPage = lazy(() => import('@/pages/auth/login'));
@@ -17,10 +22,16 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
+      // 항상 접근 가능한 라우트들 (먼저 정의)
+      { path: 'landing', element: <LandingPage /> },
+      { path: 'reissue', element: <ReissuePage /> },
+
       // 인증이 필요한 라우트들
       {
         element: <ProtectedRoute />,
         children: [
+          // 홈 페이지
+          { path: 'home', element: <HomePage /> },
           // 개인페이지
           { path: '/', element: <PersonalPage /> },
           { path: '/personal/folder/:folderId', element: <FolderDetailPage /> },
@@ -55,10 +66,6 @@ const router = createBrowserRouter([
           { path: 'signup', element: <SignupPage /> },
         ],
       },
-
-      // 항상 접근 가능한 라우트들
-      { path: 'landing', element: <LandingPage /> },
-      { path: 'reissue', element: <ReissuePage /> },
     ],
   },
 ]);

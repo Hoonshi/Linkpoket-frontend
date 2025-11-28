@@ -1,16 +1,14 @@
 import { fetchSharedPage } from '@/apis/page-apis/fetchSharedPage';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function useFetchSharedPage(pageId: string) {
-  const { data, ...rest } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['sharedPage', pageId],
     queryFn: () => fetchSharedPage({ pageId }),
-    placeholderData: (prev) => prev,
-    structuralSharing: true,
+    select: (response) => response.data,
   });
 
   return {
     data,
-    ...rest,
   };
 }

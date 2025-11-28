@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect } from 'react';
+import { Spinner } from '@/components/common-ui/Spinner';
 
 export default function ReissuePage() {
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function ReissuePage() {
           if (sseToken) {
             localStorage.setItem('sse_token', sseToken);
           }
-          window.location.href = '/';
+          window.location.href = '/home';
         }
       } catch (error) {
         console.log(error);
@@ -49,5 +50,9 @@ export default function ReissuePage() {
     handleRedirection();
   }, []);
 
-  return <p>Reissuing access token... Please wait.</p>;
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <Spinner display={true} position="center" />
+    </div>
+  );
 }

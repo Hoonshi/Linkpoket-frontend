@@ -3,9 +3,9 @@ import { useDebounce } from '@/hooks/useDebounce';
 import useUpdateSharedPageTitle from '@/hooks/mutations/useUpdateSharedPageTitle';
 import { useModalStore } from '@/stores/modalStore';
 import { useLocation } from 'react-router-dom';
-import { useMobile } from '@/hooks/useMobile';
 import { useFolderColorStore } from '@/stores/folderColorStore';
 import { Button } from '../common-ui/button';
+import toast from 'react-hot-toast';
 
 type PageHeaderSectionProps = {
   pageTitle: string;
@@ -17,14 +17,14 @@ const MAX_TITLE_LENGTH = 12;
 export default function SharedPageHeaderSection({
   pageTitle,
   pageId,
-}: PageHeaderSectionProps) {
+  isMobile,
+}: PageHeaderSectionProps & { isMobile: boolean }) {
   const [title, setTitle] = useState(pageTitle ?? '');
   const lastUpdateTitle = useRef({ title });
 
   const location = useLocation();
   const currentLocation = location.pathname;
   const isLinkButtonVisible = currentLocation !== '/bookmarks';
-  const isMobile = useMobile();
 
   const { openLinkModal, openFolderModal } = useModalStore();
   const { getCurrentColor } = useFolderColorStore();
@@ -46,6 +46,11 @@ export default function SharedPageHeaderSection({
       },
       onError: (error) => {
         console.error('설명 업데이트 실패:', error);
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : '페이지 제목 업데이트에 실패했습니다.'
+        );
       },
     });
   };
@@ -99,7 +104,7 @@ export default function SharedPageHeaderSection({
                 borderColor: currentFolderColor.previewColor,
                 color: currentFolderColor.previewColor,
               }}
-              className="rounded-lg border-2 bg-white text-sm font-medium whitespace-nowrap transition-colors"
+              className="responsive-button rounded-lg border-2 bg-white text-sm font-medium whitespace-nowrap transition-colors"
               onClick={openLinkModal}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = `${currentFolderColor.previewColor}15`;
@@ -122,7 +127,7 @@ export default function SharedPageHeaderSection({
                 borderColor: currentFolderColor.previewColor,
                 color: currentFolderColor.previewColor,
               }}
-              className="rounded-lg border-2 bg-white text-sm font-medium whitespace-nowrap transition-colors"
+              className="responsive-button rounded-lg border-2 bg-white text-sm font-medium whitespace-nowrap transition-colors"
               onClick={openFolderModal}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = `${currentFolderColor.previewColor}15`;

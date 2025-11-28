@@ -1,16 +1,16 @@
-import { NotificationItem } from '@/types/modalAlarm';
+import { NotificationItem, NotificationsResponse } from '@/types/modalAlarm';
 import { axiosInstance } from '../axiosInstance';
 
 export const fetchNotifications = async (): Promise<NotificationItem[]> => {
-  const response = await axiosInstance.get('/api/dispatch/notifications');
-  const {
-    SharePageInvitationRequests = [],
-    DirectoryTransmissionRequests = [],
-  } = response.data.data;
+  const response = await axiosInstance.get<NotificationsResponse>(
+    '/api/dispatch/notifications'
+  );
+  const { SharePageInvitationRequests = [], FolderTransmissionRequests = [] } =
+    response.data.data;
 
   const merged: NotificationItem[] = [
     ...SharePageInvitationRequests,
-    ...DirectoryTransmissionRequests,
+    ...FolderTransmissionRequests,
   ];
 
   return merged;

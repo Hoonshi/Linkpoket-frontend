@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import BookMark from '@/assets/widget-ui-assets/BookMark.svg?react';
 import BookMarkActive from '@/assets/widget-ui-assets/BookMarkActive.svg?react';
 import PersonalPage from '@/assets/widget-ui-assets/PersonalPage.svg?react';
 import PersonalPageActive from '@/assets/widget-ui-assets/PersonalPageActive.svg?react';
 import PlusIcon from '@/assets/common-ui-assets/PlusIcon.svg?react';
+import SidebarSharedPageIcon from '@/assets/common-ui-assets/SidebarSharedPageIcon.svg?react';
+import SidebarFolderIcon from '@/assets/common-ui-assets/SidebarFolderIcon.svg?react';
 import ColorUp from '@/assets/common-ui-assets/ColorUp.svg?react';
 import ColorDown from '@/assets/common-ui-assets/ColorDown.svg?react';
 import NoColorUp from '@/assets/common-ui-assets/NoColorUp.svg?react';
@@ -23,6 +25,7 @@ type MenubarProps = {
   setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
   isFoldSidebar: boolean;
   setIsFoldSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  initialCollapsed?: boolean;
 };
 
 const SideBar: React.FC<MenubarProps> = ({
@@ -30,19 +33,40 @@ const SideBar: React.FC<MenubarProps> = ({
   setShowSidebar,
   isFoldSidebar,
   setIsFoldSidebar,
+  initialCollapsed = false,
 }) => {
   const [isFolderListOpen, setIsFolderListOpen] = useState(true);
   const sidebarRef = useRef<HTMLElement | null>(null);
+  const initialCollapseAppliedRef = useRef(false);
   const isMobile = useMobile();
   const { pageId } = usePageStore();
   const location = useLocation();
+  const navigate = useNavigate();
   const params = useParams();
 
-  //768px 이하의 경우, showSidebar를 false처리, 이외엔 true처리
+  //768px 이하의 경우 자동 접기, 홈 초기 상태 제어
   useEffect(() => {
-    setShowSidebar(!isMobile);
-    setIsFoldSidebar(isMobile);
-  }, [isMobile, setShowSidebar, setIsFoldSidebar]);
+    if (initialCollapsed && !isMobile && !initialCollapseAppliedRef.current) {
+      setShowSidebar(false);
+      setIsFoldSidebar(true);
+      initialCollapseAppliedRef.current = true;
+      return;
+    }
+
+    if (isMobile) {
+      setShowSidebar(false);
+      setIsFoldSidebar(true);
+    } else if (!initialCollapsed) {
+      setShowSidebar(true);
+      setIsFoldSidebar(false);
+    }
+  }, [initialCollapsed, isMobile, setIsFoldSidebar, setShowSidebar]);
+
+  useEffect(() => {
+    if (!initialCollapsed) {
+      initialCollapseAppliedRef.current = false;
+    }
+  }, [initialCollapsed]);
 
   //useClickOutside 사용시 isMobile === false일 때도 계속 리스너가 등록되어 있어 명시적으로
   useEffect(() => {
@@ -113,11 +137,18 @@ const SideBar: React.FC<MenubarProps> = ({
 
   //공유페이지 생성
   const { mutate: createSharedPage } = useCreateSharedPage({
-    onSuccess: () => {
+    onSuccess: (response) => {
       toast.success('공유페이지 생성 완료');
+
+      const createdPageId = response?.data?.pageId;
+      if (createdPageId) {
+        navigate(`/shared/${createdPageId}`);
+      }
     },
-    onError: () => {
-      toast.error('공유페이지 생성 실패');
+    onError: (error) => {
+      toast.error(
+        error instanceof Error ? error.message : '공유페이지 생성 실패'
+      );
     },
   });
 
@@ -160,15 +191,23 @@ const SideBar: React.FC<MenubarProps> = ({
 
     if (isActive) {
       return isCollapsed ? (
-        <ColorDown width={16} height={16} />
+        <ColorDown
+          width={12}
+          height={12}
+          style={{ filter: 'grayscale(1) brightness(0)' }}
+        />
       ) : (
-        <ColorUp width={16} height={16} />
+        <ColorUp
+          width={12}
+          height={12}
+          style={{ filter: 'grayscale(1) brightness(0)' }}
+        />
       );
     } else {
       return isCollapsed ? (
-        <NoColorDown width={16} height={16} />
+        <NoColorDown width={12} height={12} />
       ) : (
-        <NoColorUp width={16} height={16} />
+        <NoColorUp width={12} height={12} />
       );
     }
   };
@@ -181,7 +220,7 @@ const SideBar: React.FC<MenubarProps> = ({
     return (
       <aside
         ref={sidebarRef}
-        className={`border-gray-10 flex h-screen w-[220px] flex-col justify-between border-r ${isMobile ? 'bg-gray-0 absolute top-0 left-0 z-50' : 'relative'} `}
+        className={`border-gray-10 flex h-screen flex-col justify-between border-r ${isMobile ? 'bg-gray-0 absolute top-0 left-0 z-50 w-[220px]' : 'relative w-[15vw] min-w-[150px]'} `}
       >
         <div className="flex flex-col gap-[8px] p-[16px]">
           <div className="flex justify-end">
@@ -200,7 +239,7 @@ const SideBar: React.FC<MenubarProps> = ({
             <li>
               <Link
                 to="/"
-                className={`group flex items-center gap-[12px] rounded-[8px] p-[8px] text-[14px] font-[600] ${
+                className={`group sidebar-text flex items-center gap-[12px] rounded-[8px] p-[8px] text-[14px] font-[600] ${
                   isPersonalActive
                     ? 'bg-gray-5 text-gray-90'
                     : 'text-gray-70 hover:bg-gray-5'
@@ -216,7 +255,7 @@ const SideBar: React.FC<MenubarProps> = ({
 
               <Link
                 to="/bookmarks"
-                className={`group flex items-center gap-[12px] rounded-[8px] p-[8px] text-[14px] font-[600] ${
+                className={`group sidebar-text flex items-center gap-[12px] rounded-[8px] p-[8px] text-[14px] font-[600] ${
                   isBookmarksActive
                     ? 'bg-gray-5 text-gray-90'
                     : 'text-gray-70 hover:bg-gray-5'
@@ -230,10 +269,15 @@ const SideBar: React.FC<MenubarProps> = ({
                 북마크
               </Link>
 
-              <div className="mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[500] text-gray-50 hover:rounded-[8px] active:rounded-[8px]">
+              <div className="sidebar-text mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[600] text-gray-100 hover:rounded-[8px] active:rounded-[8px]">
                 <div className="group flex w-full items-center justify-between">
-                  <div className="flex gap-[20px]">
-                    <div>공유 페이지</div>
+                  <div className="flex items-center gap-[12px]">
+                    <SidebarSharedPageIcon
+                      width={20}
+                      height={20}
+                      className="text-gray-90"
+                    />
+                    <span>공유 페이지</span>
                   </div>
                   <PlusIcon
                     className="text-gray-40 hover:text-gray-90 cursor-pointer"
@@ -243,22 +287,22 @@ const SideBar: React.FC<MenubarProps> = ({
                       handleCreateSharedPage();
                     }}
                     aria-label="공유페이지 추가"
-                    height={18}
-                    width={18}
+                    height={14}
+                    width={14}
                   />
                 </div>
               </div>
 
               {/* 공유페이지 리스트 */}
-              <div className="mt-2 flex flex-col gap-[2px]">
+              <div className="mt-2 flex flex-col gap-[2px] pl-2">
                 {joinedPage?.map((page: any) => (
                   <Link
                     key={page.pageId}
                     to={`/shared/${page.pageId}`}
-                    className={`block rounded-[8px] py-2 pr-3 pl-2 text-[14px] font-[600] ${
+                    className={`sidebar-text block rounded-[8px] py-2 pr-3 pl-4 text-[14px] font-[600] ${
                       isSharedPageActive(page.pageId)
                         ? 'bg-gray-5 text-gray-90'
-                        : 'text-gray-70 hover:bg-gray-5'
+                        : 'text-gray-60 hover:bg-gray-5'
                     }`}
                   >
                     {page.pageTitle}
@@ -269,9 +313,14 @@ const SideBar: React.FC<MenubarProps> = ({
               {/* 폴더 섹션 - 개인페이지 내 폴더 표시 */}
               {currentContext === 'personal' && (
                 <>
-                  <div className="mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[500] text-gray-50 hover:rounded-[8px] active:rounded-[8px]">
+                  <div className="sidebar-text mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[600] text-gray-100 hover:rounded-[8px] active:rounded-[8px]">
                     <div className="group flex w-full items-center justify-between">
-                      <div className="flex gap-[20px]">
+                      <div className="flex items-center gap-[12px]">
+                        <SidebarFolderIcon
+                          width={20}
+                          height={20}
+                          className="text-gray-90"
+                        />
                         <div>폴더</div>
                       </div>
                       {isFolderListOpen ? (
@@ -288,8 +337,8 @@ const SideBar: React.FC<MenubarProps> = ({
                             handleToggleFolderList();
                           }}
                           aria-label="폴더 추가"
-                          height={18}
-                          width={18}
+                          height={14}
+                          width={14}
                         />
                       ) : (
                         <NoColorDown
@@ -305,8 +354,8 @@ const SideBar: React.FC<MenubarProps> = ({
                             handleToggleFolderList();
                           }}
                           aria-label="폴더 추가"
-                          height={18}
-                          width={18}
+                          height={14}
+                          width={14}
                         />
                       )}
                     </div>
@@ -315,7 +364,7 @@ const SideBar: React.FC<MenubarProps> = ({
                   {isFolderListOpen && (
                     <>
                       {/* 폴더 뎁스1 리스트 */}
-                      <div className="mt-2 flex flex-col gap-[2px]">
+                      <div className="mt-2 flex flex-col gap-[2px] pl-2">
                         {refinedFolderList?.map((folder: any) => (
                           <div key={folder.folderId}>
                             <div className="flex items-center">
@@ -323,10 +372,10 @@ const SideBar: React.FC<MenubarProps> = ({
 
                               <Link
                                 to={getFolderLink(folder.folderId)}
-                                className={`flex w-full items-center justify-between rounded-[8px] py-2 pr-3 pl-2 text-[14px] font-[600] ${
+                                className={`sidebar-text flex w-full items-center justify-between rounded-[8px] py-2 pr-3 pl-4 text-[14px] font-[600] ${
                                   isFolderActive(folder.folderId)
-                                    ? 'bg-primary-5 text-primary-50'
-                                    : 'text-gray-70 hover:bg-primary-5'
+                                    ? 'bg-gray-5 text-gray-90'
+                                    : 'text-gray-60 hover:bg-gray-5'
                                 }`}
                               >
                                 {folder.folderTitle}
@@ -356,15 +405,15 @@ const SideBar: React.FC<MenubarProps> = ({
                             {folder.children &&
                               folder.children.length > 0 &&
                               expandedFolders.has(folder.folderId) && (
-                                <div className="mt-1 ml-5 flex flex-col gap-[2px]">
+                                <div className="mt-1 ml-6 flex flex-col gap-[2px]">
                                   {folder.children.map((child: any) => (
                                     <Link
                                       key={child.folderId}
                                       to={getFolderLink(child.folderId)}
-                                      className={`block rounded-[8px] py-2 pr-3 pl-2 text-[14px] font-[600] ${
+                                      className={`sidebar-text block rounded-[8px] py-2 pr-3 pl-4 text-[14px] font-[600] ${
                                         isFolderActive(child.folderId)
-                                          ? 'bg-primary-5 text-primary-50'
-                                          : 'text-gray-70 hover:bg-primary-5'
+                                          ? 'bg-gray-5 text-gray-90'
+                                          : 'hover:bg-gray-5 text-gray-50'
                                       }`}
                                     >
                                       <span className="pr-2">•</span>
@@ -384,9 +433,14 @@ const SideBar: React.FC<MenubarProps> = ({
               {/* 공유페이지 내 폴더 표시 */}
               {currentContext === 'shared' && params.pageId && (
                 <>
-                  <div className="mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[500] text-gray-50 hover:rounded-[8px] active:rounded-[8px]">
+                  <div className="sidebar-text mt-4 flex items-center px-[8px] py-[4px] text-[14px] font-[600] text-gray-100 hover:rounded-[8px] active:rounded-[8px]">
                     <div className="group flex w-full items-center justify-between">
-                      <div className="flex gap-[20px]">
+                      <div className="flex items-center gap-[12px]">
+                        <SidebarFolderIcon
+                          width={20}
+                          height={20}
+                          className="text-gray-90"
+                        />
                         <div>폴더</div>
                       </div>
                       {isFolderListOpen ? (
@@ -403,8 +457,8 @@ const SideBar: React.FC<MenubarProps> = ({
                             handleToggleFolderList();
                           }}
                           aria-label="폴더 추가"
-                          height={18}
-                          width={18}
+                          height={14}
+                          width={14}
                         />
                       ) : (
                         <NoColorDown
@@ -420,15 +474,15 @@ const SideBar: React.FC<MenubarProps> = ({
                             handleToggleFolderList();
                           }}
                           aria-label="폴더 추가"
-                          height={18}
-                          width={18}
+                          height={14}
+                          width={14}
                         />
                       )}
                     </div>
                   </div>
                   {isFolderListOpen && (
                     <>
-                      <div className="mt-2 flex flex-col gap-[2px]">
+                      <div className="mt-2 flex flex-col gap-[2px] pl-2">
                         {refinedFolderList?.map((folder: any) => (
                           <div key={folder.folderId}>
                             <div className="flex items-center">
@@ -436,11 +490,11 @@ const SideBar: React.FC<MenubarProps> = ({
 
                               <Link
                                 to={`/shared/${params.pageId}/folder/${folder.folderId}`}
-                                className={`flex w-full items-center justify-between rounded-[8px] py-2 pr-3 pl-2 text-[14px] font-[600] ${
+                                className={`sidebar-text flex w-full items-center justify-between rounded-[8px] py-2 pr-3 pl-4 text-[14px] font-[600] ${
                                   location.pathname ===
                                   `/shared/${params.pageId}/folder/${folder.folderId}`
-                                    ? 'bg-primary-5 text-primary-50'
-                                    : 'text-gray-70 hover:bg-primary-5'
+                                    ? 'bg-gray-5 text-gray-90'
+                                    : 'text-gray-60 hover:bg-gray-5'
                                 }`}
                               >
                                 {folder.folderTitle}
@@ -470,16 +524,16 @@ const SideBar: React.FC<MenubarProps> = ({
                             {folder.children &&
                               folder.children.length > 0 &&
                               expandedFolders.has(folder.folderId) && (
-                                <div className="mt-1 ml-5 flex flex-col gap-[2px]">
+                                <div className="mt-1 ml-6 flex flex-col gap-[2px]">
                                   {folder.children.map((child: any) => (
                                     <Link
                                       key={child.folderId}
                                       to={`/shared/${params.pageId}/folder/${child.folderId}`}
-                                      className={`block rounded-[8px] py-2 pr-3 pl-2 text-[14px] font-[600] ${
+                                      className={`sidebar-text block rounded-[8px] py-2 pr-3 pl-4 text-[14px] font-[600] ${
                                         location.pathname ===
                                         `/shared/${params.pageId}/folder/${child.folderId}`
-                                          ? 'bg-primary-5 text-primary-50'
-                                          : 'text-gray-70 hover:bg-primary-5'
+                                          ? 'bg-gray-5 text-gray-90'
+                                          : 'hover:bg-gray-5 text-gray-50'
                                       }`}
                                     >
                                       <span className="pr-2">•</span>
@@ -502,7 +556,10 @@ const SideBar: React.FC<MenubarProps> = ({
     );
   } else if (!showSidebar && isFoldSidebar && !isMobile) {
     return (
-      <aside className="border-gray-10 h-screen w-[80px] border-r p-4">
+      <aside
+        className="border-gray-10 h-screen border-r p-4"
+        style={{ width: 'clamp(64px, 4.5vw, 100px)' }}
+      >
         <div className="flex justify-end">
           <button
             onClick={() => {
@@ -518,11 +575,12 @@ const SideBar: React.FC<MenubarProps> = ({
 
         <div className="flex flex-col items-center gap-[8px]">
           <button
-            className={`cursor-pointer rounded-[8px] p-3 text-[14px] font-[600] ${
+            className={`sidebar-text flex w-full items-center justify-center rounded-[8px] p-3 text-[14px] font-[600] ${
               isPersonalActive
                 ? 'bg-gray-5 text-gray-90'
                 : 'text-gray-70 hover:bg-gray-5'
             }`}
+            style={{ minHeight: '48px' }}
           >
             <Link to="/">
               {isPersonalActive ? (
@@ -533,11 +591,12 @@ const SideBar: React.FC<MenubarProps> = ({
             </Link>
           </button>
           <button
-            className={`cursor-pointer rounded-[8px] p-3 text-[14px] font-[600] ${
+            className={`sidebar-text flex w-full items-center justify-center rounded-[8px] p-3 text-[14px] font-[600] ${
               isBookmarksActive
                 ? 'bg-gray-5 text-gray-90'
                 : 'text-gray-70 hover:bg-gray-5'
             }`}
+            style={{ minHeight: '48px' }}
           >
             <Link to="/bookmarks">
               {isBookmarksActive ? (

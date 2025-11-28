@@ -1,34 +1,25 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
-import { Header } from '@/components/header/Header';
-import SideBar from '@/components/side-bar/SideBar';
+import { Suspense, useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { useMobile } from '@/hooks/useMobile';
 import { useUserStore } from '@/stores/userStore';
-import { useProfileModalStore } from '@/stores/profileModalStore';
 import { useNotificationSSE } from '@/hooks/useNotificationSSE';
 import useRouteChangeTracker from '@/hooks/useRouteChangeTracker';
-import { ProfileSettingsModalSkeleton } from '@/components/skeleton/ProfileSettingModal';
-import { DeleteModalSkeleton } from '@/components/skeleton/DeleteModalSkeleton';
-
-const ProfileSettingsModal = lazy(
-  () => import('@/components/modal/profile/ProfileSettingsModal')
-);
-
-const WithdrawAccountModal = lazy(
-  () => import('@/components/modal/profile/WithdrawAccountModal')
-);
+import { Header } from '@/components/header/Header';
+import { Spinner } from '@/components/common-ui/Spinner';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorState } from '@/components/common-ui/ErrorState';
+import SideBar from '@/components/side-bar/SideBar';
 
 export default function Layout() {
   useRouteChangeTracker();
   const location = useLocation();
   const path = location.pathname;
-  const [showSidebar, setShowSidebar] = useState(true);
-  const [isFoldSidebar, setIsFoldSidebar] = useState(false);
-  const {
-    isProfileModalOpen,
-    isWithdrawModalOpen,
-    closeProfileModal,
-    closeWithdrawModal,
-  } = useProfileModalStore();
+  const isHomePage = path === '/home';
+  const isMobile = useMobile();
+  const [showSidebar, setShowSidebar] = useState(() =>
+    isMobile ? false : !isHomePage
+  );
+  const [isFoldSidebar, setIsFoldSidebar] = useState(() => isHomePage);
   const { setIsLoggedIn, isLoggedIn } = useUserStore();
 
   useEffect(() => {
@@ -49,6 +40,16 @@ export default function Layout() {
 
   useNotificationSSE(isLoggedIn);
 
+  useEffect(() => {
+    if (isMobile) {
+      setShowSidebar(false);
+      setIsFoldSidebar(true);
+    } else {
+      setShowSidebar(!isHomePage);
+      setIsFoldSidebar(isHomePage);
+    }
+  }, [isHomePage, isMobile]);
+
   return (
     <div className="flex h-screen flex-col">
       {!isHideHeader ? (
@@ -68,36 +69,20 @@ export default function Layout() {
             setShowSidebar={setShowSidebar}
             isFoldSidebar={isFoldSidebar}
             setIsFoldSidebar={setIsFoldSidebar}
+            initialCollapsed={isHomePage}
           />
         ) : null}
-        <main className="flex-1 overflow-auto">
-          <Suspense
-            fallback={
-              <div className="flex h-screen items-center justify-center">
-                <div>로딩 중...</div>
-              </div>
-            }
+        <main id="app-scroll-container" className="flex-1 overflow-auto">
+          {/* 페이지 렌더링 컴포넌트 */}
+          <ErrorBoundary
+            fallbackRender={() => (
+              <ErrorState message="페이지를 불러올 수 없습니다." />
+            )}
           >
-            <Outlet context={{ showSidebar }} />
-          </Suspense>
-
-          {isProfileModalOpen && (
-            <Suspense fallback={<ProfileSettingsModalSkeleton />}>
-              <ProfileSettingsModal
-                isOpen={isProfileModalOpen}
-                onClose={closeProfileModal}
-              />
+            <Suspense fallback={<Spinner display={true} position="center" />}>
+              <Outlet context={{ showSidebar }} />
             </Suspense>
-          )}
-
-          {isWithdrawModalOpen && (
-            <Suspense fallback={<DeleteModalSkeleton />}>
-              <WithdrawAccountModal
-                isOpen={isWithdrawModalOpen}
-                onClose={closeWithdrawModal}
-              />
-            </Suspense>
-          )}
+          </ErrorBoundary>
         </main>
       </div>
     </div>
