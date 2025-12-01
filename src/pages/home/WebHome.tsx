@@ -146,12 +146,11 @@ export default function WebHome() {
       return;
     }
 
-    // 기본 카드들
     switch (card.id) {
-      case 'personal-page': // 개인 페이지
+      case 'personal-page':
         navigate('/');
         break;
-      case 'bookmark': // 북마크
+      case 'bookmark':
         navigate('/bookmarks');
         break;
       default:
