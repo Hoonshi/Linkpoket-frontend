@@ -22,23 +22,24 @@ export default function MobileHome() {
 
   // /api/personal-pages/overview를 사용하여 모든 페이지 + 폴더 정보 한번에 가져오기
   // select 옵션으로 personalPage와 sharedPages가 자동 추출됨
-  const { data: overviewData, isLoading: overviewLoading } =
-    useFetchPagesOverview();
+  const { data: overviewData } = useFetchPagesOverview();
 
   const { personalPage, sharedPages } = overviewData || {};
 
   // 북마크 데이터만 별도로 가져오기 (북마크는 페이지가 아니므로)
-  const { data: bookmarkData, isLoading: bookmarkLoading } = useFetchFavorite();
+  const { data: bookmarkData } = useFetchFavorite();
 
   // 동적으로 카드 목록 생성 (기본 카드 + 공유 페이지 카드)
   const [allCards, setAllCards] = useState<HomeCard[]>(baseCards);
 
   useEffect(() => {
-    if (
-      !overviewLoading &&
-      !bookmarkLoading &&
-      (personalPage || sharedPages.length > 0)
-    ) {
+    // overviewData나 bookmarkData가 없으면 (아직 데이터가 로드되지 않음) 실행하지 않음
+    if (!overviewData || !bookmarkData) {
+      return;
+    }
+
+    // personalPage가 있거나 sharedPages가 있고 길이가 0보다 크면 실행
+    if (personalPage || (sharedPages && sharedPages.length > 0)) {
       // 1. 기본 카드 업데이트 (개인 페이지, 북마크)
       const updatedBaseCards = baseCards.map((card) => {
         let folders: any[] = [];
@@ -69,35 +70,31 @@ export default function MobileHome() {
       });
 
       // 2. 공유 페이지 카드 생성
-      const sharedPageCards: HomeCard[] = sharedPages.map((page: any) => ({
-        id: `shared-page-${page.pageId}`,
-        title: page.pageTitle,
-        category: 'shared',
-        tags: ['collaboration', 'team'],
-        memberCount: page.memberCount || 0,
-        backgroundImage: resolvePageImageUrl(
-          page.pageImageUrl,
-          DEFAULT_SHARED_PAGE_IMAGE
-        ),
-        pageId: page.pageId,
-        isSharedPage: true,
-        folders:
-          page.folders?.map((folder: any) => ({
-            folderId: folder.folderId,
-            folderTitle: folder.folderName,
-          })) || [],
-      }));
+      const sharedPageCards: HomeCard[] = (sharedPages || []).map(
+        (page: any) => ({
+          id: `shared-page-${page.pageId}`,
+          title: page.pageTitle,
+          category: 'shared',
+          tags: ['collaboration', 'team'],
+          memberCount: page.memberCount || 0,
+          backgroundImage: resolvePageImageUrl(
+            page.pageImageUrl,
+            DEFAULT_SHARED_PAGE_IMAGE
+          ),
+          pageId: page.pageId,
+          isSharedPage: true,
+          folders:
+            page.folders?.map((folder: any) => ({
+              folderId: folder.folderId,
+              folderTitle: folder.folderName,
+            })) || [],
+        })
+      );
 
       // 기본 카드 + 공유 페이지 카드 합치기
       setAllCards([...updatedBaseCards, ...sharedPageCards]);
     }
-  }, [
-    personalPage,
-    sharedPages,
-    bookmarkData,
-    overviewLoading,
-    bookmarkLoading,
-  ]);
+  }, [personalPage, sharedPages, bookmarkData, overviewData]);
 
   // === Infinite loop setup ===
   const L = allCards.length;
@@ -449,7 +446,7 @@ export default function MobileHome() {
       {/* 페이지 목록 메뉴 */}
       <PageListMenu
         personalPage={personalPage}
-        sharedPages={sharedPages}
+        sharedPages={sharedPages || []}
         allCards={allCards}
         activeIndex={activeIndex}
         isMenuOpen={isPageListMenuOpen}

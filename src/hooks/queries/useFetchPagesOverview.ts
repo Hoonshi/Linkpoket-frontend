@@ -15,7 +15,12 @@ export default function useFetchPagesOverview() {
     queryFn: fetchJoinedPage,
     enabled: isLoggedIn,
     select: (response) => {
-      const pagesLocal = response?.data || [];
+      // response가 없거나 data가 없으면 undefined 반환 (로딩 상태 유지)
+      if (!response?.data) {
+        return undefined;
+      }
+
+      const pagesLocal = response.data || [];
       const personalPage = pagesLocal.find(
         (p: any) => p.pageType === 'PERSONAL'
       );
