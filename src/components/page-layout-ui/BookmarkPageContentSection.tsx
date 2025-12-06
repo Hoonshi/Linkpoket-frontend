@@ -10,7 +10,7 @@ import { DndContext, closestCenter, DragOverlay } from '@dnd-kit/core';
 import { SortableContext, rectSwappingStrategy } from '@dnd-kit/sortable';
 import useUpdateDragandDrop from '@/hooks/mutations/useUpdateDragandDrop';
 import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
-import { sortPageData } from '@/utils/pageDataManage';
+import { sortPageData } from '@/utils/handlePageDataSort';
 import { usePageDragAndDrop } from '@/hooks/usePageDragAndDrop';
 import { useDragAndDropSensors } from '@/utils/dragAndDrop';
 import MobileFolderCard from '../folder-card/mobile/MobileFolderCard';
@@ -121,6 +121,7 @@ export default function BookmarkPageContentSection({
                       folder={item}
                       index={index}
                       folderDataLength={sortedFolderData.length}
+                      pageImageUrl={''}
                     />
                   </div>
                 ))}
