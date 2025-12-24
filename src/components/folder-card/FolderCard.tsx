@@ -90,7 +90,7 @@ export default function FolderCard({
   return (
     <div
       // 바깥 컨테이너 투명 처리
-      className={`group relative flex ${isMobile ? 'h-[170px]' : 'h-[242px]'} flex-col items-center gap-4 rounded-[16px] border border-transparent bg-transparent p-[16px] hover:cursor-pointer ${
+      className={`group relative flex transition-all duration-300 hover:translate-y-[-4px] ${isMobile ? 'h-[170px]' : 'h-[242px]'} flex-col items-center gap-4 rounded-[16px] border border-transparent bg-transparent p-[16px] hover:cursor-pointer ${
         isMobile ? 'min-w-[125px]' : 'min-w-[156px]'
       }`}
       onClick={handleCardClick}
@@ -107,7 +107,7 @@ export default function FolderCard({
         <FolderBackground backgroundColor={currentFolderColor.gradient} />
 
         {/* 폴더 내부 링크들 */}
-        <LinksInFolder displayLinks={[]} />
+        <LinksInFolder />
 
         {/* Front pocket (투명도 적용) */}
         <FolderPocket backgroundColor={currentFolderColor.gradient} />
