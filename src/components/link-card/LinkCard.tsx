@@ -46,7 +46,7 @@ export default function LinkCard({
     updateLinkBookmark(item.linkId);
   };
 
-  const handleMenuClick = () => {
+  const handleInlineDropdownOpen = () => {
     setIsDropDownInline((v) => !v);
   };
 
@@ -133,7 +133,7 @@ export default function LinkCard({
   return (
     <>
       <div
-        className={`group relative flex ${isMobile ? 'h-[170px]' : 'h-[242px]'} flex-col items-center gap-4 overflow-visible p-[16px] hover:cursor-pointer ${
+        className={`group relative flex transition-all duration-300 hover:translate-y-[-6px] ${isMobile ? 'h-[170px]' : 'h-[242px]'} flex-col items-center gap-4 overflow-visible p-[16px] hover:cursor-pointer ${
           // isFocusMode
           // ? 'w-[125px]'
           isMobile ? 'min-w-[125px]' : 'min-w-[156px]'
@@ -228,7 +228,7 @@ export default function LinkCard({
                 className="cursor-pointer p-1"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleMenuClick();
+                  handleInlineDropdownOpen();
                 }}
                 onPointerDown={(e) => {
                   e.stopPropagation();

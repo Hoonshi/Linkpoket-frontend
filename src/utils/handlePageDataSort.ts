@@ -1,22 +1,9 @@
 import { FolderDetail } from '@/types/folders';
 import { LinkDetail } from '@/types/links';
 
-export const getPageDataLength = (
-  folderData: FolderDetail[],
-  linkData: LinkDetail[]
-) => {
-  const folderDataLength = folderData?.length ?? 0;
-  const linkDataLength = linkData?.length ?? 0;
-
-  return {
-    folderDataLength,
-    linkDataLength,
-  };
-};
-
 type PageData = FolderDetail | LinkDetail;
 
-export const sortPageData = (
+export const handlePageDataSort = (
   data: PageData[],
   sortType: string
 ): PageData[] => {

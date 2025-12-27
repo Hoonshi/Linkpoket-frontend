@@ -4,7 +4,7 @@ import { usePageStore, useParentsFolderIdStore } from '@/stores/pageStore';
 import { useFolderColorStore } from '@/stores/folderColorStore';
 import { useMobile } from '@/hooks/useMobile';
 import useUpdateFolderBookmark from '@/hooks/mutations/useUpdateFolderBookmark';
-import useFetchFolderDetails from '@/hooks/queries/useFetchFolderDetails';
+// import useFetchFolderDetails from '@/hooks/queries/useFetchFolderDetails';
 import { FolderDetail } from '@/types/folders';
 import { DropDownInlineSkeleton } from '../skeleton/DropdownInlineSkeleton';
 import LinksInFolder from './LinksInFolder';
@@ -41,15 +41,15 @@ export default function FolderCard({
   });
 
   // 폴더 상세 정보를 가져와서 링크 정보 추출 (유효한 folderId일 때만)
-  const requestParams = {
-    pageId: pageId || '',
-    commandType: 'VIEW',
-    folderId: folderId || '',
-    sortType: 'BASIC',
-  };
+  // const requestParams = {
+  //   pageId: pageId || '',
+  //   commandType: 'VIEW',
+  //   folderId: folderId || '',
+  //   sortType: 'BASIC',
+  // };
 
-  const { data: folderDetailsData } = useFetchFolderDetails(requestParams);
-  const linkData = folderDetailsData?.linkDetailResponses || [];
+  // const { data: folderDetailsData } = useFetchFolderDetails(requestParams);
+  // const linkData = folderDetailsData?.linkDetailResponses || [];
 
   const getFolderLink = (folderId: string) => {
     const currentPath = location.pathname;
@@ -80,17 +80,17 @@ export default function FolderCard({
     updateFolderBookmark();
   };
 
-  const handleMenuClick = () => {
+  const handleInlineDropdownOpen = () => {
     setIsDropDownInline((v) => !v);
   };
 
   // 링크 데이터 사용 (상위 3개만)
-  const displayLinks = linkData.slice(0, 3);
+  // const displayLinks = linkData.slice(0, 3);
 
   return (
     <div
       // 바깥 컨테이너 투명 처리
-      className={`group relative flex ${isMobile ? 'h-[170px]' : 'h-[242px]'} flex-col items-center gap-4 rounded-[16px] border border-transparent bg-transparent p-[16px] hover:cursor-pointer ${
+      className={`group relative flex transition-all duration-300 hover:translate-y-[-4px] ${isMobile ? 'h-[170px]' : 'h-[242px]'} flex-col items-center gap-4 rounded-[16px] border border-transparent bg-transparent p-[16px] hover:cursor-pointer ${
         isMobile ? 'min-w-[125px]' : 'min-w-[156px]'
       }`}
       onClick={handleCardClick}
@@ -107,7 +107,7 @@ export default function FolderCard({
         <FolderBackground backgroundColor={currentFolderColor.gradient} />
 
         {/* 폴더 내부 링크들 */}
-        <LinksInFolder displayLinks={displayLinks} />
+        <LinksInFolder />
 
         {/* Front pocket (투명도 적용) */}
         <FolderPocket backgroundColor={currentFolderColor.gradient} />
@@ -161,7 +161,7 @@ export default function FolderCard({
               className="cursor-pointer p-1"
               onClick={(e) => {
                 e.stopPropagation();
-                handleMenuClick();
+                handleInlineDropdownOpen();
               }}
               onPointerDown={(e) => {
                 e.stopPropagation();

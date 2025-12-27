@@ -6,7 +6,11 @@ import { CHROME_EXTENSION_URL } from '@/constants/urls';
 const HeroSection: React.FC = () => {
   const isMobile = useMobile();
 
-  const heroTitles = ['나의 링크부터 팀의 자료까지,', '한곳에서 쉽게 관리해요'];
+  const heroTitles = [
+    '나의 링크부터 팀의 자료까지,',
+    '한 곳에서',
+    '쉽게 관리해요',
+  ];
 
   const buttonVariants = [
     {

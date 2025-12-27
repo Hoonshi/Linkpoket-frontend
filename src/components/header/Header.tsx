@@ -4,9 +4,9 @@ import { HamburgerButton } from './HamburgerButton';
 import { UserActions } from './UserActions';
 import { AuthButtons } from './AuthButtons';
 import { useMobile } from '@/hooks/useMobile';
-import { Search } from '../common-ui/Search';
-import { usePageSearch } from '@/hooks/usePageSearch';
-import { useFolderColorStore } from '@/stores/folderColorStore';
+// import { Search } from '../common-ui/Search';
+// import { usePageSearch } from '@/hooks/usePageSearch';
+// import { useFolderColorStore } from '@/stores/folderColorStore';
 
 interface Props {
   isLoggedIn: boolean;
@@ -24,11 +24,10 @@ export function Header({
   const isMobile = useMobile();
   const pathName = useLocation().pathname;
 
-  const { searchKeyword, handleSearchChange, handleClear } = usePageSearch();
-  const { getCurrentColor } = useFolderColorStore();
-  const currentFolderColor = getCurrentColor();
-
-  const showSearch = pathName !== '/signup' && pathName !== '/login';
+  // const { searchKeyword, handleSearchChange, handleClear } = usePageSearch();
+  // const { getCurrentColor } = useFolderColorStore();
+  // const currentFolderColor = getCurrentColor();
+  // const showSearch = pathName !== '/signup' && pathName !== '/login';
 
   return !isMobile ? (
     <header className="header-desktop border-b-gray-10 flex items-center justify-between border-b">
@@ -39,7 +38,7 @@ export function Header({
         </Link>
       </div>
       <div className="header-desktop__right flex items-center">
-        {showSearch && (
+        {/* {showSearch && (
           <Search
             containerClassName="header-search"
             className="header-search__input"
@@ -49,7 +48,7 @@ export function Header({
             onClear={handleClear}
             focusColor={currentFolderColor.previewColor}
           />
-        )}
+        )} */}
         <div className="header-actions flex items-center">
           {showHeaderButton && (isLoggedIn ? <UserActions /> : <AuthButtons />)}
         </div>
