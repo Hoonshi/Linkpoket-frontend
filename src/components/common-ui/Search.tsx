@@ -98,11 +98,11 @@ export const Search = forwardRef<HTMLInputElement, SearchProps>(
       : {};
 
     return (
-      <div className="flex w-full flex-col gap-1">
+      <div className="flex w-full gap-1">
         {label && (
           <label
             htmlFor={props.id}
-            className="text-gray-80 text-sm font-medium"
+            className="text-gray-80 text-base font-medium"
           >
             {label}
           </label>
@@ -112,7 +112,7 @@ export const Search = forwardRef<HTMLInputElement, SearchProps>(
           className={cn(
             searchVariants({ variant, size, width, isError }),
             focusColor &&
-              'focus-within:border-[var(--focus-border-color)] focus-within:ring-[var(--focus-ring-color)]',
+              'bg-white focus-within:border-[var(--focus-border-color)] focus-within:ring-[var(--focus-ring-color)]',
             containerClassName
           )}
           style={customFocusStyles}
@@ -120,7 +120,7 @@ export const Search = forwardRef<HTMLInputElement, SearchProps>(
           <input
             ref={ref}
             className={cn(
-              'font-regular h-full w-full bg-transparent px-3 py-2 placeholder:text-gray-50 focus:outline-none',
+              'font-base h-full w-full px-3 py-2 placeholder:text-gray-50 focus:outline-none',
               className
             )}
             type="text"
