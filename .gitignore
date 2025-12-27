@@ -46,3 +46,6 @@ next-env.d.ts
 cert.crt
 key.key
 
+# Cursor
+.cursor/
+
