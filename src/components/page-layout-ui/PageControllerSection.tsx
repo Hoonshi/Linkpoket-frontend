@@ -3,6 +3,7 @@ import DropDownView from '../common-ui/DropDownView';
 import { Search } from '../common-ui/Search';
 import { useLocation } from 'react-router-dom';
 import { usePageSearch } from '@/hooks/usePageSearch';
+import { useFolderColorStore } from '@/stores/folderColorStore';
 
 export default function PageControllerSection({
   folderDataLength = 0,
@@ -13,7 +14,8 @@ export default function PageControllerSection({
 }: PageControllerSectionProps & { isMobile: boolean }) {
   const pathName = useLocation().pathname;
   const { searchKeyword, handleSearchChange, handleClear } = usePageSearch();
-
+  const { getCurrentColor } = useFolderColorStore();
+  const currentFolderColor = getCurrentColor();
   const showSearch = pathName !== '/signup' && pathName !== '/login';
 
   return (
@@ -26,6 +28,7 @@ export default function PageControllerSection({
           {folderDataLength}개의 폴더 | {linkDataLength}개의 링크
         </div>
       )}
+
       {isMobile && showSearch && (
         <Search
           placeholder="폴더 또는 링크 검색"
@@ -34,7 +37,20 @@ export default function PageControllerSection({
           onClear={handleClear}
         />
       )}
-      <DropDownView sortType={sortType} setSortType={setSortType} />
+      <div className="flex items-center">
+        {!isMobile && (
+          <Search
+            containerClassName="header-search"
+            className="header-search__input"
+            placeholder="폴더 또는 링크 검색"
+            value={searchKeyword}
+            onChange={handleSearchChange}
+            onClear={handleClear}
+            focusColor={currentFolderColor.previewColor}
+          />
+        )}
+        <DropDownView sortType={sortType} setSortType={setSortType} />
+      </div>
     </div>
   );
 }

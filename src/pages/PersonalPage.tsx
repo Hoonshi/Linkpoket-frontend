@@ -10,7 +10,6 @@ import { PageLayout } from '@/components/common-ui/PageLayout';
 import ScrollToTopButton from '@/components/common-ui/ScrollToTopButton';
 import PageHeaderSection from '@/components/page-layout-ui/PageHeaderSection';
 import PageControllerSection from '@/components/page-layout-ui/PageControllerSection';
-
 const PersonalPageContentSection = lazy(
   () => import('@/components/page-layout-ui/PersonalPageContentSection')
 );
